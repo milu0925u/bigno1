@@ -14,7 +14,7 @@
                     <div>{{ user.username }}</div>
                     <div>{{ user.trialTotal }}</div>
                     <input v-model="user.newValue" type="number" />
-                    <button class="edit-btn" @click="send(user.id, user.newValue)">送出</button>
+                    <button class="send-btn" @click="send(user.id, user.newValue)">送出</button>
                 </div>
             </div>
         </div>
@@ -120,11 +120,19 @@ watch(currentActive, async () => {
         white-space: nowrap;
 
         .title {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            text-align: center;
             text-decoration: underline;
         }
 
         .data {
             height: 50px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            text-align: center;
 
             div {
                 display: flex;
@@ -142,33 +150,10 @@ watch(currentActive, async () => {
                 height: 20px;
             }
         }
-
-        >div {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            text-align: center;
-        }
     }
 }
 
-.search-date {
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-
-    input {
-        width: 500px;
-        height: 36px;
-        padding: 24px;
-        border-radius: 12px;
-    }
-
-}
-
-.edit-btn {
+.send-btn {
     border: 1px solid black;
     padding: 2px 4px;
     width: 45px;
@@ -181,5 +166,47 @@ watch(currentActive, async () => {
 .border {
     border: 1px solid black;
     padding: 2px 4px;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+
+        .content {
+            width: 100%;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+
+            .title {
+                display: grid;
+                grid-template-columns: 80px auto 80px 70px;
+                gap: 0;
+            }
+
+            .data {
+                display: grid;
+                grid-template-columns: 80px auto 100px 50px;
+                gap: 0;
+                text-align: start;
+
+                div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                input {
+                    width: 80px;
+                    margin-left: 2px;
+                }
+
+                button {
+                    width: 30px;
+                }
+            }
+        }
+    }
 }
 </style>

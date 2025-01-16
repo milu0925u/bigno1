@@ -1,6 +1,6 @@
 <template>
-    <div class="login-container">
-        <div class="login-content">
+    <div class="container">
+        <div class="content">
             <div class="error">
                 <p v-if="errorMessage">{{ errorMessage }}</p>
             </div>
@@ -64,7 +64,7 @@ const goToHome = () => {
 </script>
 
 <style lang="scss" scoped>
-.login-container {
+.container {
     position: fixed;
     top: 0;
     left: 0;
@@ -76,7 +76,7 @@ const goToHome = () => {
     align-items: center;
 }
 
-.login-content {
+.content {
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -84,11 +84,10 @@ const goToHome = () => {
     width: 100%;
     display: flex;
     flex-direction: column;
-
+    gap: 6px;
     position: relative;
 
     >div {
-        margin: 6px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -108,8 +107,7 @@ const goToHome = () => {
 }
 
 .btn-group {
-    display: flex;
-    gap: 24px;
+    padding-top: 12px;
 
     button:last-child {
         box-shadow: inset -1px -1px 1px rgb(180, 178, 178), 2px 2px 1px rgb(207, 207, 207);
@@ -136,6 +134,16 @@ const goToHome = () => {
         width: 80%;
         background: red;
         padding: 3px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        width: auto;
+    }
+
+    .error {
+        height: auto;
     }
 }
 </style>

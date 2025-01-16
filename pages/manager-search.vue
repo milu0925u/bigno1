@@ -35,7 +35,6 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import { useToast } from 'vue-toastification';
-import { fetchAllUsers } from '~/store/st_user.js';
 const toast = useToast();
 
 const currentActive = ref("search"); // 接收子層組件
@@ -97,6 +96,7 @@ const getUserById = (uid) => {
     justify-content: center;
     align-items: center;
     gap: 12px;
+    white-space: nowrap;
 
     input {
         width: 500px;
@@ -113,6 +113,16 @@ const getUserById = (uid) => {
 
     &:active {
         transform: translateY(2px);
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .container {
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
 </style>

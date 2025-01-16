@@ -140,4 +140,11 @@ const getUsernameByUid = computed(() => {
         }
     }
 }
+
+@media screen and (max-width: 768px) {
+
+    .container {
+        width: 100%;
+    }
+}
 </style>

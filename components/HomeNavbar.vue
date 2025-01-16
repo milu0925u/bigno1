@@ -3,7 +3,6 @@
         <button class="btn" @click="goToManager">管理者模式</button>
     </div>
     <div v-else-if="user && user.username" class="btn-group">
-
     </div>
     <div v-else class="btn-group">
         <button class="btn" @click="goToSignup">註冊</button>
@@ -33,5 +32,5 @@ const goToManager = () => { navigateTo('/manager') };
     }
 }
 
-;
+@media screen and (max-width: 768px) {}
 </style>

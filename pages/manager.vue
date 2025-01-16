@@ -6,11 +6,11 @@
                 <div class="header">
                     <div>名稱</div>
                     <div>職業</div>
-                    <div>line名稱</div>
-                    <div>lineID</div>
+                    <div class="none">line名稱</div>
+                    <div class="none">lineID</div>
                     <div>職位</div>
-                    <div>加入時間</div>
-                    <div>狀態</div>
+                    <div class="none">加入時間</div>
+                    <div class="none">狀態</div>
                     <div>修改狀態</div>
                 </div>
 
@@ -30,11 +30,13 @@
                     </div>
                     <div v-else> {{ user.job }} </div>
 
-                    <div v-if="editUser?.id === user.id"><input v-model="editUser.lineName" type="text" /></div>
-                    <div v-else> {{ user.lineName }} </div>
+                    <div class="none" v-if="editUser?.id === user.id"><input v-model="editUser.lineName" type="text" />
+                    </div>
+                    <div class="none" v-else> {{ user.lineName }} </div>
 
-                    <div v-if="editUser?.id === user.id"><input v-model="editUser.lineID" type="text" /></div>
-                    <div v-else> {{ user.lineID }} </div>
+                    <div class="none" v-if="editUser?.id === user.id"><input v-model="editUser.lineID" type="text" />
+                    </div>
+                    <div class="none" v-else> {{ user.lineID }} </div>
 
                     <div v-if="editUser?.id === user.id">
                         <select v-model="editUser.position" placeholder="設定職位" required>
@@ -44,10 +46,11 @@
                     </div>
                     <div v-else> {{ user.position }} </div>
 
-                    <div v-if="editUser?.id === user.id"><input v-model="editUser.createDate" type="date" /></div>
-                    <div v-else> {{ user.createDate }} </div>
+                    <div class="none" v-if="editUser?.id === user.id"><input v-model="editUser.createDate"
+                            type="date" /></div>
+                    <div class="none" v-else> {{ user.createDate }} </div>
 
-                    <div v-if="editUser?.id === user.id">
+                    <div class="none" v-if="editUser?.id === user.id">
                         <span>
                             <select v-model="editUser.verify" placeholder="審核加入" required>
                                 <option value="true">通過</option>
@@ -56,7 +59,7 @@
                             </select>
                         </span>
                     </div>
-                    <div v-else>
+                    <div class="none" v-else>
                         <span :style="{
                             color: user.verify === null ? 'black' : (user.verify === true ? 'green' : 'red')
                         }">
@@ -159,7 +162,8 @@ definePageMeta({
             }
         }
 
-        >div {
+        .header,
+        .body {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             padding: 8px;
@@ -180,6 +184,23 @@ definePageMeta({
 
     &:active {
         transform: translateY(2px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .none {
+        display: none;
+    }
+
+    .container {
+        .content {
+            width: 100%;
+
+            .header,
+            .body {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
     }
 }
 </style>

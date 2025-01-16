@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         };
       }
 
-      const newValue = value * 1000;
+      // const newValue = value * 1000;
 
       // 新增進試煉
       await Trial.updateOne(
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
         {
           $set: {
             id: id,
-            value: newValue,
+            value:value,
             date: date,
             ...(mid && { reviewer: mid }),
           },

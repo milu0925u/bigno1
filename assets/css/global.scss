@@ -72,14 +72,20 @@ button {
   gap: 20px;
 }
 
-@media screen and (max-width: 730px) {
+
+
+@media screen and (max-width: 768px) {
   .home-grid {
-    flex-direction: column;
-  }
-  .flex {
-    justify-content: center;
-  }
-  .card {
-    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "navv"
+      "usercard"
+      "newuser"
+      "attendt" 
+      "attendb"
+      "rank"
+      ;
+
   }
 }

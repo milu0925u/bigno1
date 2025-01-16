@@ -1,6 +1,7 @@
 <template>
     <div class="trial-container">
-        <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" />
+        尚未完成
+        <!-- <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" /> -->
     </div>
 </template>
 

@@ -2,28 +2,30 @@
     <div>
         <div class="btn-group">
             <button :class="{ activeColor: route.name === 'manager' }" @click="goToAllUser"><i
-                    class="fa-solid fa-people-group"></i>所有成員</button>
+                    class="fa-solid fa-people-group"></i><span>所有成員</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-verify' }" @click="goToVerify"><i
-                    class="fa-solid fa-user-pen"></i>審核人員</button>
+                    class="fa-solid fa-user-pen"></i><span>審核人員</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-trial' }" @click="goToWriteTrial"><i
-                    class="fa-solid fa-bolt"></i>協助輸入試煉</button>
+                    class="fa-solid fa-bolt"></i><span>協助輸入試煉</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-battle' }" @click="goToBattle"><i
-                    class="fa-regular fa-square-check"></i>戰場出席選擇</button>
+                    class="fa-regular fa-square-check"></i><span>戰場出席選擇</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-search' }" @click="goToSearch"><i
-                    class="fa-solid fa-magnifying-glass"></i>搜尋出席</button>
+                    class="fa-solid fa-magnifying-glass"></i><span>搜尋出席</span></button>
 
-            <button @click="goToHome"> <i class="fa-solid fa-arrow-right-from-bracket"></i>返回首頁</button>
+            <button @click="goToHome"> <i class="fa-solid fa-arrow-right-from-bracket"></i><span>返回首頁</span></button>
         </div>
         <div class="group-list">
             <div v-if='route.name === "manager"'>
-                <button :class="{ activeColor: props.currentActive === 'seeAll' }" @click="seeAll">所有成員</button>
+                <button :class="{ activeColor: props.currentActive === 'seeAll' }"
+                    @click="seeAll">審核<span>成員</span></button>
                 <button :class="{ activeColor: props.currentActive === 'seeAllcontainLeave' }"
-                    @click="seeAllcontainLeave">已離開成員</button>
-                <button :class="{ activeColor: props.currentActive === 'seeNoUser' }" @click="seeNoUser">未審核成員</button>
+                    @click="seeAllcontainLeave">離開<span>成員</span></button>
+                <button :class="{ activeColor: props.currentActive === 'seeNoUser' }"
+                    @click="seeNoUser">未審核<span>成員</span></button>
             </div>
             <div v-else-if='route.name === "manager-verify"'>
                 <button :class="{ activeColor: props.currentActive === 'verifyJoin' }" @click="verifyJoin">加入</button>
@@ -147,5 +149,35 @@ const notrialUser = () => {
 .activeColor {
     background: black;
     color: white;
+}
+
+@media screen and (max-width: 768px) {
+    .btn-group {
+        gap: 0;
+        padding-inline: 0;
+
+        span {
+            display: none;
+        }
+
+        button {
+            padding: 12px;
+
+            i {
+                font-size: 16px;
+                padding-right: 0;
+            }
+        }
+    }
+
+    .group-list {
+        padding-inline: 0;
+        width: 100%;
+        margin-block: 8px;
+
+        span {
+            display: none;
+        }
+    }
 }
 </style>

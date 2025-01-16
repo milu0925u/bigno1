@@ -1,6 +1,7 @@
 <template>
     <div class="battle-container">
-        <Doughnut :data="chartData" :options="chartOptions" />
+        尚未完成
+        <!-- <Doughnut :data="chartData" :options="chartOptions" /> -->
     </div>
 </template>
 

@@ -25,11 +25,13 @@ let users = useState('users')
 
 // 由數字最大到小
 const sortedUsers = computed(() => {
-    return users && [...users.value].sort((a, b) => {
-        const aTrialTotal = a.trialTotal != null ? a.trialTotal : 0;
-        const bTrialTotal = b.trialTotal != null ? b.trialTotal : 0;
-        return bTrialTotal - aTrialTotal;
-    });
+    return users && [...users.value]
+        .filter(user => !user.leaveDate)
+        .sort((a, b) => {
+            const aTrialTotal = a.trialTotal != null ? a.trialTotal : 0;
+            const bTrialTotal = b.trialTotal != null ? b.trialTotal : 0;
+            return bTrialTotal - aTrialTotal;
+        });
 });
 
 
@@ -66,9 +68,5 @@ const sortedUsers = computed(() => {
     }
 }
 
-@media screen and (max-width: 730px) {
-    .rank-content {
-        width: 90%;
-    }
-}
+@media screen and (max-width: 730px) {}
 </style>

@@ -18,6 +18,8 @@
         <div class="attendb">
             <HomeBattleAttend />
         </div>
+        <div class="pig"></div>
+        <div class="bg"></div>
     </div>
 </template>
 
@@ -43,3 +45,37 @@ import { fetchAllUsers } from '~/store/st_user.js';
 fetchAllUsers();
 
 </script>
+
+
+<style lang="scss" scoped>
+.bg {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url('/public/images/background1.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.pig {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url('/public/images/pig.png');
+    background-repeat: no-repeat;
+    background-size: 70%;
+    width: 300px;
+    height: 300px;
+}
+
+@media screen and (max-width: 768px) {
+    .pig {
+        width: 150px;
+    }
+}
+</style>
