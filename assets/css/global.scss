@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.btn {
+  width: 95%;
+  background: black;
+  color: white;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: inset -1px -1px 1px rgba(191, 191, 192, 0.607), 2px 2px 1px black;
+  text-align: center;
+  &:active {
+    border: 1px solid white;
+    box-shadow: 0 0 0 1px black;
+    transform: translateY(2px);
+  }
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 10% 20% 20% auto 10%;
+  grid-template-areas:
+    "navv navv navv navv navv"
+    ". usercard newuser rank ."
+    ". attendt attendb rank .";
+  row-gap: 24px;
+  column-gap: 36px;
+  .navv {
+    grid-area: navv;
+  }
+  .usercard {
+    grid-area: usercard;
+  }
+  .newuser {
+    grid-area: newuser;
+  }
+  .attendt {
+    grid-area: attendt;
+  }
+  .attendb {
+    grid-area: attendb;
+  }
+  .rank {
+    grid-area: rank;
+  }
+}
+
+.card {
+  width: 100%;
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 0.878);
+  border-radius: 20px;
+  padding: 12px 24px;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media screen and (max-width: 730px) {
+  .home-grid {
+    flex-direction: column;
+  }
+  .flex {
+    justify-content: center;
+  }
+  .card {
+    width: 90%;
+  }
+}
