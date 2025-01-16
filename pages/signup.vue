@@ -33,8 +33,7 @@
 </template>
 
 <script setup>
-import Toast from 'vue-toastification';
-const { useToast } = Toast;
+import { useToast } from 'vue-toastification';
 const toast = useToast();
 
 import axios from 'axios';

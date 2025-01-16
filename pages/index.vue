@@ -41,9 +41,29 @@ useHead({
 });
 
 import { fetchAllUsers } from '~/store/st_user.js';
-import { checkUser } from '~/middleware/auth'
+const user = useState("user");
+const cookieUser = useCookie("ipx");
 fetchAllUsers();
-checkUser()
+
+console.log(cookieUser.value, 'cookieUser我的哭我的哭');
+
+if (!user.value && cookieUser.value) {
+
+    console.log(cookieUser.value, 'cookieUser');
+    const decodedUser = JSON.parse(decodeURIComponent(cookieUser.value));
+    try {
+        const response = axios.post(`/api/user`, { type: 'verify', id: decodedUser.id });
+        if (response.data.success) {
+            console.log(response.data.users, '結果有存嗎');
+            user.value = response.data.users;
+        } else {
+            console.log('沒有抓到捏');
+        }
+    } catch (error) {
+        console.error("驗證使用者時發生錯誤", error);
+    }
+}
+
 
 </script>
 

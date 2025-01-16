@@ -34,8 +34,7 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import Toast from 'vue-toastification';
-const { useToast } = Toast;
+import { useToast } from 'vue-toastification';
 const toast = useToast();
 
 const currentActive = ref("search"); // 接收子層組件

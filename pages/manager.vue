@@ -82,8 +82,7 @@ import axios from "axios";
 
 import { fetchAllUsers } from '~/store/st_user.js';
 
-import Toast from 'vue-toastification';
-const { useToast } = Toast;
+import { useToast } from 'vue-toastification';
 const toast = useToast();
 
 const currentActive = ref("seeAll");

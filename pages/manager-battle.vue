@@ -31,9 +31,10 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import Toast from 'vue-toastification';
-const { useToast } = Toast;
+
+import { useToast } from 'vue-toastification';
 const toast = useToast();
+
 const users = useState("users")
 
 const currentActive = ref("check"); // 接收子層組件
