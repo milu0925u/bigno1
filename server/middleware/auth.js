@@ -1,4 +1,4 @@
-export default defineEventHandler((to, from) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   const user = useState("user");
   const cookieUser = useCookie("ipx");
   if (!user.value && !cookieUser.value) {
