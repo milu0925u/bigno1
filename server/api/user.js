@@ -51,21 +51,24 @@ export default defineEventHandler(async (event) => {
       const users = await User.findOne({ username });
 
       if (type === "login") {
+        
         // 檢查用戶是否存在
         if (!users) {
           return { success: false, message: "沒有這個成員" };
         }
+
         // 用戶存在、檢查密碼
         if (users.password !== password) {
           return { success: false, message: "密碼錯誤" };
         }
-
         // 設定 Cookie
         const cookieOptions = {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
           maxAge: 60 * 60 * 24,
+        sameSite: "Lax",
+          secure: true,
         };
+
         // 儲存用戶資訊到 Cookie
         event.res.setHeader(
           "Set-Cookie",
@@ -75,7 +78,6 @@ export default defineEventHandler(async (event) => {
             cookieOptions
           )
         );
-
         return {
           success: true,
           message: "登入成功",
