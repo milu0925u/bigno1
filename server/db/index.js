@@ -9,7 +9,7 @@ export const connectToDatabase = async () => {
   try {
   console.log('與mongoose env');
 
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect("mongodb+srv://admin:admin0925@rabbbe.3idti.mongodb.net/rob?retryWrites=true&w=majority&appName=Rabbbe");
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
