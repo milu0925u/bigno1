@@ -57,3 +57,5 @@ export const fetchChartData = async () => {
     console.error(error, "API request failed");
   }
 };
+
+

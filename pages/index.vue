@@ -41,8 +41,9 @@ useHead({
 });
 
 import { fetchAllUsers } from '~/store/st_user.js';
-
+import { checkUser } from '~/middleware/auth'
 fetchAllUsers();
+checkUser()
 
 </script>
 

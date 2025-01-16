@@ -5,6 +5,8 @@ import moment from "moment";
 
 // 用來處理HTTP請求
 export default defineEventHandler(async (event) => {
+  const cookies = parseCookies(event);
+  const token = cookies.auth;
   await connectToDatabase(); //確保與資料庫建立連接
   try {
     //資料庫中查詢
@@ -31,6 +33,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (event.req.method === "POST") {
+
       // 客戶端的資料取出
       const {
         ids,
@@ -115,6 +118,10 @@ export default defineEventHandler(async (event) => {
         await newUser.save();
         return { success: true, message: "註冊成功" };
       } else if (type === "update") {
+        if (!token) {
+          return { success:false, message: "成員身分認證失敗" }
+        }
+  
         const updateData = {}; //需要更新的項目內容
         if (lineID) {
           updateData.lineID = lineID;
@@ -155,10 +162,29 @@ export default defineEventHandler(async (event) => {
           message: "更新成功！",
         };
       } else if (type === "verifyuser") {
+        if (!token) {
+          return { success:false, message: "成員身分認證失敗" }
+        }
+  
         await User.updateMany({ id: id }, { $set: { verify: true } });
         return {
           success: true,
           message: "審核成功！",
+        };
+      } else if (type === 'verify'){
+        const users = await User.findOne({ id });
+
+        return {
+          success: true,
+          message: "登入成功",
+          user: {
+            id: users.id,
+            username: users.username,
+            position: users.position,
+            job: users.job,
+            createDate: moment(users.createDate).format("YYYY-MM-DD"),
+            verify: users.verify,
+          },
         };
       }
     }
