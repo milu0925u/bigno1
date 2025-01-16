@@ -33,8 +33,10 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toastification';
+import Toast from 'vue-toastification';
+const { useToast } = Toast;
 const toast = useToast();
+
 import axios from 'axios';
 
 const formData = ref({

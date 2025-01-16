@@ -42,9 +42,12 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 
-import { useToast } from 'vue-toastification';
-import { fetchAllUsers } from '~/store/st_user.js';
+import Toast from 'vue-toastification';
+const { useToast } = Toast;
 const toast = useToast();
+
+import { fetchAllUsers } from '~/store/st_user.js';
+
 
 const currentActive = ref("verifyJoin"); // 接收子層組件
 const updateCurrentActive = (newValue) => {

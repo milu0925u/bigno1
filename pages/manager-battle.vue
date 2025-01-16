@@ -31,8 +31,8 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import { useToast } from 'vue-toastification';
-import { fetchAllUsers } from '~/store/st_user.js';
+import Toast from 'vue-toastification';
+const { useToast } = Toast;
 const toast = useToast();
 const users = useState("users")
 
