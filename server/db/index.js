@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 
 export const connectToDatabase = async () => {
+  console.log('與mongoose嘗試連接');
+  
+
   if (mongoose.connection.readyState >= 1) return;
 
   try {
+  console.log('與mongoose env');
+
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");
   } catch (error) {
