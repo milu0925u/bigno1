@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
           httpOnly: true,
           maxAge: 60 * 60 * 24,
         sameSite: "Lax",
-          secure: "production",
+          secure: true,
         };
 
         // 儲存用戶資訊到 Cookie
