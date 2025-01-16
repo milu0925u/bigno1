@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
         }
         // 設定 Cookie
         const cookieOptions = {
-          httpOnly: true,
+          httpOnly:  false,
           maxAge: 60 * 60 * 24,
         sameSite: "Lax",
           secure: true,
