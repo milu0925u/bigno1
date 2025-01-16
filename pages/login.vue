@@ -21,7 +21,6 @@
 
 <script setup>
 import Toast from 'vue-toastification';
-import Toast from 'vue-toastification';
 const { useToast } = Toast;
 const toast = useToast();
 
