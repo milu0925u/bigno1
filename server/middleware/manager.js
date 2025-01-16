@@ -1,6 +1,6 @@
 import { useUser } from "~/store/st_user";
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineEventHandler((to, from) => {
   const user = useUser();
   if (!user.value) {
     return navigateTo("/");
