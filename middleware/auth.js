@@ -31,7 +31,6 @@ export const checkUser = async () => {
       }
     } catch (error) {
       console.error("驗證使用者時發生錯誤", error);
-      return navigateTo("/login");  
     }
   }
 };
