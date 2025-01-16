@@ -7,6 +7,9 @@ import moment from "moment";
 export default defineEventHandler(async (event) => {
   await connectToDatabase(); //確保與資料庫建立連接
 
+  console.log('與資料庫連接成功！');
+  
+
   try {
     //資料庫中查詢
 
