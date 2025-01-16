@@ -33,7 +33,7 @@ const errorMessage = ref('');
 // 登入
 const login = async () => {
     try {
-        const response = await axios.post('/api/user', formData.value)
+        const response = await axios.post('/api/user', formData.value, { withCredentials: true })
 
         if (response.data.success) {
             user.value = response.data.user;
