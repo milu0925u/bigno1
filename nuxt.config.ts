@@ -22,4 +22,7 @@ export default defineNuxtConfig({
   plugins: [
     "~/plugins/vue-toastification.js", // 註冊 VueToast 插件
   ],
+  nitro: {
+    preset: 'vercel', // 使用 Vercel 
+  },
 });
