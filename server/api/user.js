@@ -5,10 +5,12 @@ import moment from "moment";
 
 // 用來處理HTTP請求
 export default defineEventHandler(async (event) => {
+
+  console.log('與後端連接成功！');
+
   await connectToDatabase(); //確保與資料庫建立連接
 
   console.log('與資料庫連接成功！');
-  
 
   try {
     //資料庫中查詢
