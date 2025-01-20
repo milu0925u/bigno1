@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
 
       
       const result = await Battlefield.updateMany(
-        { uid: { $in: ids }, date: date },
+        { uid: { $in: ids }, date: new Date(date) },
         { $set: { attend: true } }
       );
 

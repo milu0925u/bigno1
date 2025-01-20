@@ -14,10 +14,19 @@ export default defineEventHandler(async (event) => {
     const startOfDay = new Date(moment(date).startOf("day").toISOString());
     const endOfDay = new Date(moment(date).endOf("day").toISOString());
 
+    // 計算前一天的開始與結束時間
+const startOfYesterday = moment(date).clone().subtract(1, "day").startOf("day").toDate();
+const endOfYesterday = moment(date).clone().subtract(1, "day").endOf("day").toDate();
+
     const userdata = await User.find({ verify: true }).lean();
+
     const trialsdata = await Trial.find({
       date: { $gte: startOfDay, $lt: endOfDay },
     }).lean();
+    // 查詢前一天數據
+const yesterdayData = await Trial.find({ date: { $gte: startOfYesterday, $lt: endOfYesterday } }).lean();
+
+
     const battlesdata = await Battlefield.find({
       date: { $gte: startOfDay, $lt: endOfDay },
     }).lean();
@@ -37,6 +46,14 @@ export default defineEventHandler(async (event) => {
         !dayoffsdata.some((dayoff) => dayoff.uid === item.uid)
     );
 
+
+
+    // 將數據轉換為以 ID 為鍵的對象，便於快速查找
+const yesterdayMap = new Map();
+yesterdayData.forEach((entry) => {
+  yesterdayMap.set(entry.id, entry.trialTotal);
+});
+
     const trueTrianData = trialsdata;
     const falseTrianData = userdata.filter(
       (t) => !trialsdata.some((v) => String(v.id) === String(t.id))
@@ -47,6 +64,9 @@ export default defineEventHandler(async (event) => {
     // 請假
     // 試煉有更新日期 (user.createDate之前)
     // 試煉未更新日期 (user.createDate之前)
+
+
+
 
     return {
       success: true,

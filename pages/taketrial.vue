@@ -40,6 +40,7 @@ WatcherUser((newUser) => {
     if (newUser) {
         formData.value = {
             id: newUser.id,
+            type: 'add',
             date: new Date().toISOString().split("T")[0],
             value: newUser.value,
         };

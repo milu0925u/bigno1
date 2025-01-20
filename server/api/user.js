@@ -152,8 +152,6 @@ export default defineEventHandler(async (event) => {
           updateData.position = position;
         }
 
-        console.log(updateData);
-        
 
         // 更新會員資料 - 多項目
         await User.updateMany(

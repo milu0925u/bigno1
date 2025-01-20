@@ -16,7 +16,6 @@ const User =
       lineID: String,
       createDate: Date,
       leaveDate: Date,
-      trialTotal: Number,
     })
   );
 
@@ -36,6 +35,7 @@ const Battlefield =
     })
   );
 
+
 const Trial =
   mongoose.models.trials ||
   mongoose.model(
@@ -44,6 +44,7 @@ const Trial =
       id: Number,
       value: Number,
       date: Date,
+      ranking:Number,
       reviewer: {
         type: Number,
         required: false,

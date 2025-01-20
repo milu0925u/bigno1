@@ -1,49 +1,26 @@
 <template>
     <div>
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
-        <div v-if="currentActive === 'trialUser'" class="container">
-            <div class="border">僅新增今日內容</div>
-
-
+        <div class="container">
+            <div class="border">新增今日數據</div>
             <button class="hide-btn" @click="toggleVisibility">
                 open
             </button>
-
             <div v-if="visibilityBTN">
                 <input type="date" v-model="newdate" />
             </div>
-
-
             <div class="content">
                 <div class="title">
                     <h4>名稱</h4>
-                    <h4>目前值</h4>
+                    <h4>昨日值</h4>
                     <h4>新值</h4>
                     <h4></h4>
                 </div>
                 <div class="data" v-for="user in printUser" :key="user?.id">
                     <div>{{ user.username }}</div>
-                    <div>{{ user.trialTotal }}</div>
+                    <div>{{ user.value }}</div>
                     <input v-model="user.newValue" type="number" />
                     <button class="send-btn" @click="send(user.id, user.newValue)">送出</button>
-                </div>
-            </div>
-        </div>
-
-        <div v-else-if="currentActive === 'notrialUser'" class="container">
-            <div class="border">僅新增今日內容</div>
-            <div class="content">
-                <div class="title">
-                    <h4>名稱</h4>
-                    <h4>目前值</h4>
-                    <h4>新值</h4>
-                    <h4></h4>
-                </div>
-                <div class="data" v-for="user in printNoUser" :key="user?.id">
-                    <div>{{ user.username }}</div>
-                    <div>{{ user.trialTotal }}</div>
-                    <input v-model="user.newValue" type="number" />
-                    <button class="edit-btn" @click="send(user.id, user.newValue)">送出</button>
                 </div>
             </div>
         </div>
@@ -63,8 +40,6 @@ const toggleVisibility = () => {
 
 import { WatcherUser, fetchAllUsers } from '~/store/st_user.js';
 
-const user = useState("user")
-const users = useState("users")
 
 const currentActive = ref("trialUser"); // 接收子層組件
 const updateCurrentActive = (newValue) => {
@@ -92,10 +67,10 @@ const send = async (id, value) => {
 }
 
 // 抓取資料並過濾
-const battle = ref([]); // 今天有打沒打所有人
+const battle = ref({}); // 今天有打沒打所有人
 const fetchData = async () => {
     try {
-        const response = await axios.post('/api/trial', { type: 'get', date: new Date().toISOString().split("T")[0] });
+        const response = await axios.get('/api/trial');
         if (response.data.success) {
             battle.value = response.data.users;
         } else {
@@ -111,19 +86,19 @@ WatcherUser((newUser) => {
     if (newUser) {
         inputData.value = {
             mid: newUser.id,
+            type: 'add',
             date: new Date().toISOString().split("T")[0],
         };
     }
 });
 const printUser = ref();
-const printNoUser = ref();
 
 watch(currentActive, async () => {
     await fetchData();
     if (currentActive.value === 'trialUser') {
-        printUser.value = users.value.filter(user => user.leaveDate === null && user.verify === true);
+        printUser.value = battle.value.all
     } else if (currentActive.value === 'notrialUser') {
-        printNoUser.value = users.value.filter(user => user.leaveDate === null && user.verify === true && battle.value.every(b => b.id !== user.id));
+        printUser.value = battle.value.missing
     }
 }, { immediate: true }); 
 </script>

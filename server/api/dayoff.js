@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
       // 新增請假紀錄
       if (type === "add") {
         await Dayoff.updateMany(
-          { uid: id, date: date },
+          { uid: id, date:new Date(date) },
           {
             $set: {
               id: nextId,

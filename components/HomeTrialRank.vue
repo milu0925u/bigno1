@@ -7,11 +7,11 @@
                 <div>數值</div>
             </div>
             <div class="rank-b">
-                <div class="rank-b" v-if="users && users.length > 0">
-                    <div v-for="user in sortedUsers" :key="user.id" class="grid">
-                        <div>{{ user.username }}</div>
-                        <div>{{ user.trialTotal }}K</div>
-                    </div>
+
+                <div v-for="(user, index) in ranking" :key="user.id" class="grid">
+                    <div class="ranking">{{ index + 1 }}</div>
+                    <div>{{ user.username }}</div>
+                    <div>{{ user.value }}K</div>
                 </div>
             </div>
         </div>
@@ -21,17 +21,22 @@
 <script setup>
 import HomeTitle from '~/components/HomeTitle.vue';
 
-let users = useState('users')
-
-// 由數字最大到小
-const sortedUsers = computed(() => {
-    return users && [...users.value]
-        .filter(user => !user.leaveDate)
-        .sort((a, b) => {
-            const aTrialTotal = a.trialTotal != null ? a.trialTotal : 0;
-            const bTrialTotal = b.trialTotal != null ? b.trialTotal : 0;
-            return bTrialTotal - aTrialTotal;
-        });
+import axios from 'axios';
+const ranking = ref([]);
+const fetchRanking = async () => {
+    try {
+        const response = await axios.get("/api/trial");
+        if (response.data.success) {
+            ranking.value = response.data.users.all
+        } else {
+            console.log(response.data.message);
+        }
+    } catch (error) {
+        console.log(error, "錯誤");
+    }
+};
+onMounted(() => {
+    fetchRanking();
 });
 
 
@@ -51,6 +56,7 @@ const sortedUsers = computed(() => {
     grid-template-columns: 1fr 1fr;
     text-align: center;
     padding-block: 5px;
+    position: relative;
 }
 
 .title-line {
@@ -59,8 +65,21 @@ const sortedUsers = computed(() => {
     border-style: solid;
 }
 
+.ranking {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    font-size: 8px;
+    border: 1px solid rgb(148, 148, 148);
+    border-radius: 80px;
+    width: 10px;
+    height: 10px;
+    color: rgb(148, 148, 148);
+}
+
 .rank-b {
     overflow-y: auto;
+
 
     &::-webkit-scrollbar {
         display: none;

@@ -40,19 +40,15 @@ useHead({
     ]
 });
 
+import axios from 'axios';
 import { fetchAllUsers } from '~/store/st_user.js';
 const user = useState("user");
-const cookieUser = useCookie("ipx");
 fetchAllUsers();
 
-console.log(cookieUser.value, 'cookieUser我的哭我的哭');
 
-if (!user.value && cookieUser.value) {
-
-    console.log(cookieUser.value, 'cookieUser');
-    const decodedUser = JSON.parse(decodeURIComponent(cookieUser.value));
+if (!user.value) {
     try {
-        const response = axios.post(`/api/user`, { type: 'verify', id: decodedUser.id });
+        const response = axios.post(`/api/user`, { type: 'verify' });
         if (response.data.success) {
             console.log(response.data.users, '結果有存嗎');
             user.value = response.data.users;
