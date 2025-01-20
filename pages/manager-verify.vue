@@ -57,12 +57,12 @@ const users = useState("users")
 const printUser = ref([])
 
 // // 監控目前位置
-watch(currentActive, async (newVal) => {
-    if (newVal === "verifyJoin") {
-        printUser.value = users.value?.filter((user) => user.verify === false);
-    } else if (newVal === "verifyDate") {
+watch([currentActive, users], async (newVal) => {
+    if (newVal === "verifyDate") {
         dayoffUser.value = dayoffUser.value?.filter((v) => v.verify === false);
+        return
     }
+    printUser.value = users.value?.filter((user) => user.verify === false);
 }, { immediate: true }); // 使用 immediate: true 使初次加載時就會運行一次
 
 
@@ -72,7 +72,7 @@ const updateVerify = async (newSelected) => {
         const response = await axios.post('/api/user', { id: newSelected, type: 'verifyuser' });
         if (response.data.success) {
             fetchAllUsers()
-            printUser.value = users.value?.filter((user) => user.verify === false);
+
             toast.success(response.data.message)
         } else {
             errorMessage.value = response.data.message || '審核失敗';

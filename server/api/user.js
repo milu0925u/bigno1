@@ -5,8 +5,7 @@ import moment from "moment";
 
 // 用來處理HTTP請求
 export default defineEventHandler(async (event) => {
-  const cookies = parseCookies(event);
-  const token = cookies.auth;
+
   await connectToDatabase(); //確保與資料庫建立連接
   try {
     //資料庫中查詢
@@ -48,6 +47,7 @@ export default defineEventHandler(async (event) => {
         lineID,
         type,
         id,
+        trialTotal
       } = await readBody(event);
 
       //資料庫中查詢
@@ -118,9 +118,7 @@ export default defineEventHandler(async (event) => {
         await newUser.save();
         return { success: true, message: "註冊成功" };
       } else if (type === "update") {
-        if (!token) {
-          return { success:false, message: "成員身分認證失敗" }
-        }
+
   
         const updateData = {}; //需要更新的項目內容
         if (lineID) {
@@ -138,6 +136,9 @@ export default defineEventHandler(async (event) => {
         if (createDate) {
           updateData.createDate = createDate;
         }
+        if (leaveDate) {
+          updateData.leaveDate = leaveDate;
+        }
         if (trialTotal) {
           updateData.trialTotal = trialTotal;
         }
@@ -151,6 +152,9 @@ export default defineEventHandler(async (event) => {
           updateData.position = position;
         }
 
+        console.log(updateData);
+        
+
         // 更新會員資料 - 多項目
         await User.updateMany(
           { id: parseInt(id) },
@@ -162,9 +166,7 @@ export default defineEventHandler(async (event) => {
           message: "更新成功！",
         };
       } else if (type === "verifyuser") {
-        if (!token) {
-          return { success:false, message: "成員身分認證失敗" }
-        }
+
   
         await User.updateMany({ id: id }, { $set: { verify: true } });
         return {

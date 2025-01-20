@@ -4,14 +4,11 @@ import moment from "moment";
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
-  const cookies = parseCookies(event);
-  const token = cookies.auth;
+
   await connectToDatabase(); // 確保資料庫連接
 
   if (event.req.method === "POST") {
-    if (!token) {
-      return { success:false, message: "成員身分認證失敗" }
-    }
+
     const { date } = await readBody(event);
 
     const startOfDay = new Date(moment(date).startOf("day").toISOString());

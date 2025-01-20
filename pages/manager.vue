@@ -52,11 +52,12 @@
 
                     <div class="none" v-if="editUser?.id === user.id">
                         <span>
-                            <select v-model="editUser.verify" placeholder="審核加入" required>
+                            <input v-model="editUser.leveDate" type="date" />
+                            <!-- <select v-model="editUser.verify" placeholder="審核加入" required>
                                 <option value="true">通過</option>
                                 <option value="false">待審核</option>
                                 <option value="null">已離開</option>
-                            </select>
+                            </select> -->
                         </span>
                     </div>
                     <div class="none" v-else>
@@ -95,23 +96,28 @@ const printUser = ref([]); //顯示的使用者項目
 const editUser = ref(null); // 編輯的項目
 
 // 監控目前位置
-watch(currentActive, (newVal) => {
-    let filteredUsers;
+watch(
+    [currentActive, users],
+    ([newCurrentActive, newUsers]) => {
+        let filteredUsers;
 
-    if (newVal === "seeAll") {
-        filteredUsers = users.value?.filter((user) => user.leaveDate === null);
-    } else if (newVal === "seeAllcontainLeave") {
-        filteredUsers = users.value?.filter((user) => user.leaveDate);
-    } else if (newVal === "seeNoUser") {
-        filteredUsers = users.value?.filter((user) => user.leaveDate === null && user.verify === false);
-    }
-    // 最舊會員在最上方
-    printUser.value = filteredUsers?.sort((a, b) => new Date(a.createDate) - new Date(b.createDate));
-}, { immediate: true }); // 使用 immediate: true 使初次加載時就會運行一次
-// 監控打印資料
-watch(users, () => {
-    printUser.value = users.value;
-}, { deep: true });
+        if (newCurrentActive === "seeAllcontainLeave") {
+            filteredUsers = newUsers?.filter((user) => user.leaveDate);
+        } else if (newCurrentActive === "seeNoUser") {
+            filteredUsers = newUsers?.filter(
+                (user) => user.leaveDate === null && user.verify === false
+            );
+        } else {
+            filteredUsers = newUsers?.filter((user) => user.leaveDate === null);
+        }
+
+        // 统一排序逻辑
+        printUser.value = filteredUsers?.sort(
+            (a, b) => new Date(a.createDate) - new Date(b.createDate)
+        );
+    },
+    { immediate: true, deep: true }
+);
 
 const edit = (user) => {
     editUser.value = { ...user };

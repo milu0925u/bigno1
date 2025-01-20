@@ -3,17 +3,13 @@ import { User, Battlefield } from "./model";
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
-  const cookies = parseCookies(event);
-  const token = cookies.auth;
   await connectToDatabase(); // 確保資料庫連接
 
   if (event.req.method === "POST") {
     const { type, date, ids } = await readBody(event);
 
     if (type === "addin") {
-      if (!token) {
-        return { success:false, message: "成員身分認證失敗" }
-      }
+
       // 先檢查是否已有名單
       const existingRecord = await Battlefield.findOne({ date: date });
 
@@ -64,9 +60,6 @@ export default defineEventHandler(async (event) => {
       };
     } else if (type === "chosen") {
 
-      if (!token) {
-        return { success:false, message: "成員身分認證失敗" }
-      }
       
       const result = await Battlefield.updateMany(
         { uid: { $in: ids }, date: date },

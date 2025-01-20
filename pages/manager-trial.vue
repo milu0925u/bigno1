@@ -3,6 +3,17 @@
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
         <div v-if="currentActive === 'trialUser'" class="container">
             <div class="border">僅新增今日內容</div>
+
+
+            <button class="hide-btn" @click="toggleVisibility">
+                open
+            </button>
+
+            <div v-if="visibilityBTN">
+                <input type="date" v-model="newdate" />
+            </div>
+
+
             <div class="content">
                 <div class="title">
                     <h4>名稱</h4>
@@ -45,6 +56,11 @@ import axios from "axios";
 import { useToast } from 'vue-toastification';
 const toast = useToast();
 
+const visibilityBTN = ref(false);
+const toggleVisibility = () => {
+    visibilityBTN.value = true;
+};
+
 import { WatcherUser, fetchAllUsers } from '~/store/st_user.js';
 
 const user = useState("user")
@@ -56,11 +72,16 @@ const updateCurrentActive = (newValue) => {
 };
 
 
-const inputData = ref({})
+const inputData = ref({}) // 正常管理員輸入
+const newdate = ref(""); // 可選日期
+
+
+
+
 // 送出代寫數值 
 const send = async (id, value) => {
     try {
-        const response = await axios.post("/api/trial", { ...inputData.value, id: id, value: value, });
+        const response = await axios.post("/api/trial", { ...inputData.value, id: id, value: value, newdate: newdate.value });
         if (response.data.success) {
             fetchAllUsers()
             toast.success(response.data.message);
@@ -71,7 +92,7 @@ const send = async (id, value) => {
 }
 
 // 抓取資料並過濾
-const battle = ref([]);
+const battle = ref([]); // 今天有打沒打所有人
 const fetchData = async () => {
     try {
         const response = await axios.post('/api/trial', { type: 'get', date: new Date().toISOString().split("T")[0] });
@@ -168,6 +189,17 @@ watch(currentActive, async () => {
 .border {
     border: 1px solid black;
     padding: 2px 4px;
+}
+
+
+.hide-btn {
+    margin-left: auto;
+    opacity: 0;
+    pointer-events: auto;
+    width: 50px;
+    height: 20px;
+    background: transparent;
+    border: none;
 }
 
 @media screen and (max-width: 768px) {

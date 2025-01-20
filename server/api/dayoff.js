@@ -4,14 +4,11 @@ import { Dayoff } from "./model";
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
-  const cookies = parseCookies(event);
-  const token = cookies.auth;
+
   await connectToDatabase(); // 確保資料庫連接
   try {
 
-    if (!token) {
-      return { success:false, message: "成員身分認證失敗" }
-    }
+
 
     const dayoff = await Dayoff.find();
 

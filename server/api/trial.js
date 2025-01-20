@@ -3,13 +3,13 @@ import { User, Trial } from "./model";
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
-  const cookies = parseCookies(event);
-  const token = cookies.auth;
+
   await connectToDatabase(); // 確保資料庫連接
 
   try {
     if (event.req.method === "POST") {
-      const { id, value, date, mid, type } = await readBody(event);
+      const { id, value, date, mid, type ,newdate} = await readBody(event);
+    
 
       if (type === "get") {
         const users = await Trial.find({ date: date }).lean();
@@ -20,12 +20,6 @@ export default defineEventHandler(async (event) => {
         };
       }
 
-
-      if (!token) {
-        return { success:false, message: "成員身分認證失敗" }
-      }
-
-
       // 新增進試煉
       await Trial.updateOne(
         { id: id, date: date },
@@ -33,7 +27,7 @@ export default defineEventHandler(async (event) => {
           $set: {
             id: id,
             value:value,
-            date: date,
+            date: newdate ? newdate : date,
             ...(mid && { reviewer: mid }),
           },
         },
