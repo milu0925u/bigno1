@@ -19,15 +19,17 @@ export default defineEventHandler(async (event) => {
 
     // 查詢前一天的數據
     const yesterdayData = await Trial.find({ date: { $gte: yesterdayStart, $lt: yesterdayEnd } }).sort({ value: -1 }).lean();
-
+  
 
     // 將前一天的數據依照 id 插入對應的用戶資料中
     const userData = users.map(user => {
     // 查找對應的前一天數據
     const userYesterdayData = yesterdayData.find(data => data.id === user.id)
-    return userYesterdayData ? {...user,userYesterdayData} :{...user,ranking:null,value:0}
+    return {...user,...userYesterdayData} 
   }).sort((a, b) => b.value - a.value);
 
+  console.log(userData,'前一天的所有值');
+  
 
   // 抓取今天的資料 (這裡假設你已經有今日的數據 `todayData`，可以從資料庫或其他地方取得)
   const todayStart = moment(new Date()).clone().startOf("day").toDate();
@@ -48,7 +50,8 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       message: "抓取成功！",
-      users:{all:userData,missing:missinguserData},
+      users:{all:userData,
+        missing:missinguserData},
     };
     };
 
@@ -67,24 +70,16 @@ export default defineEventHandler(async (event) => {
                 value:value,
                 date: newdate ? newdate : date,
                 ...(mid && { reviewer: mid }),
-              },
-            },
-            { upsert: true }
-          );
-
-          // 新增進會員
-          await User.updateOne(
-            { id: id },
-            {
-              $set: {
-                trialTotal: value,
+                ranking:null,
               },
             },
             { upsert: true }
           );
 
 
-          const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1 }).lean();
+          const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1, id: 1  }).lean();
+ 
+          
           const bulkOps = newTrialRank.map((user, index) => ({
             updateOne: {
               filter: { id: user.id}, // 根據 id 找到對應的使用者
@@ -103,6 +98,29 @@ export default defineEventHandler(async (event) => {
       };
       }
     };
+
+    // 排名沒更新時使用
+    if (event.req.method === "PATCH") {
+      const { targetDate} = await readBody(event);
+      const startOfDay = moment(targetDate).startOf('day').toDate();
+      const endOfDay = moment(targetDate).endOf('day').toDate();
+    const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1 , _id: 1  }).lean();
+
+    const bulkOps = newTrialRank.map((user, index) => {
+
+      return {
+      updateOne: {
+        filter: { _id: user._id}, 
+        update: {
+          $set: {
+            ranking: index+1,
+          },
+        },
+      },
+    }});
+
+    await Trial.bulkWrite(bulkOps);
+  };
   } catch (e) {
     console.log(e);
   }

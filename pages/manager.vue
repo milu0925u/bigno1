@@ -52,7 +52,7 @@
 
                     <div class="none" v-if="editUser?.id === user.id">
                         <span>
-                            <input v-model="editUser.leveDate" type="date" />
+                            <input v-model="editUser.leaveDate" type="date" />
                             <!-- <select v-model="editUser.verify" placeholder="審核加入" required>
                                 <option value="true">通過</option>
                                 <option value="false">待審核</option>

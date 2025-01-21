@@ -40,25 +40,8 @@ useHead({
     ]
 });
 
-import axios from 'axios';
 import { fetchAllUsers } from '~/store/st_user.js';
-const user = useState("user");
 fetchAllUsers();
-
-
-if (!user.value) {
-    try {
-        const response = axios.post(`/api/user`, { type: 'verify' });
-        if (response.data.success) {
-            console.log(response.data.users, '結果有存嗎');
-            user.value = response.data.users;
-        } else {
-            console.log('沒有抓到捏');
-        }
-    } catch (error) {
-        console.error("驗證使用者時發生錯誤", error);
-    }
-}
 
 
 </script>

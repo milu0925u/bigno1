@@ -7,9 +7,8 @@
                 <div>數值</div>
             </div>
             <div class="rank-b">
-
-                <div v-for="(user, index) in ranking" :key="user.id" class="grid">
-                    <div class="ranking">{{ index + 1 }}</div>
+                <div v-for="user in ranking" :key="user.id" class="grid">
+                    <div class="ranking">{{ user.ranking }}</div>
                     <div>{{ user.username }}</div>
                     <div>{{ user.value }}K</div>
                 </div>
@@ -28,8 +27,6 @@ const fetchRanking = async () => {
         const response = await axios.get("/api/trial");
         if (response.data.success) {
             ranking.value = response.data.users.all
-        } else {
-            console.log(response.data.message);
         }
     } catch (error) {
         console.log(error, "錯誤");
@@ -38,6 +35,9 @@ const fetchRanking = async () => {
 onMounted(() => {
     fetchRanking();
 });
+
+
+console.log(ranking.value);
 
 
 </script>
