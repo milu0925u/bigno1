@@ -3,14 +3,21 @@
         <HomeTitle title="試煉排名" />
         <div class="rank-content card">
             <div class="grid title-line">
+                <div></div>
                 <div>名稱</div>
                 <div>數值</div>
+                <div></div>
             </div>
             <div class="rank-b">
                 <div v-for="user in ranking" :key="user.id" class="grid">
                     <div class="ranking">{{ user.ranking }}</div>
                     <div>{{ user.username }}</div>
                     <div>{{ user.value }}K</div>
+                    <div class="pro">
+                        <i v-if="user.pro > 0" class="fa-solid fa-up-long up-color"></i>
+                        <i v-else-if="user.pro < 0" class="fa-solid fa-down-long down-color"></i>
+                        <i v-else class="fa-solid fa-minus"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,7 +60,7 @@ console.log(ranking.value);
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 20px 1fr 1fr 20px;
     text-align: center;
     padding-block: 5px;
     position: relative;
@@ -66,15 +73,30 @@ console.log(ranking.value);
 }
 
 .ranking {
-    position: absolute;
-    left: 0;
-    top: 12px;
-    font-size: 8px;
-    border: 1px solid rgb(148, 148, 148);
+    font-size: 12px;
+    // border: 1px solid rgb(148, 148, 148);
     border-radius: 80px;
-    width: 10px;
-    height: 10px;
-    color: rgb(148, 148, 148);
+    color: rgb(65, 61, 70);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+
+    .up-color {
+        color: red;
+    }
+
+    .down-color {
+        color: rgb(27, 112, 55);
+    }
 }
 
 .rank-b {

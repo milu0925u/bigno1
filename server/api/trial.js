@@ -17,20 +17,24 @@ export default defineEventHandler(async (event) => {
     const yesterdayStart = moment(new Date()).clone().subtract(1, "day").startOf("day").toDate();
     const yesterdayEnd = moment(new Date()).clone().subtract(1, "day").endOf("day").toDate();
 
+     // 前二天數據
+     const yesterdayStart2 = moment(new Date()).clone().subtract(2, "day").startOf("day").toDate();
+     const yesterdayEnd2= moment(new Date()).clone().subtract(2, "day").endOf("day").toDate();
+ 
+
     // 查詢前一天的數據
     const yesterdayData = await Trial.find({ date: { $gte: yesterdayStart, $lt: yesterdayEnd } }).sort({ value: -1 }).lean();
+    const yesterdayData2 = await Trial.find({ date: { $gte: yesterdayStart2, $lt: yesterdayEnd2 } }).sort({ value: -1 }).lean();
   
 
     // 將前一天的數據依照 id 插入對應的用戶資料中
     const userData = users.map(user => {
     // 查找對應的前一天數據
     const userYesterdayData = yesterdayData.find(data => data.id === user.id)
-    return {...user,...userYesterdayData} 
+    const userYesterdayData2 = yesterdayData2.find(data => data.id === user.id)
+    return {...user,...userYesterdayData,pro:userYesterdayData.ranking - userYesterdayData2.ranking} 
   }).sort((a, b) => b.value - a.value);
-
-  console.log(userData,'前一天的所有值');
   
-
   // 抓取今天的資料 (這裡假設你已經有今日的數據 `todayData`，可以從資料庫或其他地方取得)
   const todayStart = moment(new Date()).clone().startOf("day").toDate();
   const todayEnd = moment(new Date()).clone().endOf("day").toDate();
