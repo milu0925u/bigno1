@@ -30,20 +30,30 @@
             </div>
         </div>
         <div class="container" v-else>
-            <div class="content">
+            <div class="content2">
                 <div>
                     <h4 class="title">請假最多前五名</h4>
-                    <div v-for="a in data?.dayoffperson" :key="a.uid">{{ getUserById(a.uid)?.username }}</div>
+                    <div v-for="a in getdata?.dayoffperson" :key="a._id" class="flex">
+
+                        <span>{{ getUserById(a._id)?.username }}</span>
+                        <span>{{ a.count }}次</span>
+                    </div>
                 </div>
-                <div></div>
                 <div>
                     <h4 class="title">試煉缺席前五名</h4>
-                    <div v-for="b in data?.trainperson" :key="a.id">{{ getUserById(b.id)?.username }}</div>
+                    <div class="flex-col">查詢月份：<input type="month" v-model="selectedDate" /><button class="edit-btn"
+                            @click="fetchSearch">送出</button></div>
+                    <div v-for="b in data?.trainperson" :key="b.id" class="flex">
+                        <span>{{ getUserById(b._id)?.username }}</span>
+                        <span>{{ b.count }}次</span>
+                    </div>
                 </div>
-                <div></div>
                 <div>
                     <h4 class="title">戰場缺席前五名</h4>
-                    <div v-for="c in data?.battleperson" :key="a.id">{{ getUserById(c.id)?.username }}</div>
+                    <div v-for="c in getdata?.battleperson" :key="c._id" class="flex">
+                        <span>{{ getUserById(c._id)?.username }}</span>
+                        <span>{{ c.count }}次</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,11 +87,43 @@ const fetchSearch = async () => {
         toast.error("錯誤");
     }
 };
+const data2 = ref(null);
+const fetchFivePerson = async () => {
+    try {
+        const response = await axios.patch("/api/search", { date: date });
+        if (response.data.success) {
+            data.value = response.data.data;
+            toast.success(response.data.message);
+        } else {
+            toast.error(response.data.message);
+        }
+    } catch (error) {
+        toast.error("錯誤");
+    }
+};
+const getdata = ref(null);
+const getData = async () => {
+    try {
+        const response = await axios.get("/api/search");
+        if (response.data.success) {
+            getdata.value = response.data.data;
+        } else {
+            toast.error(response.data.message);
+        }
+    } catch (error) {
+        toast.error("錯誤");
+    }
+};
 
 // 取得名稱
 const getUserById = (uid) => {
     return users.value.find(user => user.id === uid);
 };
+
+
+onMounted(() => {
+    getData();
+});
 </script>
 
 
@@ -99,6 +141,19 @@ const getUserById = (uid) => {
         width: 70%;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
+        gap: 24px;
+
+        .title {
+            text-align: center;
+            box-shadow: 0 1px black;
+        }
+
+    }
+
+    .content2 {
+        width: 80%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         gap: 24px;
 
         .title {
@@ -132,6 +187,22 @@ const getUserById = (uid) => {
 
     &:active {
         transform: translateY(2px);
+    }
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-col {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    input {
+        height: 100%;
     }
 }
 
