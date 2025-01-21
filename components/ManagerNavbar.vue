@@ -14,7 +14,7 @@
                     class="fa-regular fa-square-check"></i><span>戰場出席選擇</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-search' }" @click="goToSearch"><i
-                    class="fa-solid fa-magnifying-glass"></i><span>搜尋出席</span></button>
+                    class="fa-solid fa-magnifying-glass"></i><span>搜尋</span></button>
 
             <button @click="goToHome"> <i class="fa-solid fa-arrow-right-from-bracket"></i><span>返回首頁</span></button>
         </div>
@@ -36,6 +36,12 @@
                 <button :class="{ activeColor: props.currentActive === 'trialUser' }" @click="trialUser">所有人</button>
                 <button :class="{ activeColor: props.currentActive === 'notrialUser' }"
                     @click="notrialUser">未輸入者</button>
+            </div>
+
+            <div v-else-if='route.name === "manager-search"'>
+                <button :class="{ activeColor: props.currentActive === 'searchdata' }" @click="searchdata">搜尋出席</button>
+                <button :class="{ activeColor: props.currentActive === 'searchtotal' }"
+                    @click="searchtotal">統計出席</button>
             </div>
         </div>
     </div>
@@ -94,6 +100,12 @@ const trialUser = () => {
 };
 const notrialUser = () => {
     emit('update:currentActive', "notrialUser");
+};
+const searchdata = () => {
+    emit('update:currentActive', "searchdata");
+};
+const searchtotal = () => {
+    emit('update:currentActive', "searchtotal");
 };
 
 </script>

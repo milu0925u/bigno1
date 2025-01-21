@@ -1,9 +1,10 @@
 <template>
     <div>
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
-        <div class="container">
+        <div class="container" v-if="currentActive === 'searchdata'">
             <div class="search-date">
-                搜尋日期：<input type="date" v-model="selectedDate" @change="fetchSearch" />
+                搜尋日期：<input type="date" v-model="selectedDate" /><button class="edit-btn"
+                    @click="fetchSearch">搜尋</button>
             </div>
             <div class="content">
                 <div>
@@ -28,6 +29,24 @@
                 </div>
             </div>
         </div>
+        <div class="container" v-else>
+            <div class="content">
+                <div>
+                    <h4 class="title">請假最多前五名</h4>
+                    <div v-for="a in data?.dayoffperson" :key="a.uid">{{ getUserById(a.uid)?.username }}</div>
+                </div>
+                <div></div>
+                <div>
+                    <h4 class="title">試煉缺席前五名</h4>
+                    <div v-for="b in data?.trainperson" :key="a.id">{{ getUserById(b.id)?.username }}</div>
+                </div>
+                <div></div>
+                <div>
+                    <h4 class="title">戰場缺席前五名</h4>
+                    <div v-for="c in data?.battleperson" :key="a.id">{{ getUserById(c.id)?.username }}</div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -37,7 +56,7 @@ import axios from "axios";
 import { useToast } from 'vue-toastification';
 const toast = useToast();
 
-const currentActive = ref("search"); // 接收子層組件
+const currentActive = ref("searchdata"); // 接收子層組件
 const updateCurrentActive = (newValue) => {
     currentActive.value = newValue;
 };

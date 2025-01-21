@@ -2,7 +2,7 @@
     <div>
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
         <div class="container">
-            <div class="border">新增今日數據</div>
+            <div class="border">今日數據輸入</div>
             <button class="hide-btn" @click="toggleVisibility">
                 open
             </button>
@@ -24,6 +24,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </template>
 
@@ -68,11 +70,13 @@ const send = async (id, value) => {
 
 // 抓取資料並過濾
 const battle = ref({}); // 今天有打沒打所有人
+const printUser = ref([]); // 打印資料
 const fetchData = async () => {
     try {
         const response = await axios.get('/api/trial');
         if (response.data.success) {
-            battle.value = response.data.users;
+            battle.value.all = response.data.users.homeRanking.sort((a, b) => a.ranking - b.ranking);
+            battle.value.today = response.data.users.today.sort((a, b) => a.ranking - b.ranking);
         } else {
             toast.error(response.data.message);
         }
@@ -91,14 +95,17 @@ WatcherUser((newUser) => {
         };
     }
 });
-const printUser = ref();
+
 
 watch(currentActive, async () => {
     await fetchData();
     if (currentActive.value === 'trialUser') {
         printUser.value = battle.value.all
     } else if (currentActive.value === 'notrialUser') {
-        printUser.value = battle.value.missing
+        const todayUserIds = battle.value.today.map(user => user.id);
+        const remainingUsers = battle.value.all.filter(user => !todayUserIds.includes(user.id));
+
+        printUser.value = remainingUsers
     }
 }, { immediate: true }); 
 </script>

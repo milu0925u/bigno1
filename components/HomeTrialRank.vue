@@ -33,7 +33,7 @@ const fetchRanking = async () => {
     try {
         const response = await axios.get("/api/trial");
         if (response.data.success) {
-            ranking.value = response.data.users.all
+            ranking.value = response.data.users.homeRanking.sort((a, b) => a.ranking - b.ranking)
         }
     } catch (error) {
         console.log(error, "錯誤");
