@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     // 查找對應的前一天數據
     const userYesterdayData = yesterdayData.find(data => data.id === user.id)
     const userYesterdayData2 = yesterdayData2.find(data => data.id === user.id)
-    return {...user,...userYesterdayData,pro:userYesterdayData.ranking - userYesterdayData2.ranking} 
+    return {...user,...userYesterdayData,pro:userYesterdayData2.ranking - userYesterdayData.ranking} 
   }).sort((a, b) => b.value - a.value);
   
   // 抓取今天的資料 (這裡假設你已經有今日的數據 `todayData`，可以從資料庫或其他地方取得)

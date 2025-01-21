@@ -68,4 +68,10 @@ const sortedUsers = computed(() => {
     border-style: solid;
     text-align: center;
 }
+
+@media screen and (max-width: 1200px) {
+    .ontainer {
+        font-size: 12px;
+    }
+}
 </style>

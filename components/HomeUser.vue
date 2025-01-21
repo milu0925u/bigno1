@@ -11,7 +11,7 @@
             <button class="btn" @click="goToTrial">試煉數值</button>
         </div>
     </div>
-    <div v-else>
+    <div v-else class="not-login">
         尚未登入，右上角前往登入。
     </div>
 
@@ -40,5 +40,18 @@ const goToUserData = () => { navigateTo('/takeuserData') };
     flex-direction: column;
     gap: 8px;
     padding: 24px 0 0 0;
+}
+
+.not-login {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 800px) {
+    .content {
+        font-size: 12px;
+    }
 }
 </style>

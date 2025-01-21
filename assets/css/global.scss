@@ -73,6 +73,14 @@ button {
 }
 
 
+@media screen and (max-width: 1200px) {
+  .home-grid {
+    display: grid;
+    grid-template-columns: 3% 20% 20% auto 3%;
+
+  }
+}
+
 
 @media screen and (max-width: 768px) {
   .home-grid {

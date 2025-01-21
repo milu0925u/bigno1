@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HomeTitle title="試煉排名" />
+        <HomeTitle title="昨日排名" />
         <div class="rank-content card">
             <div class="grid title-line">
                 <div></div>
@@ -109,5 +109,9 @@ console.log(ranking.value);
     }
 }
 
-@media screen and (max-width: 730px) {}
+@media screen and (max-width: 800px) {
+    .rank-content {
+        font-size: 12px;
+    }
+}
 </style>

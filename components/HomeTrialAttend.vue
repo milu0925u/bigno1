@@ -82,5 +82,8 @@ onMounted(() => {
 .trial-container {
     min-width: 150px;
     height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

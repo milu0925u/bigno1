@@ -10,13 +10,13 @@
             <HomeNewUser />
         </div>
         <div class="attendt">
-            <HomeTrialAttend />
+            <!-- <HomeTrialAttend /> -->
         </div>
         <div class="rank">
             <HomeTrialRank />
         </div>
         <div class="attendb">
-            <HomeBattleAttend />
+            <!-- <HomeBattleAttend /> -->
         </div>
         <div class="pig"></div>
         <div class="bg"></div>
@@ -73,7 +73,15 @@ fetchAllUsers();
     height: 300px;
 }
 
+@media screen and (max-width: 1600px) {
+    .bg {
+        background-size: auto;
+    }
+}
+
 @media screen and (max-width: 768px) {
+
+
     .pig {
         width: 150px;
     }
