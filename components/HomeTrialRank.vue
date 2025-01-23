@@ -50,7 +50,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .rank-content {
     margin-top: 24px;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 280px);
     display: flex;
     flex-direction: column;
     text-align: center;

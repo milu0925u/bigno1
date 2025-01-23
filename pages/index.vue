@@ -6,6 +6,9 @@
         <div class="usercard">
             <HomeUser />
         </div>
+        <div class="board">
+            <HomeBoard />
+        </div>
         <div class="newuser">
             <HomeNewUser />
         </div>
@@ -20,10 +23,12 @@
         </div>
         <div class="pig"></div>
         <div class="bg"></div>
+        <div class="pig-g"></div>
     </div>
 </template>
 
 <script setup>
+import HomeBoard from '~/components/HomeBoard.vue'
 import HomeBattleAttend from '~/components/HomeBattleAttend.vue';
 import HomeNewUser from '~/components/HomeNewUser.vue';
 import HomeUser from '~/components/HomeUser.vue';
@@ -37,6 +42,9 @@ useHead({
     meta: [
         { name: 'description', content: 'This is RO rebirth Game\'s Guild - Swagger Pig No.1 ' },
         { name: 'keywords', content: 'rebirth,game,guild,nuxt,RO' }
+    ],
+    link: [
+        { rel: 'icon', type: 'image/png', href: '/images/logo.png' } // 指定新的 LOGO 路徑
     ]
 });
 
@@ -76,17 +84,34 @@ onMounted(() => {
     height: 300px;
 }
 
+.pig-g {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    background-image: url('/public/images/pig-g.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 300px;
+    height: 130px;
+}
+
 @media screen and (max-width: 1600px) {
     .bg {
         background-size: auto;
     }
+
+
 }
 
 @media screen and (max-width: 768px) {
-
-
     .pig {
         width: 150px;
+    }
+
+    .pig-g {
+        position: relative;
+        right: 0;
+        width: 100%;
     }
 }
 </style>

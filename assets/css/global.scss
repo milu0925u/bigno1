@@ -31,15 +31,18 @@ button {
 
 .home-grid {
   display: grid;
-  grid-template-columns: 10% 20% 20% auto 10%;
+  grid-template-columns: 5% 15% 15% 20% auto 5%;
   grid-template-areas:
-    "navv navv navv navv navv"
-    ". usercard newuser rank ."
-    ". attendt attendb rank .";
+    "navv navv navv navv navv navv"
+    ". usercard usercard board rank ."
+    ". attendt attendb newuser rank .";
   row-gap: 24px;
   column-gap: 36px;
   .navv {
     grid-area: navv;
+  }
+  .board{
+    grid-area: board;
   }
   .usercard {
     grid-area: usercard;
@@ -89,6 +92,7 @@ button {
     grid-template-areas:
       "navv"
       "usercard"
+      "board"
       "newuser"
       "attendt" 
       "attendb"
