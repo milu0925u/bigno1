@@ -15,6 +15,8 @@ import HomeTitle from '~/components/HomeTitle.vue';
 
 <style lang="scss" scoped>
 .container {
+    text-align: center;
+
     >div:first-child {
         margin-bottom: 16px;
     }
