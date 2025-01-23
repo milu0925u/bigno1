@@ -8,11 +8,9 @@ export const fetchAllUsers = async () => {
     const users = useUsers();
     if (response.data.success) {
       users.value = response.data.users;
-    } else {
-      console.log(response.data.message);
-    }
+    } 
   } catch (error) {
-    console.log(error, "錯誤");
+    console.log(error, "執行錯誤，請前往修改代碼");
   }
 };
 export const WatcherUser = (callback) => {

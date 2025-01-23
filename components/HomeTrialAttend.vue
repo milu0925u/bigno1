@@ -34,7 +34,7 @@ const fetchData = async () => {
             datas.value = [response.data.data.trianY.length, response.data.data.trianN.length];
         }
     } catch (error) {
-        console.log(error, 'err是啥');
+        console.log(error, "執行錯誤，請前往修改代碼");
     }
 };
 

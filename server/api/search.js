@@ -5,16 +5,14 @@ import moment from "moment";
 
 
 async function getMonthlyUnsubmittedTrials(month) {
-  // 获取该月的开始和结束日期
+
   const startOfMonth = moment(month, "YYYY-MM").startOf("month").toDate();
   const endOfMonth = moment(month, "YYYY-MM").endOf("month").toDate();
 
-  // 获取该月所有的试炼数据
   const allTrials = await Trial.find({
     date: { $gte: startOfMonth, $lte: endOfMonth },
   }).lean();
 
-  // 将数据按日期分组
   const trialsByDate = allTrials.reduce((acc, trial) => {
     const trialDate = moment(trial.date).startOf("day").format("YYYY-MM-DD");
     if (!acc[trialDate]) acc[trialDate] = [];
@@ -22,44 +20,46 @@ async function getMonthlyUnsubmittedTrials(month) {
     return acc;
   }, {});
 
-  // 获取该月的所有日期
   const allDates = Object.keys(trialsByDate).sort();
 
-  // 存储用户的未出席记录
   const unsubmittedCounts = {};
 
-  // 按日期逐天计算
   for (let i = 1; i < allDates.length; i++) {
     const today = allDates[i];
     const yesterday = allDates[i - 1];
 
     const todayTrials = trialsByDate[today] || [];
-    const yesterdayTrialsMap = (trialsByDate[yesterday] || []).reduce((map, trial) => {
-      map[trial.id] = trial.value;
-      return map;
-    }, {});
+    const yesterdayTrialsMap = (trialsByDate[yesterday] || []).reduce(
+      (map, trial) => {
+        map[trial.id] = trial.value;
+        return map;
+      },
+      {}
+    );
 
-    // 比较今天和昨天的值
+    // 逐个比对今天的试炼和昨天的试炼
     todayTrials.forEach((trial) => {
-      const yesterdayValue = yesterdayTrialsMap[trial.id] || null;
-      const hasChanged = yesterdayValue !== null && yesterdayValue !== trial.value;
+      const yesterdayValue = yesterdayTrialsMap[trial.id] || 0; // 默认值为0（表示未参与）
+      const hasChanged = trial.value !== yesterdayValue;
 
       if (!hasChanged) {
         if (!unsubmittedCounts[trial.id]) {
           unsubmittedCounts[trial.id] = 0;
         }
-        unsubmittedCounts[trial.id] += 1; // 统计未出席次数
+        unsubmittedCounts[trial.id] += 1; // 未出席计数
       }
     });
   }
 
-  // 将未出席次数按用户排序
   const sortedUnsubmitted = Object.entries(unsubmittedCounts)
     .map(([id, count]) => ({ id, count }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
 
-  return sortedUnsubmitted;
+
+    return sortedUnsubmitted
 }
+
 
 
 // 處理 HTTP 請求
@@ -74,8 +74,8 @@ export default defineEventHandler(async (event) => {
    
     const countday = await Dayoff.countDocuments({ verify: true });
     if (countday > 0) {
-    // 請假最多前五名
-    dayoffsdata = await Dayoff.aggregate([{   
+    dayoffsdata = await Dayoff.aggregate([
+      {   
         $match: {
           verify: true,  // 只選擇請假有通過的
         },
@@ -83,9 +83,22 @@ export default defineEventHandler(async (event) => {
         _id: "$uid",   // 根據uid
         count: { $sum: 1 }, // 計算次數
       }},
+      {
+        $lookup: {
+          from: "users",  // 關聯users 資料表
+          localField: "uid",   //dayoff的關聯鍵
+          foreignField: "id",   //users的關聯鍵
+          as: "userLeave",  // 取出後的新命名函數
+        },
+      },
+      {
+        $match: {
+          "userLeave.leaveDate": { $exists: false },  //排除掉有leaveDate的
+        },
+      },
     {$sort: { count: -1 }}, // 根據次數排序
     {
-      $limit: 5 //只需要返回五個
+      $limit: 10 //只需要返回五個
     }])
     }
 
@@ -102,11 +115,24 @@ export default defineEventHandler(async (event) => {
             count: { $sum: 1 }
           }
         },
+        {
+          $lookup: {
+            from: "users",  // 關聯users 資料表
+            localField: "uid",   //trian的關聯鍵
+            foreignField: "id",   //users的關聯鍵
+            as: "userLeave",  // 取出後的新命名函數
+          },
+        },
+        {
+          $match: {
+            "userLeave.leaveDate": { $exists: false },  //排除掉有leaveDate的
+          },
+        },
         { 
           $sort: { count: -1 }
         },
         { 
-          $limit: 5
+          $limit: 10
         }
       ]);
     }
@@ -180,14 +206,12 @@ const submitted = trialResults.filter(trial => trial.hasChanged);
 
     const { date } = await readBody(event);
 
-    const trialsdata = getMonthlyUnsubmittedTrials(date);
+    const trialsdata = await getMonthlyUnsubmittedTrials(date);
 
     return {
       success: true,
       message: "取得結果",
-      data: {
-       trialperson:trialsdata,
-      },
+      data: trialsdata,
     };
   }
  

@@ -103,11 +103,9 @@ const fetchAllDayoff = async () => {
         const response = await axios.get("/api/dayoff");
         if (response.data.success) {
             dayoffUser.value = response.data.dayoff.filter((v) => v.verify === false);
-        } else {
-            console.log(response.data.message);
         }
     } catch (error) {
-        console.log(error, "錯誤");
+        console.log(error, "執行錯誤，請前往修改代碼");
     }
 };
 onMounted(() => {

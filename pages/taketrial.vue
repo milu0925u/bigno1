@@ -50,8 +50,6 @@ WatcherUser((newUser) => {
 // 輸入數值
 const send = async () => {
     try {
-        console.log('formData.value', formData.value);
-
         const response = await axios.post('/api/trial', formData.value);
         if (response.data.success) {
             fetchAllUsers()

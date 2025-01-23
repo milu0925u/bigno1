@@ -47,9 +47,11 @@ export default defineEventHandler(async (event) => {
 
     if (event.req.method === "POST") {
       const { id, value, date, mid, type ,newdate} = await readBody(event);
+
       if (type === 'add'){
           const startOfDay = new Date(moment(newdate ? newdate : date).startOf("day").toISOString());
           const endOfDay = new Date(moment(newdate ? newdate : date).endOf("day").toISOString());
+
 
           // 新增進試煉
           await Trial.updateOne(
@@ -65,21 +67,21 @@ export default defineEventHandler(async (event) => {
             },
             { upsert: true }
           );
-
-
-          const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1, id: 1  }).lean();
- 
           
-          const bulkOps = newTrialRank.map((user, index) => ({
+          const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1, id: 1  }).lean();
+
+          const bulkOps = newTrialRank.map((user, index) => {
+            
+            return{
             updateOne: {
-              filter: { id: user.id}, // 根據 id 找到對應的使用者
+              filter: { _id: user._id}, // 根據 id 找到對應的使用者
               update: {
                 $set: {
                   ranking: index + 1, // 排名從 1 開始
                 },
               },
             },
-          }));
+          }});
 
           await Trial.bulkWrite(bulkOps);
       return {
@@ -97,7 +99,6 @@ export default defineEventHandler(async (event) => {
     const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1 , _id: 1  }).lean();
 
     const bulkOps = newTrialRank.map((user, index) => {
-
       return {
       updateOne: {
         filter: { _id: user._id}, 
@@ -112,6 +113,6 @@ export default defineEventHandler(async (event) => {
     await Trial.bulkWrite(bulkOps);
   };
   } catch (e) {
-    console.log(e);
+    console.log(error, "執行錯誤，請前往修改代碼");
   }
 });

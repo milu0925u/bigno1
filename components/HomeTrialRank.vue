@@ -36,15 +36,13 @@ const fetchRanking = async () => {
             ranking.value = response.data.users.homeRanking.sort((a, b) => a.ranking - b.ranking)
         }
     } catch (error) {
-        console.log(error, "錯誤");
+        console.log(error, "執行錯誤，請前往修改代碼");
     }
 };
 onMounted(() => {
     fetchRanking();
 });
 
-
-console.log(ranking.value);
 
 
 </script>

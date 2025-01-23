@@ -32,7 +32,7 @@
         <div class="container" v-else>
             <div class="content2">
                 <div>
-                    <h4 class="title">請假最多前五名</h4>
+                    <h4 class="title">請假次數前10位</h4>
                     <div v-for="a in getdata?.dayoffperson" :key="a._id" class="flex">
 
                         <span>{{ getUserById(a._id)?.username }}</span>
@@ -40,16 +40,17 @@
                     </div>
                 </div>
                 <div>
-                    <h4 class="title">試煉缺席前五名</h4>
+                    <h4 class="title">試煉缺席前10位</h4>
                     <div class="flex-col">查詢月份：<input type="month" v-model="selectedDate" /><button class="edit-btn"
-                            @click="fetchSearch">送出</button></div>
-                    <div v-for="b in data?.trainperson" :key="b.id" class="flex">
-                        <span>{{ getUserById(b._id)?.username }}</span>
+                            @click="fetchFivePerson">送出</button></div>
+                    <div v-for="b in data2" :key="b.id" class="flex">
+                        <span>{{ getUserById(b.id)?.username }}</span>
                         <span>{{ b.count }}次</span>
                     </div>
                 </div>
                 <div>
-                    <h4 class="title">戰場缺席前五名</h4>
+                    <h4 class="title">戰場缺席前10位</h4>
+                    <div class="flex-col"></div>
                     <div v-for="c in getdata?.battleperson" :key="c._id" class="flex">
                         <span>{{ getUserById(c._id)?.username }}</span>
                         <span>{{ c.count }}次</span>
@@ -90,15 +91,15 @@ const fetchSearch = async () => {
 const data2 = ref(null);
 const fetchFivePerson = async () => {
     try {
-        const response = await axios.patch("/api/search", { date: date });
+        const response = await axios.patch("/api/search", { date: selectedDate.value });
         if (response.data.success) {
-            data.value = response.data.data;
+            data2.value = response.data.data;
             toast.success(response.data.message);
         } else {
             toast.error(response.data.message);
         }
     } catch (error) {
-        toast.error("錯誤");
+        toast.error("錯誤", error);
     }
 };
 const getdata = ref(null);
@@ -117,7 +118,7 @@ const getData = async () => {
 
 // 取得名稱
 const getUserById = (uid) => {
-    return users.value.find(user => user.id === uid);
+    return users.value.find(user => user.id == uid);
 };
 
 
@@ -191,6 +192,7 @@ onMounted(() => {
 }
 
 .flex {
+    margin-block: 16px;
     display: flex;
     justify-content: space-between;
 }
@@ -198,10 +200,12 @@ onMounted(() => {
 .flex-col {
     height: 32px;
     display: flex;
+    gap: 16px;
     align-items: center;
     white-space: nowrap;
 
     input {
+        width: 50%;
         height: 100%;
     }
 }

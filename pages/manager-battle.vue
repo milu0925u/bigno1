@@ -55,8 +55,7 @@ const newData = async () => {
                 toast.error(response.data.message);
             }
         } catch (error) {
-            console.log(error);
-            toast.error(`Please try again, ${error}`);
+            console.log(error, "執行錯誤，請前往修改代碼");
         }
     } else {
         toast.error('請選擇禮拜六的時間')
@@ -79,8 +78,7 @@ const getData = async () => {
             toast.error(response.data.message);
         }
     } catch (error) {
-        console.log(error);
-        toast.error(`Please try again, ${error}`);
+        console.log(error, "執行錯誤，請前往修改代碼");
     }
 }
 // 勾選出席者
@@ -94,8 +92,7 @@ const chosenData = async () => {
             toast.error(response.data.message);
         }
     } catch (error) {
-        console.log(error);
-        toast.error(`Please try again, ${error}`);
+        console.log(error, "執行錯誤，請前往修改代碼");
     }
 }
 
