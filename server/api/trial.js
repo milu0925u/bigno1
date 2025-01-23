@@ -46,12 +46,11 @@ export default defineEventHandler(async (event) => {
     };
 
     if (event.req.method === "POST") {
-      const { id, value, date, mid, type ,newdate} = await readBody(event);
+      const { id, value, date, mid, type ,newdate,radio} = await readBody(event);
 
       if (type === 'add'){
           const startOfDay = new Date(moment(newdate ? newdate : date).startOf("day").toISOString());
           const endOfDay = new Date(moment(newdate ? newdate : date).endOf("day").toISOString());
-
 
           // 新增進試煉
           await Trial.updateOne(
@@ -59,7 +58,7 @@ export default defineEventHandler(async (event) => {
             {
               $set: {
                 id: id,
-                value:value,
+                value:radio == 'M' ? value*1000 : value,
                 date: newdate ? newdate : date,
                 ...(mid && { reviewer: mid }),
                 ranking:null,

@@ -1,6 +1,9 @@
 <template>
     <div class="container">
         <div class="content">
+            <div class="announce">*我們是休閒公會但希望大家都是很團結活躍的</div>
+            <div class="announce">*請假是為了讓資料好登記以及會長了解狀況</div>
+            <div class="announce">*感謝各位成員配合。</div>
             <div class="error">
                 <p v-if="errorMessage">{{ errorMessage }}</p>
             </div>
@@ -43,8 +46,19 @@ WatcherUser((newUser) => {
 
 // 輸入請假
 const send = async () => {
-    try {
+    errorMessage.value = ""
 
+    if (!formData.value.date) {
+        errorMessage.value = '請選擇請假日期';
+        return
+    }
+
+    if (!formData.value.reason) {
+        errorMessage.value = '請輸入請假事由';
+        return
+    }
+
+    try {
         const response = await axios.post('/api/dayoff', formData.value);
         if (response.data.success) {
             fetchAllUsers();
@@ -62,7 +76,6 @@ const send = async () => {
 const goToHome = () => {
     navigateTo('/')
 };
-
 
 </script>
 
@@ -107,6 +120,11 @@ const goToHome = () => {
         div {
             width: 100%;
         }
+    }
+
+    .announce {
+        justify-content: flex-start;
+        font-size: 12px;
     }
 }
 

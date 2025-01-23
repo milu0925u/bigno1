@@ -143,6 +143,9 @@ export default defineEventHandler(async (event) => {
         if (trialTotal) {
           updateData.trialTotal = trialTotal;
         }
+        if (password) {
+          updateData.password = password;
+        }
         if (verify) {
           updateData.verify = JSON.parse(verify);
           if (leaveDate) {

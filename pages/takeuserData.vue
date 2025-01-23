@@ -1,11 +1,16 @@
 <template>
     <div class="container">
         <div class="content">
+            <div class="announce">*此為公會網站密碼，請勿使用常用的密碼設置。</div>
+            <div class="announce">*如忘記密碼可找「米路露」尋回。</div>
+            <div class="announce">*僅提供觀看、成員請假與成員試煉數值輸入。</div>
+
             <div class="error">
                 <p v-if="errorMessage">{{ errorMessage }}</p>
             </div>
             <input type="number" v-model="formData.id" hidden />
             <div><label>遊戲名稱</label><input type="text" v-model="formData.username" /></div>
+            <div><label>網站密碼</label><input type="password" v-model="formData.password" /></div>
             <div><label>LineID</label><input type="text" v-model="formData.lineID" />
             </div>
             <div><label>Line名稱</label><input type="text" v-model="formData.lineName" /></div>
@@ -42,6 +47,12 @@ WatcherUser((newUser) => {
 
 // 輸入請假
 const send = async () => {
+
+    if (!formData.value.password && !formData.value.lineID && !formData.value.lineName) {
+        errorMessage.value = '未輸入任何資料更改';
+        return
+    }
+
     try {
         const response = await axios.post('/api/user', formData.value);
         if (response.data.success) {
@@ -100,6 +111,11 @@ const goToHome = () => {
         label {
             width: 100px;
         }
+    }
+
+    .announce {
+        justify-content: flex-start;
+        font-size: 12px;
     }
 }
 

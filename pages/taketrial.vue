@@ -1,6 +1,11 @@
 <template>
     <div class="container">
         <div class="content">
+            <div class="announce">*我們是休閒公會但希望大家都是很團結活躍的</div>
+            <div class="announce">*自行輸入讓資料更精確，感謝各位成員配合，</div>
+            <div class="announce">*未輸入者於每日清晨五/七點會匯入昨日資訊。</div>
+            <div class="announce">*僅供會員輸日當日打完的數值資訊。</div>
+
             <div class="error">
                 <p v-if="errorMessage">{{ errorMessage }}</p>
             </div>
@@ -15,9 +20,13 @@
             </div>
             <input type="date" v-model="formData.date" hidden />
             <input type="number" v-model="formData.id" hidden />
-            <div><label>數值</label><input type="number" v-model="formData.value" />K</div>
+            <div><label>數值</label><input type="number" v-model="formData.value" />
 
-            <div class="btn-group">
+                <input type="radio" name="radiogroup" v-model="formData.radio" value="K" />K
+                <input type="radio" name="radiogroup" v-model="formData.radio" value="M" />M
+            </div>
+
+            <div class=" btn-group">
                 <button class="btn" @click="send">送出</button>
                 <button class="btn" @click="goToHome">返回</button>
             </div>
@@ -43,12 +52,26 @@ WatcherUser((newUser) => {
             type: 'add',
             date: new Date().toISOString().split("T")[0],
             value: newUser.value,
+            radio: null,
         };
     }
 })
 
 // 輸入數值
 const send = async () => {
+    errorMessage.value = ""
+
+    if (formData.value.radio === null) {
+        errorMessage.value = '請選擇數值單位';
+        return
+    }
+
+    if (!formData.value.value) {
+        errorMessage.value = '請輸入數值';
+        return
+    }
+
+
     try {
         const response = await axios.post('/api/trial', formData.value);
         if (response.data.success) {
@@ -99,7 +122,7 @@ const goToHome = () => {
         align-items: center;
         gap: 12px;
 
-        input {
+        input[type='number'] {
             width: 100%;
             padding: 6px 8px;
         }
@@ -111,6 +134,11 @@ const goToHome = () => {
         div {
             width: 100%;
         }
+    }
+
+    .announce {
+        justify-content: flex-start;
+        font-size: 12px;
     }
 }
 
