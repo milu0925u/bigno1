@@ -10,13 +10,13 @@
             <HomeNewUser />
         </div>
         <div class="attendt">
-            <!-- <HomeTrialAttend /> -->
+            <HomeTrialAttend />
         </div>
         <div class="rank">
             <HomeTrialRank />
         </div>
         <div class="attendb">
-            <!-- <HomeBattleAttend /> -->
+            <HomeBattleAttend />
         </div>
         <div class="pig"></div>
         <div class="bg"></div>
@@ -41,7 +41,10 @@ useHead({
 });
 
 import { fetchAllUsers } from '~/store/st_user.js';
-fetchAllUsers();
+
+onMounted(() => {
+    fetchAllUsers();
+});
 
 
 </script>

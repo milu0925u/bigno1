@@ -10,13 +10,17 @@ export const fetchAllUsers = async () => {
       users.value = response.data.users;
     } 
   } catch (error) {
-    console.log(error, "執行錯誤，請前往修改代碼");
+    console.log(error, "抓取會員資料失敗，請重新抓取");
   }
 };
+
+
+
+
 export const WatcherUser = (callback) => {
   const user = useUser();
   watch(
-    () => user.value, // 監聽 user 的變化
+    () => user.value, 
     (newUser, oldUser) => {
       if (callback && typeof callback === "function") {
         callback(newUser, oldUser);

@@ -1,20 +1,19 @@
 <template>
     <div class="battle-container">
-        尚未完成
-        <!-- <Doughnut :data="chartData" :options="chartOptions" /> -->
+        <h3>上周戰場出席</h3>
+        <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" />
     </div>
 </template>
 
 <script setup>
 import { Doughnut } from 'vue-chartjs';
+import axios from 'axios';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { fetchChartData } from '~/store/st_user.js';
+
 ChartJS.register(ArcElement, Tooltip, Legend);
-// 定義 chartRef 來引用圖表實例
-const chartRef = ref(null);
-// 定義圖表數據
-const datas = ref([0, 0, 0]);
-// API 請求獲取資料
+
+const chartRef = ref(null)
+const datas = ref([0, 0, 0])
 
 const chartData = ref({
     labels: ['出席', '未出席', '請假'],
@@ -33,17 +32,35 @@ const chartOptions = ref({
     plugins: {
         legend: {
             position: 'top',
+            labels: {
+                font: {
+                    size: 14,
+                },
+            },
         },
         tooltip: {
             enabled: true,
         },
     },
+    font: {
+        size: 10,
+    },
 });
 
+// 抓取資料
+const fetchData = async () => {
+    try {
+        const response = await axios.get("/api/total-chart");
+        if (response.data.success) {
+            datas.value = response.data.data
+        }
+    } catch (error) {
+        console.error('保存失敗', error);
+    };
+}
+
 watch(datas, async () => {
-    // 等待 Vue 完成 DOM 更新
     await nextTick(() => {
-        // 確保 chartRef 存在並能更新
         if (chartRef.value && chartRef.value.chart) {
             chartRef.value.chart.data.datasets[0].data = datas.value; // 更新圖表數據
             chartRef.value.chart.update(); // 強制更新圖表
@@ -51,7 +68,9 @@ watch(datas, async () => {
     });
 });
 
-
+onMounted(() => {
+    fetchData();
+});
 </script>
 
 

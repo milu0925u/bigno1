@@ -9,8 +9,8 @@
                 <div></div>
             </div>
             <div class="rank-b">
-                <div v-for="user in ranking" :key="user.id" class="grid">
-                    <div class="ranking">{{ user.ranking }}</div>
+                <div v-for="(user, index) in ranking" :key="user.id" class="grid">
+                    <div class="ranking">{{ index + 1 }}</div>
                     <div>{{ user.username }}</div>
                     <div>{{ user.value }}K</div>
                     <div class="pro">
@@ -26,14 +26,17 @@
 
 <script setup>
 import HomeTitle from '~/components/HomeTitle.vue';
-
 import axios from 'axios';
+
 const ranking = ref([]);
+const isLoading = ref(true);
+
+
 const fetchRanking = async () => {
     try {
         const response = await axios.get("/api/trial");
         if (response.data.success) {
-            ranking.value = response.data.users.homeRanking.sort((a, b) => a.ranking - b.ranking)
+            ranking.value = response.data.users.homeRanking.sort((a, b) => b.value - a.value)
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");
@@ -42,9 +45,6 @@ const fetchRanking = async () => {
 onMounted(() => {
     fetchRanking();
 });
-
-
-
 </script>
 
 <style lang="scss" scoped>

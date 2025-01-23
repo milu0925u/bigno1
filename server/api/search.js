@@ -208,6 +208,8 @@ const submitted = trialResults.filter(trial => trial.hasChanged);
 
     const trialsdata = await getMonthlyUnsubmittedTrials(date);
 
+
+    
     return {
       success: true,
       message: "取得結果",

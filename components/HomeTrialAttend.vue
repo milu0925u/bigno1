@@ -1,44 +1,20 @@
 <template>
     <div class="trial-container">
-        尚未完成
-        <!-- <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" /> -->
+        <h3>昨日試煉出席</h3>
+        <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect, nextTick } from 'vue';
 import axios from 'axios';
 import { Doughnut } from 'vue-chartjs';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-// 註冊 Chart.js 插件
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// 定義 chartRef 來引用圖表實例
-const chartRef = ref(null);
+const chartRef = ref(null)
+const datas = ref([0, 0])
 
-// 定義圖表數據
-const datas = ref([0, 0]);
-
-// API 請求獲取資料
-const fetchData = async () => {
-    try {
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split("T")[0];
-
-        const response = await axios.post('/api/search', { date: today });
-        if (response.data.success) {
-
-            datas.value = [response.data.data.trianY.length, response.data.data.trianN.length];
-        }
-    } catch (error) {
-        console.log(error, "執行錯誤，請前往修改代碼");
-    }
-};
-
-// 定義圖表數據和配置
 const chartData = ref({
     labels: ['出席', '未出席'],
     datasets: [
@@ -50,32 +26,57 @@ const chartData = ref({
         },
     ],
 });
+
 const chartOptions = ref({
     responsive: true,
     plugins: {
         legend: {
             position: 'top',
+            labels: {
+                font: {
+                    size: 14,
+                },
+            },
         },
         tooltip: {
             enabled: true,
         },
     },
+    font: {
+        size: 10,
+    },
 });
 
+// 抓取資料
+const fetchData = async () => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    try {
+        const response = await axios.post("/api/search", { date: yesterday });
+        if (response.data.success) {
+            const ptrue = response.data.data.trianY.length;
+            const pfalse = response.data.data.trianN.length;
+            datas.value = [ptrue, pfalse]
+
+        }
+    } catch (error) {
+        console.error('保存失敗', error);
+    };
+};
+
 watch(datas, async () => {
-    // 等待 Vue 完成 DOM 更新
     await nextTick(() => {
-        // 確保 chartRef 存在並能更新
         if (chartRef.value && chartRef.value.chart) {
             chartRef.value.chart.data.datasets[0].data = datas.value; // 更新圖表數據
             chartRef.value.chart.update(); // 強制更新圖表
         }
     });
 });
+
 onMounted(() => {
     fetchData();
 });
-
 </script>
 
 <style scoped>

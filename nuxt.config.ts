@@ -1,6 +1,10 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
+  build: {
+    
+    transpile: ['axios', 'moment'], 
+  },
   runtimeConfig: {
     mongoUri: process.env.MONGO_URI || "",
   },

@@ -1,7 +1,8 @@
-import { connectToDatabase } from "../db";
+import { connectToDatabase} from "../db";
 import cookie from "cookie";
 import { User,Trial } from "./model";
 import moment from "moment";
+
 
 // 用來處理HTTP請求
 export default defineEventHandler(async (event) => {
@@ -9,9 +10,11 @@ export default defineEventHandler(async (event) => {
   await connectToDatabase(); //確保與資料庫建立連接
   try {
     //資料庫中查詢
-
-    // 所有會員 (含未審核、離開)
+    if (event.req.method === "GET") {
+          // 所有會員 (含未審核、離開)
     const users = await User.find().select("-password").lean(); //lean()轉為純js用法
+
+
 
     users.forEach((user) => {
       if (user.createDate) {
@@ -23,7 +26,6 @@ export default defineEventHandler(async (event) => {
       return user;
     });
 
-    if (event.req.method === "GET") {
       return {
         success: true,
         message: "取得成員資料成功",
@@ -35,7 +37,6 @@ export default defineEventHandler(async (event) => {
 
       // 客戶端的資料取出
       const {
-        ids,
         position,
         verify,
         leaveDate,
