@@ -1,6 +1,6 @@
 <template>
     <div class="trial-container">
-        <h3>昨日試煉出席</h3>
+        <!-- <h3>昨日試煉出席</h3> -->
         <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" />
     </div>
 </template>
@@ -19,7 +19,7 @@ const chartData = ref({
     labels: ['出席', '未出席'],
     datasets: [
         {
-            label: 'Person',
+            label: '人數',
             data: datas.value,
             backgroundColor: ['#8DDE92', '#FFC8C9'],
             borderWidth: 1,
@@ -32,18 +32,35 @@ const chartOptions = ref({
     plugins: {
         legend: {
             position: 'top',
-            labels: {
+            title: {
+                display: true,
+                text: '昨日試煉出席',
                 font: {
-                    size: 14,
+                    size: 18,
+                    weight: 'bold',
                 },
+                color: '#555',
+            },
+            labels: {
+                color: '#555',
+                font: {
+                    size: 12,
+                },
+                boxWidth: 12,
+                boxHeight: 12,
+                padding: 8,
             },
         },
-        tooltip: {
-            enabled: true,
+        tooltip: { // 滑鼠移動到上面的提示
+            // enabled: true,
+            backgroundColor: '#000000',
+            titleFont: {
+                size: 14,
+            },
+            bodyFont: {
+                size: 12,
+            },
         },
-    },
-    font: {
-        size: 10,
     },
 });
 
