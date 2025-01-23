@@ -33,7 +33,7 @@ import HomeNavbar from '~/components/HomeNavbar.vue';
 
 // 設置此頁的title跟關鍵字搜尋
 useHead({
-    title: 'Swagger Pig NO.1',
+    title: '天下第一霸豬',
     meta: [
         { name: 'description', content: 'This is RO rebirth Game\'s Guild - Swagger Pig No.1 ' },
         { name: 'keywords', content: 'rebirth,game,guild,nuxt,RO' }
