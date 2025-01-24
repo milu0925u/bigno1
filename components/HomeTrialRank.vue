@@ -2,13 +2,16 @@
     <div>
         <HomeTitle title="昨日排名" />
         <div class="rank-content card">
-            <div class="grid title-line">
+            <div v-if="loading" class="loading">
+                <Loading />
+            </div>
+            <div v-else class="grid title-line">
                 <div></div>
                 <div>名稱</div>
                 <div>數值</div>
                 <div></div>
             </div>
-            <div class="rank-b">
+            <div v-else class="rank-b">
                 <div v-for="(user, index) in ranking" :key="user.id" class="grid">
                     <div class="ranking">{{ index + 1 }}</div>
                     <div>{{ user.username }}</div>
@@ -26,12 +29,11 @@
 
 <script setup>
 import HomeTitle from '~/components/HomeTitle.vue';
+import Loading from "~/components/Loading.vue"
 import axios from 'axios';
 
 const ranking = ref([]);
-const isLoading = ref(true);
-
-
+const loading = useState('loading');
 const fetchRanking = async () => {
     try {
         const response = await axios.get("/api/trial");

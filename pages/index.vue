@@ -50,7 +50,15 @@ useHead({
 
 import { fetchAllUsers } from '~/store/st_user.js';
 
+// 加載進度條
+const loading = useState('loading', () => true);
+
 onMounted(() => {
+
+    setTimeout(() => {
+        loading.value = false;
+    }, 2000);
+
     fetchAllUsers();
 });
 
@@ -109,9 +117,9 @@ onMounted(() => {
     }
 
     .pig-g {
-        position: relative;
-        right: 0;
-        width: 100%;
+        position: static;
+        padding: 0;
+        margin: 0;
     }
 }
 </style>

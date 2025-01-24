@@ -1,16 +1,21 @@
 <template>
     <div class="battle-container">
-        <Doughnut ref="chartRef" :data="chartData" :options="chartOptions" />
+        <div v-if="loading" class="loading">
+            <Loading />
+        </div>
+        <Doughnut v-else ref="chartRef" :data="chartData" :options="chartOptions" />
     </div>
 </template>
 
 <script setup>
 import { Doughnut } from 'vue-chartjs';
 import axios from 'axios';
+import Loading from "~/components/Loading.vue"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const loading = useState('loading');
 const chartRef = ref(null)
 const datas = ref([0, 0, 0])
 
@@ -75,7 +80,7 @@ const fetchData = async () => {
     };
 }
 
-watch(datas, async () => {
+watch([datas, loading], async () => {
     await nextTick(() => {
         if (chartRef.value && chartRef.value.chart) {
             chartRef.value.chart.data.datasets[0].data = datas.value; // 更新圖表數據

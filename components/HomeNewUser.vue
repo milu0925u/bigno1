@@ -1,7 +1,10 @@
 <template>
     <div class="container">
         <HomeTitle title="最新加入" />
-        <div class="card">
+        <div v-if="loading" class="card loading height">
+            <Loading />
+        </div>
+        <div v-else class="card">
             <div class="grid title-line">
                 <div>名稱</div>
                 <div>加入日期</div>
@@ -16,9 +19,10 @@
 
 <script setup>
 import HomeTitle from '~/components/HomeTitle.vue';
+import Loading from '~/components/Loading.vue'
 
 const users = useState('users');
-
+const loading = useState('loading');
 
 // 抓到最新加入的 最接近十個
 const sortedUsers = computed(() => {
@@ -31,7 +35,6 @@ const sortedUsers = computed(() => {
         .sort((a, b) => new Date(b.createDate) - new Date(a.createDate)) // 按日期排序
         .slice(0, 5); // 取前 5 個
 });
-
 
 </script>
 
@@ -67,6 +70,10 @@ const sortedUsers = computed(() => {
     border-color: black;
     border-style: solid;
     text-align: center;
+}
+
+.height {
+    height: 300px;
 }
 
 @media screen and (max-width: 1200px) {

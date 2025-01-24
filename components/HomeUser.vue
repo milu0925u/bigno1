@@ -1,25 +1,29 @@
 <template>
-    <div v-if="user && user.username" class="card">
+    <div v-if="loading" class="loading">
+        <Loading />
+    </div>
+    <div v-else v-if="user && user.username" class="card">
         <div class="content">
             <div><span>名稱</span>{{ user && user.username ? user.username : '無' }}</div>
             <div><span>職業</span>{{ user && user.username ? user.job : '無' }}</div>
             <div><span>加入時間</span>{{ user && user.username ? user.createDate : '無' }}</div>
-        </div>
-        <div class="btn-group">
-            <button class="btn" @click="goToUserData">編輯資料</button>
-            <button class="btn" @click="goToTakeOff">戰場請假</button>
-            <button class="btn" @click="goToTrial">試煉數值</button>
+            <div class="btn-group">
+                <button class="btn" @click="goToUserData">編輯資料</button>
+                <button class="btn" @click="goToTakeOff">戰場請假</button>
+                <button class="btn" @click="goToTrial">試煉數值</button>
+            </div>
         </div>
     </div>
     <div v-else class="not-login">
         尚未登入，右上角前往登入。
     </div>
-
 </template>
 
 <script setup>
 import { useUser } from '~/store/st_user';
+import Loading from "~/components/Loading.vue"
 const user = useUser();
+const loading = useState('loading');
 
 const goToTakeOff = () => { navigateTo('/takeoff') };
 const goToTrial = () => { navigateTo('/taketrial') };

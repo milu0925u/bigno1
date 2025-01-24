@@ -1,6 +1,10 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+
 
 button {
   all: unset;
@@ -38,6 +42,7 @@ button {
     ". attendt attendb newuser rank .";
   row-gap: 24px;
   column-gap: 36px;
+  padding: 16px;
   .navv {
     grid-area: navv;
   }
@@ -75,6 +80,13 @@ button {
   gap: 20px;
 }
 
+.loading{
+  width: 100%;
+  height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
 
 @media screen and (max-width: 1200px) {
   .home-grid {
@@ -98,6 +110,29 @@ button {
       "attendb"
       "rank"
       ;
+      padding: 0;
 
+      .navv {
+        padding-top: 12px;
+      }
+
+      .board{
+       padding: 8px;
+      }
+      .usercard {
+        padding: 8px;
+      }
+      .newuser {
+        padding: 8px;
+      }
+      .attendt {
+        padding: 8px;
+      }
+      .attendb {
+        padding: 8px;
+      }
+      .rank {
+        padding: 8px;
+      }
   }
 }
