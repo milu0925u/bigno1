@@ -2,7 +2,7 @@
     <div v-if="loading" class="loading">
         <Loading />
     </div>
-    <div v-if="user && user?.username && user?.verif === true" class="card">
+    <div v-if="user && user?.username && user?.verify === true" class="card">
         <div class="content">
             <div><span>名稱</span>{{ user && user.username ? user.username : '無' }}</div>
             <div><span>職業</span>{{ user && user.username ? user.job : '無' }}</div>
