@@ -34,7 +34,7 @@ button {
   grid-template-columns: 5% 15% 15% 20% auto 5%;
   grid-template-areas:
     "navv navv navv navv navv navv"
-    ". usercard usercard board rank ."
+    ". usercard board board rank ."
     ". attendt attendb newuser rank .";
   row-gap: 24px;
   column-gap: 36px;
