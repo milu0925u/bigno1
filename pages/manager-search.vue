@@ -137,6 +137,7 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     text-align: center;
+    gap: 24px;
 
     .content {
         width: 70%;
@@ -203,6 +204,8 @@ onMounted(() => {
     gap: 16px;
     align-items: center;
     white-space: nowrap;
+    margin-block: 16px;
+
 
     input {
         width: 50%;

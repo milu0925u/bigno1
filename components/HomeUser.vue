@@ -2,7 +2,7 @@
     <div v-if="loading" class="loading">
         <Loading />
     </div>
-    <div v-if="user && user.username && user.verify" class="card">
+    <div v-if="user && user?.username && user?.verify" class="card">
         <div class="content">
             <div><span>名稱</span>{{ user && user.username ? user.username : '無' }}</div>
             <div><span>職業</span>{{ user && user.username ? user.job : '無' }}</div>
@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div v-else-if="!user.verify" class="not-login">
+    <div v-else-if="!user?.verify" class="not-login">
         您的審核未通過/非本公會會員。
     </div>
     <div v-else class="not-login">

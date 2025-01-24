@@ -117,6 +117,7 @@ const searchtotal = () => {
     gap: 12px;
     padding-inline: 24px;
     text-align: center;
+    padding: 16px;
 
     button {
         display: flex;
