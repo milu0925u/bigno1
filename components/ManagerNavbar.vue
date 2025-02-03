@@ -41,7 +41,7 @@
             <div v-else-if='route.name === "manager-search"'>
                 <button :class="{ activeColor: props.currentActive === 'searchdata' }" @click="searchdata">搜尋出席</button>
                 <button :class="{ activeColor: props.currentActive === 'searchtotal' }"
-                    @click="searchtotal">統計出席</button>
+                    @click="searchtotal">總出席表</button>
             </div>
         </div>
     </div>

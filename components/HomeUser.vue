@@ -2,23 +2,26 @@
     <div v-if="loading" class="loading">
         <Loading />
     </div>
-    <div v-if="user && user?.username && user?.verify === true" class="card">
-        <div class="content">
-            <div><span>名稱</span>{{ user && user.username ? user.username : '無' }}</div>
-            <div><span>職業</span>{{ user && user.username ? user.job : '無' }}</div>
-            <div><span>加入時間</span>{{ user && user.username ? user.createDate : '無' }}</div>
-            <div class="btn-group">
-                <button class="btn" @click="goToUserData">編輯資料</button>
-                <button class="btn" @click="goToTakeOff">戰場請假</button>
-                <button class="btn" @click="goToTrial">試煉數值</button>
+    <div v-else>
+        <div v-if="user && user?.username && user?.verify === true" class="card">
+            <div class="content">
+                <div><span>名稱</span>{{ user && user.username ? user.username : '無' }}</div>
+                <div><span>職業</span>{{ user && user.username ? user.job : '無' }}</div>
+                <div><span>加入時間</span>{{ user && user.username ? user.createDate : '無' }}</div>
+                <div class="btn-group">
+                    <button class="btn" @click="goToUser">會員中心</button>
+                    <button class="btn" @click="goToUserData">編輯資料</button>
+                    <button class="btn" @click="goToTakeOff">戰場請假</button>
+                    <button class="btn" @click="goToTrial">試煉數值</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div v-else-if="!user && !user?.verify === false" class="not-login">
-        您的審核未通過/非本公會會員。
-    </div>
-    <div v-else class="not-login">
-        尚未登入，右上角前往登入。
+        <div v-else-if="user && user?.verify === false" class="not-login">
+            您的審核未通過/非本公會會員。
+        </div>
+        <div v-else class="not-login">
+            尚未登入，右上角前往登入。
+        </div>
     </div>
 </template>
 
@@ -32,6 +35,7 @@ const loading = useState('loading');
 const goToTakeOff = () => { navigateTo('/takeoff') };
 const goToTrial = () => { navigateTo('/taketrial') };
 const goToUserData = () => { navigateTo('/takeuserData') };
+const goToUser = () => { navigateTo('/takeuser') };
 
 </script>
 

@@ -6,6 +6,9 @@
         <div class="usercard">
             <HomeUser />
         </div>
+        <div class="profession">
+            <HomeProfession />
+        </div>
         <div class="board">
             <HomeBoard />
         </div>
@@ -35,6 +38,7 @@ import HomeUser from '~/components/HomeUser.vue';
 import HomeTrialAttend from '~/components/HomeTrialAttend.vue';
 import HomeTrialRank from '~/components/HomeTrialRank.vue';
 import HomeNavbar from '~/components/HomeNavbar.vue';
+import HomeProfession from '~/components/HomeProfession.vue';
 
 // 設置此頁的title跟關鍵字搜尋
 useHead({

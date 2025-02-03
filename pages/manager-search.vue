@@ -30,33 +30,26 @@
             </div>
         </div>
         <div class="container" v-else>
-            <div class="content2">
-                <div>
-                    <h4 class="title">請假次數前10位</h4>
-                    <div v-for="a in getdata?.dayoffperson" :key="a._id" class="flex">
-
-                        <span>{{ getUserById(a._id)?.username }}</span>
-                        <span>{{ a.count }}次</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="title">試煉缺席前10位</h4>
-                    <div class="flex-col">查詢月份：<input type="month" v-model="selectedDate" /><button class="edit-btn"
-                            @click="fetchFivePerson">送出</button></div>
-                    <div v-for="b in data2" :key="b.id" class="flex">
-                        <span>{{ getUserById(b.id)?.username }}</span>
-                        <span>{{ b.count }}次</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="title">戰場缺席前10位</h4>
-                    <div class="flex-col"></div>
-                    <div v-for="c in getdata?.battleperson" :key="c._id" class="flex">
-                        <span>{{ getUserById(c._id)?.username }}</span>
-                        <span>{{ c.count }}次</span>
-                    </div>
-                </div>
+            <div class="hint">
+                <div><input type="checkbox" :checked="true" :disabled="true" /> = 出席</div>
+                <div><input type="checkbox" :checked="false" :disabled="true" /> = 未出席</div>
+                <div><i class="fa-solid fa-xmark red"></i> = 未加入</div>
             </div>
+            <table class="overflow-y">
+                <thead class="flex-d title-d">
+                    <th>名稱</th>
+                    <tr v-for="(day, i ) in data2.days" :key="i">
+                        <th>{{ day }}</th>
+                    </tr>
+                </thead>
+                <tbody v-for="d in data2.data" :key="d.id" class="flex-d">
+                    <td>{{ getUserById(d.uid)?.username }}</td>
+                    <td v-for="item in d.attendance" :key="i">
+                        <div v-if="item === 'nodata'"><i class="fa-solid fa-xmark red"></i></div>
+                        <input v-else type="checkbox" :checked="item" :disabled="true" />
+                    </td>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -89,25 +82,12 @@ const fetchSearch = async () => {
     }
 };
 const data2 = ref(null);
-const fetchFivePerson = async () => {
-    try {
-        const response = await axios.patch("/api/search", { date: selectedDate.value });
-        if (response.data.success) {
-            data2.value = response.data.data;
-            toast.success(response.data.message);
-        } else {
-            toast.error(response.data.message);
-        }
-    } catch (error) {
-        toast.error("錯誤", error);
-    }
-};
-const getdata = ref(null);
-const getData = async () => {
+const fetchSearchTotal = async () => {
     try {
         const response = await axios.get("/api/search");
         if (response.data.success) {
-            getdata.value = response.data.data;
+            data2.value = response.data.data;
+            toast.success(response.data.message);
         } else {
             toast.error(response.data.message);
         }
@@ -116,14 +96,16 @@ const getData = async () => {
     }
 };
 
+
 // 取得名稱
 const getUserById = (uid) => {
     return users.value.find(user => user.id == uid);
 };
 
 
+
 onMounted(() => {
-    getData();
+    fetchSearchTotal();
 });
 </script>
 
@@ -164,6 +146,8 @@ onMounted(() => {
         }
 
     }
+
+    .content3 {}
 }
 
 .search-date {
@@ -192,10 +176,49 @@ onMounted(() => {
     }
 }
 
-.flex {
-    margin-block: 16px;
+.flex-d {
+    margin-block: 8px;
     display: flex;
-    justify-content: space-between;
+
+    >:first-child {
+        width: 150px;
+    }
+
+    >:not(:first-child) {
+        width: 30px;
+    }
+}
+
+.title-d {
+    font-size: 10px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    appearance: none;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+
+    &:checked {
+        border-color: #00ff80;
+
+        &::after {
+            content: "";
+            position: absolute;
+            font-size: 16px;
+            width: 100%;
+            height: 100%;
+            background-color: #00ff80;
+        }
+
+        &:not(:checked) {
+            background-color: white;
+        }
+    }
 }
 
 .flex-col {
@@ -213,6 +236,20 @@ onMounted(() => {
     }
 }
 
+.overflow-y {
+    width: 80%;
+    overflow-y: auto;
+}
+
+.hint {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.red {
+    color: red;
+}
 
 @media screen and (max-width: 768px) {
     .container {

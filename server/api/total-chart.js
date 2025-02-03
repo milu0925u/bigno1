@@ -14,9 +14,9 @@ export default defineEventHandler(async (event) => {
                 {
                     $group: {
                         _id: {
-                            $dateToString: { format: "%Y-%m-%d", date: "$date" }, // 将日期格式化为 YYYY-MM-DD
+                            $dateToString: { format: "%Y-%m-%d", date: "$date" }, 
                         },
-                        count: { $sum: 1 }, // 统计每个日期的条目数（可选）
+                        count: { $sum: 1 }, 
                     },
                 },
                 {
@@ -24,8 +24,8 @@ export default defineEventHandler(async (event) => {
                         absDiff: { $abs: { $subtract: [new Date(), { $dateFromString: { dateString: "$_id" } }] } },
                     },
                 },
-                { $sort: { absDiff: 1 } }, // 按日期差距排序
-                { $limit: 1 }, // 取最接近的日期
+                { $sort: { absDiff: 1 } }, 
+                { $limit: 1 }, 
             ]);
     
         if (!nearestDateResult || nearestDateResult.length === 0) {
@@ -54,16 +54,7 @@ export default defineEventHandler(async (event) => {
         const filtered_no_join_user = no_join_user.filter(user => !dayoff_user_ids.includes(user.uid)); 
         
         const datas  = [join_user.length,filtered_no_join_user.length,dayoff_user.length]
-        
-            // 試煉
-
-            const startOfDay = moment(new Date()).clone().subtract(1, 'days').startOf('day').toDate();
-              const endOfDay = moment(new Date()).clone().subtract(1, 'days').endOf('day').toDate();
-
-            const newTrialRank = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1, id: 1  }).lean();
-        
-        
-        
+    
         
         
         return {

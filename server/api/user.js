@@ -192,6 +192,24 @@ export default defineEventHandler(async (event) => {
         };
       }
     }
+
+    if (event.req.method === "PATCH"){
+      const {uid} = await readBody(event);
+    
+      //  const startOfMonth = moment(month, "YYYY-MM").startOf("month").toDate();
+      //  const endOfMonth = moment(month, "YYYY-MM").endOf("month").toDate();
+     
+       const allTrials = await Trial.find({id:uid}).lean();
+      
+       console.log(allTrials,'取得數值');
+       
+       return {
+        success: true,
+        message: "取得成功！",
+        label:['2025-1-1','2025-1-2','2025-1-3'],
+        data:[100,50,20]
+      };
+    }
   } catch (e) {
     return {
       success: false,
