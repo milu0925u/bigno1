@@ -37,7 +37,9 @@
             </div>
             <table class="overflow-y">
                 <thead class="flex-d title-d">
-                    <th>名稱</th>
+                    <div>
+                        名稱
+                    </div>
                     <tr v-for="(day, i ) in data2.days" :key="i">
                         <th>{{ day }}</th>
                     </tr>
@@ -80,7 +82,7 @@ const fetchSearch = async () => {
         toast.error("錯誤");
     }
 };
-const data2 = ref(null);
+const data2 = ref({ data: [], days: [] });
 const fetchSearchTotal = async () => {
     try {
         const response = await axios.get("/api/search");
@@ -145,7 +147,6 @@ onMounted(() => {
 
     }
 
-    .content3 {}
 }
 
 .search-date {
