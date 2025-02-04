@@ -2,18 +2,19 @@
     <div>
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
         <div class="container">
-            <div v-if="changebtn" class="dateAdd">
-                <button @click="endbtn"><i class="fa-solid fa-sun"></i></button>
-                <input v-model="newDataDate.date" type="date" />
-                <button @click="newData">新增名單</button>
+            <div class="ill">
+                <span>1.請先選新增名單(選擇好日期按「新增名單」，會加入此次所有成員。)</span>
+                <span>2.再勾選此次有出席的人員</span>
+                <span>3.若有勾選錯誤再點取消按鈕</span>
             </div>
-            <div v-else class="dateAdd">
-                <button @click="startbtn"><i class="fa-regular fa-sun"></i></button>
+            <div class="btn-group">
                 <input v-model="newDataDate.date" type="date" />
-                <button @click="getData">勾選出席者</button>
+                <button class="edit-btn" @click="newData">新增名單</button>
+                <button class="edit-btn" @click="getData">勾選出席者</button>
+                <button class="edit-btn" @click="noData">取消</button>
             </div>
 
-            <div v-if="!changebtn && newDataDate.date" class="content">
+            <div v-if="changebtn === 'now' || changebtn === 'no' && newDataDate.date" class="content">
                 <div>
                     <div>名稱 </div>
                     <div>是否出席</div>
@@ -22,7 +23,8 @@
                     <div>{{ getUserById(user.uid)?.username }}</div>
                     <input type="checkbox" :value="user.uid" v-model="ids" />
                 </div>
-                <button class="btn" @click="chosenData">送出</button>
+                <button v-if="changebtn === 'now'" class="btn" @click="chosenData">送出</button>
+                <button v-else-if="changebtn === 'no'" class="btn" @click="chosenDeleteData">送出</button>
             </div>
         </div>
     </div>
@@ -62,12 +64,27 @@ const newData = async () => {
     }
 };
 // 切換成選擇按鈕
-const changebtn = ref(false);
-const startbtn = () => { changebtn.value = true }
-const endbtn = () => { changebtn.value = false }
+const changebtn = ref("none");
 // 讀取這天的出席者
 const getdata = ref([])
 const getData = async () => {
+    changebtn.value = 'now';
+    ids.value = []
+    try {
+        const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'get' });
+        if (response.data.success) {
+            getdata.value = response.data.users;
+            toast.success(response.data.message);
+        } else {
+            toast.error(response.data.message);
+        }
+    } catch (error) {
+        console.log(error, "執行錯誤，請前往修改代碼");
+    }
+}
+// 取得勾錯的人
+const noData = async () => {
+    changebtn.value = 'no';
     ids.value = []
     try {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'get' });
@@ -95,12 +112,29 @@ const chosenData = async () => {
         console.log(error, "執行錯誤，請前往修改代碼");
     }
 }
+const chosenDeleteData = async () => {
+    try {
+        const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'delete', ids: ids.value });
+        if (response.data.success) {
+            toast.success(response.data.message);
+        } else {
+            toast.error(response.data.message);
+        }
+    } catch (error) {
+        console.log(error, "執行錯誤，請前往修改代碼");
+    }
+}
 
 
 // 取得名稱
 const getUserById = (uid) => {
     return users.value.find(user => user.id === uid);
 };
+
+// 每次點擊日期清空項目
+watch(() => newDataDate.value.date, () => {
+    changebtn.value = 'none';
+});
 
 </script>
 
@@ -179,5 +213,25 @@ const getUserById = (uid) => {
         border: 1px solid black;
         padding: 4px 12px;
     }
+}
+
+.ill {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px dashed black;
+    padding: 16px 32px;
+    margin-bottom: 16px;
+
+    i {
+        color: rgb(34, 45, 150);
+        font-size: 12px;
+    }
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
 }
 </style>

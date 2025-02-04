@@ -57,9 +57,7 @@ export default defineEventHandler(async (event) => {
         message: "讀取成功！",
         users: users,
       };
-    } else if (type === "chosen") {
-
-      
+    } else if (type === "chosen") {   
       const result = await Battlefield.updateMany(
         { uid: { $in: ids }, date: new Date(date) },
         { $set: { attend: true } }
@@ -69,6 +67,18 @@ export default defineEventHandler(async (event) => {
         success: true,
         message: `${result.modifiedCount} 筆資料已更新成功！`,
       };
+    } else if (type === 'delete'){
+      const result = await Battlefield.updateMany(
+        { uid: { $in: ids }, date: new Date(date) },
+        { $set: { attend: false } }
+      );
+
+
+      return {
+        success: true,
+        message: `${result.modifiedCount} 筆資料已修改成功！`,
+      };
     }
   }
+  
 });
