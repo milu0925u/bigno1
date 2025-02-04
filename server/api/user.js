@@ -194,15 +194,14 @@ export default defineEventHandler(async (event) => {
     }
 
     if (event.req.method === "PATCH"){
+      // 會員觀看成長數據
       const {uid} = await readBody(event);
     
       //  const startOfMonth = moment(month, "YYYY-MM").startOf("month").toDate();
       //  const endOfMonth = moment(month, "YYYY-MM").endOf("month").toDate();
      
        const allTrials = await Trial.find({id:uid}).lean();
-      
-       console.log(allTrials,'取得數值');
-       
+    
        return {
         success: true,
         message: "取得成功！",

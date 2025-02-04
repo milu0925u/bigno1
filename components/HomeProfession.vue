@@ -1,11 +1,11 @@
 <template>
     <div class="container">
         <HomeTitle title="職業表" />
-
         <div v-if="loading" class="loading">
             <Loading />
         </div>
-        <div v-else class="align" @click="goToJobPage()">
+        <div v-else class="align">
+            <div class="go" @click="goToJobPage"><i class="fa-brands fa-golang"></i></div>
             <div v-for="key in jobKeys" class="flex">
                 <div class="at">{{ key }}</div>
                 <div class="ac">{{ jobCount && jobCount[key] }}</div>
@@ -21,25 +21,21 @@ const loading = useState('loading');
 const users = useState("users");
 
 const goToJobPage = () => {
-    router.push("/profession");
+    navigateTo('/profession')
 };
 
-let jobKeys = []
-let jobCount = {};
-
-watch(() => users.value, (newUsers) => {
-    if (newUsers && newUsers.length > 0) {
-        jobCount = newUsers.reduce((acc, user) => {
-            if (user.job) {
-                acc[user.job] = (acc[user.job] || 0) + 1;
-            }
-            return acc;
-        }, {});
-
-        jobKeys = Object.keys(jobCount).sort((a, b) => jobCount[b] - jobCount[a]);
-    }
+const jobCount = computed(() => {
+    return users.value.reduce((acc, user) => {
+        if (user.job) {
+            acc[user.job] = (acc[user.job] || 0) + 1;
+        }
+        return acc;
+    }, {});
 });
 
+const jobKeys = computed(() => {
+    return Object.keys(jobCount.value).sort((a, b) => jobCount.value[b] - jobCount.value[a]);
+});
 
 
 </script>
@@ -62,8 +58,34 @@ watch(() => users.value, (newUsers) => {
 }
 
 .align {
+    width: 80%;
     display: flex;
     flex-direction: column;
+    position: relative;
+
+    .go {
+        position: absolute;
+        right: 0;
+        margin-left: auto;
+        color: red;
+        font-size: 24px;
+
+        &:hover {
+            cursor: pointer;
+            animation: bounce 0.6s infinite alternate ease-in-out;
+        }
+    }
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(-10px);
+            /* 向上跳 10px */
+        }
+    }
 }
 
 @media screen and (max-width: 768px) {
