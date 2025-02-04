@@ -9,9 +9,11 @@
             </div>
             <div class="btn-group">
                 <input v-model="newDataDate.date" type="date" />
-                <button class="edit-btn" @click="newData">新增名單</button>
-                <button class="edit-btn" @click="getData">勾選出席者</button>
-                <button class="edit-btn" @click="noData">取消</button>
+                <button class="edit-btn" @click="newData"><span>新增名單</span> <i
+                        class="fa-solid fa-user-plus"></i></button>
+                <button class="edit-btn" @click="getData"><span>勾選出席者</span><i
+                        class="fa-solid fa-user-check"></i></button>
+                <button class="edit-btn" @click="noData"><span>取消</span><i class="fa-solid fa-user-minus"></i></button>
             </div>
 
             <div v-if="changebtn === 'now' || changebtn === 'no' && newDataDate.date" class="content">
@@ -67,25 +69,44 @@ const newData = async () => {
 const changebtn = ref("none");
 // 讀取這天的出席者
 const getdata = ref([])
+
 const getData = async () => {
+
+    if (newDataDate.value.date === "") {
+        toast.error("沒有選擇日期");
+        return
+    }
+
     changebtn.value = 'now';
     ids.value = []
     try {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'get' });
         if (response.data.success) {
-            getdata.value = response.data.users;
-            toast.success(response.data.message);
+            if (response.data.users.length > 0) {
+                getdata.value = response.data.users;
+                toast.success(response.data.message);
+                return
+            }
+            changebtn.value = 'none';
+            toast.error("您未新增此日期的人");
         } else {
             toast.error(response.data.message);
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");
     }
-}
+};
 // 取得勾錯的人
 const noData = async () => {
+
+    if (newDataDate.value.date === "") {
+        toast.error("沒有選擇日期");
+        return
+    }
+
     changebtn.value = 'no';
     ids.value = []
+
     try {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'get' });
         if (response.data.success) {
@@ -113,6 +134,11 @@ const chosenData = async () => {
     }
 }
 const chosenDeleteData = async () => {
+    if (!newDataDate.value || !ids.value) {
+        toast.error("沒有選擇日期&人");
+        return
+    }
+
     try {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'delete', ids: ids.value });
         if (response.data.success) {
@@ -202,6 +228,10 @@ watch(() => newDataDate.value.date, () => {
     &:active {
         transform: translateY(2px);
     }
+
+    i {
+        display: none;
+    }
 }
 
 .dateAdd {
@@ -238,6 +268,22 @@ watch(() => newDataDate.value.date, () => {
 @media screen and (max-width: 768px) {
     .ill {
         margin-inline: 16px;
+    }
+
+    .btn-group {
+        gap: 6px;
+    }
+
+    .edit-btn {
+        padding: 5px;
+
+        span {
+            display: none;
+        }
+
+        i {
+            display: grid;
+        }
     }
 }
 </style>

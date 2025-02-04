@@ -70,4 +70,20 @@ const Dayoff =
     })
   );
 
-export { User, Battlefield, Trial, Dayoff };
+  const Board =
+  mongoose.models.boards ||
+  mongoose.model(
+    "boards",
+    new mongoose.Schema({
+      bid: Number,
+      uid: Number,
+      content: String,
+      createdate: Date,
+      hiddendate: {
+        type: Date,
+        required: false,
+      },
+    })
+  );
+
+export { User, Battlefield, Trial, Dayoff ,Board};

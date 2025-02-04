@@ -11,7 +11,10 @@
                     class="fa-solid fa-bolt"></i><span>協助輸入試煉</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-battle' }" @click="goToBattle"><i
-                    class="fa-regular fa-square-check"></i><span>戰場出席選擇</span></button>
+                    class="fa-regular fa-square-check"></i><span>戰場出席</span></button>
+
+            <button :class="{ activeColor: route.name === 'manager-board' }" @click="goToBoard"><i
+                    class="fa-solid fa-comments"></i><span>公會公告</span></button>
 
             <button :class="{ activeColor: route.name === 'manager-search' }" @click="goToSearch"><i
                     class="fa-solid fa-magnifying-glass"></i><span>搜尋</span></button>
@@ -43,6 +46,11 @@
                 <button :class="{ activeColor: props.currentActive === 'searchtotal' }"
                     @click="searchtotal">總出席表</button>
             </div>
+
+            <div v-else-if='route.name === "manager-board"'>
+                <button :class="{ activeColor: props.currentActive === 'allboard' }" @click="allboard">所有公告</button>
+                <button :class="{ activeColor: props.currentActive === 'addboard' }" @click="addboard">新增公告</button>
+            </div>
         </div>
     </div>
 </template>
@@ -63,7 +71,9 @@ const goToBattle = () => {
 const goToWriteTrial = () => {
     navigateTo('/manager-trial')
 };
-
+const goToBoard = () => {
+    navigateTo('/manager-board')
+};
 
 
 const goToHome = () => { navigateTo('/') };
@@ -106,6 +116,12 @@ const searchdata = () => {
 };
 const searchtotal = () => {
     emit('update:currentActive', "searchtotal");
+};
+const allboard = () => {
+    emit('update:currentActive', "allboard");
+};
+const addboard = () => {
+    emit('update:currentActive', "addboard");
 };
 
 </script>

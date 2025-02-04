@@ -1,33 +1,33 @@
 <template>
     <div class="container">
         <div class="content">
-            <div class="color-block">
+            <div class="color-block red">
                 <span>騎士</span>
                 <div v-for="auser in a" :key="auser.id">{{ auser.username }}</div>
             </div>
-            <div class="color-block">
+            <div class="color-block green">
                 <span>獵人</span>
                 <div v-for="buser in b" :key="buser.id">{{ buser.username }}</div>
             </div>
-            <div class="color-block">
+            <div class="color-block blue">
                 <span>法師</span>
                 <div v-for="cuser in c" :key="cuser.id">{{ cuser.username }}</div>
             </div>
-            <div class="color-block">
+            <div class="color-block purple">
                 <span>刺客</span>
                 <div v-for="duser in d" :key="duser.id">{{ duser.username }}</div>
             </div>
-            <div class="color-block">
+            <div class="color-block gray">
                 <span>鐵匠</span>
                 <div v-for="euser in e" :key="euser.id">{{ euser.username }}</div>
             </div>
-            <div class="color-block">
+            <div class="color-block yellow">
                 <span>服事</span>
                 <div v-for="fuser in f" :key="fuser.id">{{ fuser.username }}</div>
             </div>
         </div>
 
-        <button class="btn" @click="goToHome">返回</button>
+        <button @click="goToHome">返回</button>
     </div>
 </template>
 
@@ -48,12 +48,12 @@ const goToHome = () => {
 
 watch(() => users.value, () => {
     if (!users || users.value.length === 0) return;
-    a.value = users.value.filter(v => v.job == '騎士');
-    b.value = users.value.filter(v => v.job == '獵人');
-    c.value = users.value.filter(v => v.job == '法師');
-    d.value = users.value.filter(v => v.job == '刺客');
-    e.value = users.value.filter(v => v.job == '鐵匠');
-    f.value = users.value.filter(v => v.job == '服事');
+    a.value = users.value.filter(v => v.verify && v.job == '騎士');
+    b.value = users.value.filter(v => v.verify && v.job == '獵人');
+    c.value = users.value.filter(v => v.verify && v.job == '法師');
+    d.value = users.value.filter(v => v.verify && v.job == '刺客');
+    e.value = users.value.filter(v => v.verify && v.job == '鐵匠');
+    f.value = users.value.filter(v => v.verify && v.job == '服事');
 }, { immediate: true });
 
 
@@ -77,11 +77,13 @@ watch(() => users.value, () => {
             gap: 6px;
             padding: 24px 12px;
             border-radius: 8px;
+            margin-block: 1rem;
 
             span {
-                width: 35px;
+                border-radius: 4px;
+                width: 40px;
                 text-align: center;
-                padding: 2px;
+                padding: 3px 8px;
             }
 
             >div {
@@ -92,14 +94,109 @@ watch(() => users.value, () => {
                 padding: 8px 12px;
             }
         }
+
+        .red {
+            --color: 255, 210, 210;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .green {
+            --color: 193, 255, 228;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .blue {
+            --color: 210, 233, 255;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .purple {
+            --color: 211, 221, 255;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .gray {
+            --color: 208, 208, 208;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .yellow {
+            --color: 255, 244, 193;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
     }
 
     >button {
         position: absolute;
         top: 8px;
-        right: 24px;
-        width: 40px;
+        right: 16px;
+        width: 30px;
+        text-align: center;
         font-size: 12px;
+        border: 1px solid black;
+        padding: 4px 8px;
+
+
+        background: linear-gradient(135deg, transparent 50%, #c5cfff 50%);
+        background-size: 300% 300%;
+        background-position: 0% 0%;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-position 0.4s ease-in-out;
+
+        &:hover {
+            background-position: 100% 100%;
+            color: rgb(148, 148, 148);
+
+        }
     }
 }
 </style>

@@ -40,7 +40,7 @@ const chartOptions = ref({
                 display: true,
                 text: '昨日試煉出席',
                 font: {
-                    size: 18,
+                    size: 16,
                     weight: 'bold',
                 },
                 color: '#555',

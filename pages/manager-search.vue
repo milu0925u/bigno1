@@ -73,7 +73,6 @@ const fetchSearch = async () => {
         const response = await axios.post("/api/search", { date: selectedDate.value });
         if (response.data.success) {
             data.value = response.data.data;
-            toast.success(response.data.message);
         } else {
             toast.error(response.data.message);
         }
@@ -87,7 +86,6 @@ const fetchSearchTotal = async () => {
         const response = await axios.get("/api/search");
         if (response.data.success) {
             data2.value = response.data.data;
-            toast.success(response.data.message);
         } else {
             toast.error(response.data.message);
         }

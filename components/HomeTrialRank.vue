@@ -5,12 +5,6 @@
             <div v-if="loading" class="loading">
                 <Loading />
             </div>
-            <div v-else class="grid title-line">
-                <div></div>
-                <div>名稱</div>
-                <div>數值</div>
-                <div></div>
-            </div>
             <div v-else class="rank-b">
                 <div v-for="(user, index) in ranking" :key="user.id" class="grid">
                     <div class="ranking">{{ index + 1 }}</div>
@@ -56,6 +50,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     text-align: center;
+    position: relative;
 }
 
 .grid {
@@ -74,7 +69,6 @@ onMounted(() => {
 
 .ranking {
     font-size: 12px;
-    // border: 1px solid rgb(148, 148, 148);
     border-radius: 80px;
     color: rgb(65, 61, 70);
     width: 20px;
@@ -101,6 +95,7 @@ onMounted(() => {
 
 .rank-b {
     overflow-y: auto;
+    position: relative;
 
 
     &::-webkit-scrollbar {
@@ -113,5 +108,6 @@ onMounted(() => {
     .rank-content {
         font-size: 12px;
     }
+
 }
 </style>
