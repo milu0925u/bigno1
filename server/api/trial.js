@@ -12,6 +12,15 @@ const getTrialDataRange = async (daysAgo = 0) => {
   return data;
 };
 
+async function getUserDataForDate(userId, daysAgoLimit = 7) {
+  for (let daysAgo = 1; daysAgo <= daysAgoLimit; daysAgo++) {
+      const pastData = await getTrialDataRange(daysAgo);
+      const foundData = pastData.find(data => data.id === userId);
+      if (foundData) return foundData; // 找到資料就回傳
+  }
+  return null; // 如果一直找不到，回傳 null
+}
+
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
 
@@ -21,18 +30,31 @@ export default defineEventHandler(async (event) => {
     if (event.req.method === "GET") {
       // 抓到目前的會員
       const users = await User.find({ verify: true }).lean();
-
       const todayData = await getTrialDataRange(0);
-      const yesterdayData = await getTrialDataRange(1);
-      const yesterdayData2 = await getTrialDataRange(2);
+      
+  //     const todayData = await getTrialDataRange(0);
+  //     const yesterdayData = await getTrialDataRange(1);
+  //     const yesterdayData2 = await getTrialDataRange(2);
     
-    // 首頁排行榜數據
-    const userData = users.map(user => {
-    const userYesterdayData = yesterdayData.find(data => data.id === user.id)
-    const userYesterdayData2 = yesterdayData2.find(data => data.id === user.id)
-    const pro = userYesterdayData && userYesterdayData2 ? (userYesterdayData2.ranking - userYesterdayData.ranking) : 0;
-    return {...user,...userYesterdayData,pro} 
-  })
+  //   // 首頁排行榜數據
+  //   const userData = users.map(user => {
+  //   const userYesterdayData = yesterdayData.find(data => data.id === user.id)
+  //   const userYesterdayData2 = yesterdayData2.find(data => data.id === user.id)
+  //   const pro = userYesterdayData && userYesterdayData2 ? (userYesterdayData2.ranking - userYesterdayData.ranking) : 0;
+  //   return {...user,...userYesterdayData,pro} 
+  // })
+
+// 首頁排行榜數據
+const userData = await Promise.all(users.map(async (user) => {
+    const userYesterdayData = await getUserDataForDate(user.id);
+    const userYesterdayData2 = await getUserDataForDate(user.id, 2); // 往前 2 天找
+
+    const pro = userYesterdayData && userYesterdayData2 
+        ? (userYesterdayData2.ranking - userYesterdayData.ranking) 
+        : 0;
+
+    return { ...user, ...userYesterdayData, pro };
+}));
 
 
     return {

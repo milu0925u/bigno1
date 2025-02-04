@@ -4,7 +4,7 @@
         <div class="container">
             <div class="ill">
                 <span>1.請先選新增名單(選擇好日期按「新增名單」，會加入此次所有成員。)</span>
-                <span>2.再勾選此次有出席的人員</span>
+                <span>2.選擇好日期按「勾選出席者」，會出現此日期內的所有會員名單</span>
                 <span>3.若有勾選錯誤再點取消按鈕</span>
             </div>
             <div class="btn-group">
@@ -233,5 +233,11 @@ watch(() => newDataDate.value.date, () => {
 .btn-group {
     display: flex;
     gap: 12px;
+}
+
+@media screen and (max-width: 768px) {
+    .ill {
+        margin-inline: 16px;
+    }
 }
 </style>

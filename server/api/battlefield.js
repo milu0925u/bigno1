@@ -8,24 +8,33 @@ export default defineEventHandler(async (event) => {
     const { type, date, ids } = await readBody(event);
 
     if (type === "addin") {
+      // 決定要不要新增的狀態
+      const isComplete = false;
 
       // 先檢查是否已有名單
-      const existingRecord = await Battlefield.findOne({ date: date });
+      const existingRecord = await Battlefield.find({ date: date }).lean();
+      const users = await User.find({ verify: true }).select("id username createDate").lean();
 
-      if (!existingRecord) {
+       // 篩出 要先加入 才能上戰場的人
+       const filteredUsers = users.filter((user) => new Date(user.createDate) <= new Date(date));
+
+
+      if (existingRecord){
+      // 檢查這次名單跟預先新增的名單有沒有多人或少人
+      const existingUids = new Set(existingRecord.map(record => record.uid));
+
+      // 取得 filteredUsers 中所有應該要有的 uid
+      const requiredUids = filteredUsers.map(user => user.id);
+      
+      // 檢查 requiredUids 是否全部都存在於 existingUids
+      isComplete = requiredUids.every(uid => existingUids.has(uid));
+      }
+
+
         // 抓到最後一筆的編號
         const newpage = await Battlefield.findOne({}).sort({ id: -1 }).lean();
         const nextId = newpage ? newpage.id + 1 : 1;
 
-        // 抓到目前驗證成功的成員們
-        const users = await User.find({ verify: true })
-          .select("id username createDate")
-          .lean();
-
-        // 篩出 要先加入 才能上戰場的人
-        const filteredUsers = users.filter(
-          (user) => new Date(user.createDate) <= new Date(date)
-        );
 
         // 目前的會員全部新增進去
         const bulkOperations = filteredUsers.map((user, index) => ({
@@ -49,7 +58,7 @@ export default defineEventHandler(async (event) => {
           message: "新增成功！",
           users: battleusers,
         };
-      }
+      
     } else if (type === "get") {
       const users = await Battlefield.find({ date: date }).lean();
       return {
