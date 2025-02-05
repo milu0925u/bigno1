@@ -35,23 +35,23 @@
                 <div><input type="checkbox" :checked="false" :disabled="true" /> = 未出席</div>
                 <div><i class="fa-solid fa-xmark red"></i> = 未加入</div>
             </div>
-            <table class="overflow-y">
-                <thead class="flex-d title-d">
+            <div class="table">
+                <div class="flex-d title-d">
                     <div>
-                        名稱
+                        <div>名稱</div>
                     </div>
-                    <tr v-for="(day, i ) in data2.days" :key="i">
-                        <th>{{ day }}</th>
-                    </tr>
-                </thead>
-                <tbody v-for="d in data2.data" :key="d.id" class="flex-d">
-                    <td>{{ getUserById(d.uid)?.username }}</td>
-                    <td v-for="item in d.attendance" :key="i">
+                    <div v-for="(day, i ) in data2.days" :key="i">
+                        <div>{{ day }}</div>
+                    </div>
+                </div>
+                <div v-for="d in data2.data" :key="d.id" class="flex-d">
+                    <div>{{ getUserById(d.uid)?.username }}</div>
+                    <div v-for="item in d.attendance" :key="i">
                         <div v-if="item === 'nodata'"><i class="fa-solid fa-xmark red"></i></div>
                         <input v-else type="checkbox" :checked="item" :disabled="true" />
-                    </td>
-                </tbody>
-            </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -235,7 +235,7 @@ input[type="checkbox"] {
     }
 }
 
-.overflow-y {
+.table {
     width: 80%;
     overflow-y: auto;
 }

@@ -138,6 +138,7 @@ const savedata = async () => {
 definePageMeta({
     middleware: ['manager'],  // 只有經過管理員中介層的用戶可以訪問
 });
+
 </script>
 
 <style lang="scss" scoped>

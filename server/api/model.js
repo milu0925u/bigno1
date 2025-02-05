@@ -77,7 +77,7 @@ const Dayoff =
     new mongoose.Schema({
       bid: Number,
       uid: Number,
-      content: String,
+      content: Object,
       createdate: Date,
       hiddendate: {
         type: Date,

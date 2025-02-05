@@ -34,6 +34,11 @@ export default defineEventHandler(async (event) => {
     return {...user,...userYesterdayData,pro} 
   })
 
+  let updatestate = true;
+  if (!userData[0].value){
+    updatestate = false;
+  }
+
 
       return {
         success: true,
@@ -41,6 +46,7 @@ export default defineEventHandler(async (event) => {
         users:{
           homeRanking:userData,
           today:todayData,
+          updatestate:updatestate,
         },
       };
     };

@@ -6,7 +6,7 @@
         </div>
 
         <div class="container" v-else-if="currentActive === 'addboard'">
-            <CKediter />
+            <editer />
         </div>
     </div>
 
@@ -15,7 +15,7 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import CKediter from '~/components/CKediter.vue';
+import editer from '~/components/editer.vue';
 import { useToast } from 'vue-toastification';
 const toast = useToast();
 const user = useState("user");
@@ -26,7 +26,6 @@ const updateCurrentActive = (newValue) => {
 };
 
 // 新增公告
-const content = ref();
 const addboard = async () => {
     try {
         const response = await axios.post('/api/board', { content })

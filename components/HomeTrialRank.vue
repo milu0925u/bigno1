@@ -6,16 +6,19 @@
                 <Loading />
             </div>
             <div v-else class="rank-b">
-                <div v-for="(user, index) in ranking" :key="user.id" class="grid">
-                    <div class="ranking">{{ index + 1 }}</div>
-                    <div>{{ user.username }}</div>
-                    <div>{{ user.value }}K</div>
-                    <div class="pro">
-                        <i v-if="user.pro > 0" class="fa-solid fa-up-long up-color"></i>
-                        <i v-else-if="user.pro < 0" class="fa-solid fa-down-long down-color"></i>
-                        <i v-else class="fa-solid fa-minus"></i>
+                <div v-if="updated">
+                    <div v-for="(user, index) in ranking" :key="user.id" class="grid">
+                        <div class="ranking">{{ index + 1 }}</div>
+                        <div>{{ user.username }}</div>
+                        <div>{{ user.value }}K</div>
+                        <div class="pro">
+                            <i v-if="user.pro > 0" class="fa-solid fa-up-long up-color"></i>
+                            <i v-else-if="user.pro < 0" class="fa-solid fa-down-long down-color"></i>
+                            <i v-else class="fa-solid fa-minus"></i>
+                        </div>
                     </div>
                 </div>
+                <div v-else class="center">昨日資料尚未輸入</div>
             </div>
         </div>
     </div>
@@ -25,14 +28,16 @@
 import HomeTitle from '~/components/HomeTitle.vue';
 import Loading from "~/components/Loading.vue"
 import axios from 'axios';
-
 const ranking = ref([]);
 const loading = useState('loading');
+const updated = ref(false);
 const fetchRanking = async () => {
     try {
         const response = await axios.get("/api/trial");
+
         if (response.data.success) {
             ranking.value = response.data.users.homeRanking.sort((a, b) => b.value - a.value)
+            updated.value = response.data.users.updatestate
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");
@@ -94,6 +99,7 @@ onMounted(() => {
 }
 
 .rank-b {
+    height: 100%;
     overflow-y: auto;
     position: relative;
 
@@ -102,6 +108,13 @@ onMounted(() => {
         display: none;
 
     }
+}
+
+.center {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media screen and (max-width: 800px) {

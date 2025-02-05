@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorMaxWorkers: true, // number of CPUs minus 1
     },
+   
   },
   css: [
     "@/assets/css/global.scss",
