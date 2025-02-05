@@ -1,6 +1,6 @@
 import { connectToDatabase} from "../db";
 import cookie from "cookie";
-import { User,Trial } from "./model";
+import { User,Trial,Battlefield } from "./model";
 import moment from "moment";
 
 
@@ -13,8 +13,6 @@ export default defineEventHandler(async (event) => {
     if (event.req.method === "GET") {
           // 所有會員 (含未審核、離開)
     const users = await User.find().select("-password").lean(); //lean()轉為純js用法
-
-
 
     users.forEach((user) => {
       if (user.createDate) {
