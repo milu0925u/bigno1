@@ -1,6 +1,6 @@
 import { connectToDatabase} from "../db";
 import cookie from "cookie";
-import { User,Trial,Battlefield } from "./model";
+import { User,Trial } from "./model";
 import moment from "moment";
 
 
