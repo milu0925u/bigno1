@@ -45,6 +45,7 @@ const Trial =
       value: Number,
       date: Date,
       ranking:Number,
+      season:Number,
       reviewer: {
         type: Number,
         required: false,

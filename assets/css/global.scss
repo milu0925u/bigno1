@@ -91,6 +91,22 @@ justify-content: center;
 align-items: center;
 }
 
+.ill {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px dashed black;
+  padding: 16px 32px;
+  margin-bottom: 16px;
+
+  i {
+      color: rgb(34, 45, 150);
+      font-size: 12px;
+  }
+}
+
+
 @media screen and (max-width: 1200px) {
   .home-grid {
     display: grid;
@@ -139,4 +155,7 @@ align-items: center;
         padding: 8px;
       }
   }
+  .ill {
+    margin-inline: 16px;
+}
 }

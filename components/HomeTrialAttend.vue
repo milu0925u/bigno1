@@ -70,14 +70,11 @@ const chartOptions = ref({
 
 // 抓取資料
 const fetchData = async () => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
     try {
-        const response = await axios.post("/api/search", { date: yesterday });
+        const response = await axios.get("/api/trial");
         if (response.data.success) {
-            const ptrue = response.data.data.trianY.length;
-            const pfalse = response.data.data.trianN.length;
+            const ptrue = response.data.ynsers.yesp;
+            const pfalse = response.data.ynsers.nop;
             datas.value = [ptrue, pfalse]
 
         }

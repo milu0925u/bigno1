@@ -7,23 +7,23 @@
                     @click="fetchSearch">搜尋</button>
             </div>
             <div class="content">
-                <div>
-                    <h4 class="title">戰場出席:{{ data?.battleY?.length || 0 }}</h4>
+                <div v-if="data?.battleY?.length || 0">
+                    <h4 class="title">戰場出席:{{ data.battleY.length || 0 }}</h4>
                     <div v-for="a in data?.battleY" :key="a.id">{{ getUserById(a.uid)?.username }}</div>
                 </div>
-                <div>
+                <div v-if="data?.battleN?.length || 0">
                     <h4 class="title">戰場未出席:{{ data?.battleN?.length || 0 }}</h4>
                     <div v-for="b in data?.battleN" :key="b.id">{{ getUserById(b.uid)?.username }}</div>
                 </div>
-                <div>
+                <div v-if="data?.dayoff?.length || 0">
                     <h4 class="title">戰場請假:{{ data?.dayoff?.length || 0 }}</h4>
                     <div v-for="c in data?.dayoff" :key="c.id">{{ getUserById(c.uid)?.username }}</div>
                 </div>
-                <div>
+                <div v-if="data?.trianY?.length || 0">
                     <h4 class="title">試煉出席:{{ data?.trianY?.length || 0 }}</h4>
                     <div v-for="d in data?.trianY" :key="d.id">{{ getUserById(d.id)?.username }}</div>
                 </div>
-                <div>
+                <div v-if="data?.trianN?.length || 0">
                     <h4 class="title">試煉未出席:{{ data?.trianN?.length || 0 }}</h4>
                     <div v-for="e in data?.trianN" :key="e.id">{{ getUserById(e.id)?.username }}</div>
                 </div>

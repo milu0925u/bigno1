@@ -25,7 +25,7 @@ const goToJobPage = () => {
 };
 
 const jobCount = computed(() => {
-    return users.value.reduce((acc, user) => {
+    return users.value.filter((v) => v.verify).reduce((acc, user) => {
         if (user.job) {
             acc[user.job] = (acc[user.job] || 0) + 1;
         }
@@ -36,6 +36,7 @@ const jobCount = computed(() => {
 const jobKeys = computed(() => {
     return Object.keys(jobCount.value).sort((a, b) => jobCount.value[b] - jobCount.value[a]);
 });
+
 
 
 </script>

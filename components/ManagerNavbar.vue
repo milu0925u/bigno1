@@ -35,12 +35,6 @@
                 <button :class="{ activeColor: props.currentActive === 'verifyDate' }" @click="verifyDate">請假</button>
             </div>
 
-            <div v-else-if='route.name === "manager-trial"'>
-                <button :class="{ activeColor: props.currentActive === 'trialUser' }" @click="trialUser">所有人</button>
-                <button :class="{ activeColor: props.currentActive === 'notrialUser' }"
-                    @click="notrialUser">未輸入者</button>
-            </div>
-
             <div v-else-if='route.name === "manager-search"'>
                 <button :class="{ activeColor: props.currentActive === 'searchdata' }" @click="searchdata">搜尋出席</button>
                 <button :class="{ activeColor: props.currentActive === 'searchtotal' }"
@@ -104,12 +98,6 @@ const verifyDate = () => {
 }
 const verifyJoin = () => {
     emit('update:currentActive', "verifyJoin");
-};
-const trialUser = () => {
-    emit('update:currentActive', "trialUser");
-};
-const notrialUser = () => {
-    emit('update:currentActive', "notrialUser");
 };
 const searchdata = () => {
     emit('update:currentActive', "searchdata");

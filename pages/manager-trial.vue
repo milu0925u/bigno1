@@ -2,13 +2,11 @@
     <div>
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
         <div class="container">
-            <div class="border">今日數據輸入</div>
-            <button class="hide-btn" @click="toggleVisibility">
-                open
-            </button>
-            <div v-if="visibilityBTN">
-                <input type="date" v-model="newdate" />
+            <div class="ill">
+                <span>1.選擇日期輸入數據</span>
+                <span>2.若重複輸入會覆蓋原本資料</span>
             </div>
+            <input type="date" v-model="newdate" />
             <div class="content">
                 <div class="title">
                     <h4>名稱</h4>
@@ -35,10 +33,6 @@ import axios from "axios";
 import { useToast } from 'vue-toastification';
 const toast = useToast();
 
-const visibilityBTN = ref(false);
-const toggleVisibility = () => {
-    visibilityBTN.value = true;
-};
 
 import { WatcherUser, fetchAllUsers } from '~/store/st_user.js';
 
@@ -52,7 +46,7 @@ const updateCurrentActive = (newValue) => {
 const inputData = ref({}) // 正常管理員輸入
 const newdate = ref(""); // 可選日期
 
-
+const printUser = ref([]);
 
 
 // 送出代寫數值 
@@ -69,14 +63,11 @@ const send = async (id, value) => {
 }
 
 // 抓取資料並過濾
-const battle = ref({}); // 今天有打沒打所有人
-const printUser = ref([]); // 打印資料
 const fetchData = async () => {
     try {
         const response = await axios.get('/api/trial');
         if (response.data.success) {
-            battle.value.all = response.data.users.homeRanking.sort((a, b) => a.ranking - b.ranking);
-            battle.value.today = response.data.users.today.sort((a, b) => a.ranking - b.ranking);
+            printUser.value = response.data.users.sort((a, b) => a.ranking - b.ranking);
         } else {
             toast.error(response.data.message);
         }
@@ -97,16 +88,8 @@ WatcherUser((newUser) => {
 });
 
 
-watch(currentActive, async () => {
+watch(printUser, async () => {
     await fetchData();
-    if (currentActive.value === 'trialUser') {
-        printUser.value = battle.value.all
-    } else if (currentActive.value === 'notrialUser') {
-        const todayUserIds = battle.value.today.map(user => user.id);
-        const remainingUsers = battle.value.all.filter(user => !todayUserIds.includes(user.id));
-
-        printUser.value = remainingUsers
-    }
 }, { immediate: true }); 
 </script>
 

@@ -245,20 +245,6 @@ watch(() => newDataDate.value.date, () => {
     }
 }
 
-.ill {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-    border: 1px dashed black;
-    padding: 16px 32px;
-    margin-bottom: 16px;
-
-    i {
-        color: rgb(34, 45, 150);
-        font-size: 12px;
-    }
-}
 
 .btn-group {
     display: flex;
@@ -266,9 +252,6 @@ watch(() => newDataDate.value.date, () => {
 }
 
 @media screen and (max-width: 768px) {
-    .ill {
-        margin-inline: 16px;
-    }
 
     .btn-group {
         gap: 6px;
