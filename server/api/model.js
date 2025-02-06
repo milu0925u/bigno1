@@ -78,6 +78,7 @@ const Dayoff =
     new mongoose.Schema({
       bid: Number,
       uid: Number,
+      title:String,
       content: Object,
       createdate: Date,
       hiddendate: {
@@ -87,4 +88,25 @@ const Dayoff =
     })
   );
 
-export { User, Battlefield, Trial, Dayoff ,Board};
+  const BoardReply =
+  mongoose.models.boardreplys ||
+  mongoose.model(
+    "boardreplys",
+    new mongoose.Schema({
+      brid:Number,
+      bid: Number,
+      uid: Number,
+      content: Object,
+      createdate: Date,
+      updatedate: {
+        type: Date,
+        required: false,
+      },
+      hiddendate: {
+        type: Date,
+        required: false,
+      },
+    })
+  );
+
+export { User, Battlefield, Trial, Dayoff ,Board,BoardReply};
