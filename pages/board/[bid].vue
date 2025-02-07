@@ -6,7 +6,7 @@
         </div>
         <div class="content-reply"> 
             <div class="reply">
-                待新增回應貼文
+                待新增回應貼文!!!!
                 <!-- <div><b>你好笨</b><p>太好看了吧</p></div>
                 <div><b>你好笨</b><p>太好看了吧</p></div>
                 <div><b>你好笨</b><p>太好看了好看了好看了好看了吧</p></div>
