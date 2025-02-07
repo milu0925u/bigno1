@@ -26,7 +26,7 @@
 
 <script setup>
 import axios from "axios";
-import Editer from '~/components/Editer.vue';
+// import Editer from '~/components/Editer.vue';
 import { useToast } from 'vue-toastification';
 import { useRoute } from 'vue-router';
 const user = useState('user');
