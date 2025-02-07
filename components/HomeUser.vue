@@ -9,7 +9,7 @@
                 <div><span>職業</span>{{ user && user.username ? user.job : '無' }}</div>
                 <div><span>加入時間</span>{{ user && user.username ? user.createDate : '無' }}</div>
                 <div class="btn-group">
-                    <button class="btn" @click="goToUser">會員中心</button>
+                    <!-- <button class="btn" @click="goToUser">會員中心</button> -->
                     <button class="btn" @click="goToUserData">編輯資料</button>
                     <button class="btn" @click="goToTakeOff">戰場請假</button>
                     <button class="btn" @click="goToTrial">試煉數值</button>
