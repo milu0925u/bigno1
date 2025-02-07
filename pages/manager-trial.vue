@@ -86,11 +86,10 @@ WatcherUser((newUser) => {
         };
     }
 });
+onMounted(() => {
+    fetchData();
+});
 
-
-watch(printUser, async () => {
-    await fetchData();
-}, { immediate: true }); 
 </script>
 
 

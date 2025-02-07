@@ -25,17 +25,20 @@ const goToJobPage = () => {
 };
 
 const jobCount = computed(() => {
-    return users.value.filter((v) => v.verify).reduce((acc, user) => {
-        if (user.job) {
-            acc[user.job] = (acc[user.job] || 0) + 1;
-        }
-        return acc;
-    }, {});
+    if (users.value) {
+        return users.value.filter((v) => v.verify).reduce((acc, user) => {
+            if (user.job) {
+                acc[user.job] = (acc[user.job] || 0) + 1;
+            }
+            return acc;
+        }, {});
+    }
 });
 
 const jobKeys = computed(() => {
+    if (users.value) {
     return Object.keys(jobCount.value).sort((a, b) => jobCount.value[b] - jobCount.value[a]);
-});
+}});
 
 
 

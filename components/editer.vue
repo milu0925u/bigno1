@@ -1,26 +1,13 @@
 <template>
-    <div>
-        <div class="title-group">
-            <span>標題：</span>
-            <input type="text" v-model="title" />
-            <button class="btn" @click="clearEditor">清除內容</button>
-            <button class="btn" @click="sendEditor">送出</button>
-        </div>
-        <div class="editor-container" ref="editor" id="editor"></div>
-    </div>
-
+    <div class="editor-container" ref="editor"></div>
 </template>
 
 <script setup>
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import axios from "axios";
-import { useToast } from 'vue-toastification';
-const user = useState("user");
-const toast = useToast();
-const title = ref('');
-const editor = ref(null);
-const toolbarOptions = [
+
+const editor = ref(null); // 用來初始化編輯器
+const options = [
     ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],
     ['link', 'image', 'video', 'formula'],
@@ -39,35 +26,51 @@ const toolbarOptions = [
     [{ 'align': [] }],
     ['clean']
 ];
+const formats = [
+    'bold', 'italic', 'underline', 'strike',
+    'blockquote', 'code-block',
+    'link', 'image', 'video', 'formula',
+    'header', 'list', 'script', 'indent', 'direction',
+    'size', 'color', 'background', 'font', 'align'
+];
+
 let quill;
+
+// 取得 JSON 內容
+const setEditorContent = (deltaData) => {
+    return quill.setContents(deltaData);
+};
+
+// 取得 JSON 內容
+const getEditorContent = () => {
+    return quill.getContents();
+};
+
+// 清除編輯器內文
 const clearEditor = () => {
     quill.deleteText(0, quill.getLength());
 };
-const sendEditor = async () => {
-    if (!title.value) {
-        toast.error("請輸入標題")
-        return
-    }
-    const jsonContent = quill.getContents(); // JSON 內容
-    try {
-        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
-        if (response.data.success) {
-            toast.success(response.data.message)
-            clearEditor();
-        }
-    } catch (error) {
-        toast.error(response.data.message)
-    };
-}
+// 接收父層
+const props = defineProps({
+    isViewing: Boolean  // 接收父層傳遞的編輯模式
+});
+// 傳遞給父層
+defineExpose({
+    clearEditor,
+    getEditorContent,
+    setEditorContent
+});
 
 onMounted(() => {
-    quill = new Quill(editor.value, {
+    quill = new Quill(editor.value, {  //會把 div 轉換成 Quill 編輯器
         debug: 'info',
         modules: {
-            toolbar: toolbarOptions
+            toolbar: props.isViewing ? false : options
         },
-        bounds: editor.value,
+        bounds: editor.value, // 限制彈跳視窗範圍
         theme: "snow",
+        formats: formats,
+        readOnly: props.isViewing
     });
 });
 </script>
@@ -76,41 +79,5 @@ onMounted(() => {
 .editor-container {
     width: 100%;
     height: 400px;
-    margin-bottom: 2rem;
-}
-
-.title-group {
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 12px;
-    align-items: center;
-    border-width: 1px 1px 0 1px;
-    border-style: solid;
-    border-color: rgb(209, 198, 198);
-
-    span {
-        white-space: nowrap;
-    }
-
-    input {
-        border: none;
-        outline: none;
-        width: 60%;
-        height: 30px;
-        border: 1px solid black;
-        padding-inline: 8px;
-
-        &:focus {
-            // border: none;
-            outline: none;
-        }
-    }
-
-    button {
-        font-size: 12px;
-        margin: 8px;
-        width: 80px;
-        height: 25px;
-    }
 }
 </style>
