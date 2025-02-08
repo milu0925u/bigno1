@@ -44,8 +44,8 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+import { toast } from '~/store/st_user';
+
 const user = useState("user");
 const users = useState("users")
 const currentActive = ref("allboard"); // 接收子層組件

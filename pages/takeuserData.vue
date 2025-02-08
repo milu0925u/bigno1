@@ -23,11 +23,8 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toastification';
-const toast = useToast();
-
 import axios from 'axios';
-import { useUser, fetchAllUsers, WatcherUser } from '~/store/st_user.js';
+import { useUser, fetchAllUsers, WatcherUser,toast } from '~/store/st_user.js';
 const user = useUser();
 
 const formData = ref({ type: 'update', id: user?.id });

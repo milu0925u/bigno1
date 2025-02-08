@@ -26,13 +26,13 @@
 
 <script setup>
 import axios from "axios";
-// import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification';
+
+import Editer from '~/components/Editer.vue';
 import { useRoute } from 'vue-router';
 const user = useState('user');
 console.log(user.value ,'現在登入會員')
 const route = useRoute();
-const toast = useToast();
+
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
