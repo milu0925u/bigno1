@@ -20,8 +20,8 @@
 </template>
 
 <script setup>
-import { toast } from '~/store/st_user';
-
+import Toast from 'vue-toastification';
+const toast = Toast.useToast();
 import axios from 'axios';
 import { useUser } from '~/store/st_user.js';
 const user = useUser();

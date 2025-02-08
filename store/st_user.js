@@ -1,9 +1,7 @@
 import axios from "axios";
-import Toast from 'vue-toastification';
 export const useUser = () => useState("user", () => null);
 export const useUsers = () => useState("users", () => []);
 
-export const toast = Toast.useToast();
 
 export const fetchAllUsers = async () => {
   try {

@@ -59,7 +59,8 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import { toast } from '~/store/st_user';
+import Toast from 'vue-toastification';
+const toast = Toast.useToast();
 
 const currentActive = ref("searchdata"); // 接收子層組件
 const updateCurrentActive = (newValue) => {

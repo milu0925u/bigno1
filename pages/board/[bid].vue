@@ -26,11 +26,9 @@
 
 <script setup>
 import axios from "axios";
-
 import Editer from '~/components/Editer.vue';
 import { useRoute } from 'vue-router';
 const user = useState('user');
-console.log(user.value ,'現在登入會員')
 const route = useRoute();
 
 const title = ref('');

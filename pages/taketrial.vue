@@ -35,8 +35,10 @@
 </template>
 
 <script setup>
+import Toast from 'vue-toastification';
+const toast = Toast.useToast();
 import axios from 'axios';
-import { useUser, fetchAllUsers, WatcherUser,toast } from '~/store/st_user.js';
+import { useUser, fetchAllUsers, WatcherUser } from '~/store/st_user.js';
 const user = useUser();
 
 const formData = ref({ id: user?.id, value: 0 });

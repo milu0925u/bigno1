@@ -80,8 +80,9 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-
-import { fetchAllUsers,toast } from '~/store/st_user.js';
+import { fetchAllUsers } from '~/store/st_user.js';
+import Toast from 'vue-toastification';
+const toast = Toast.useToast();
 
 const currentActive = ref("seeAll");
 const updateCurrentActive = (newValue) => {
