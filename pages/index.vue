@@ -6,11 +6,11 @@
         <div class="usercard">
             <HomeUser />
         </div>
-        <div class="profession">
-            <HomeProfession />
-        </div>
         <div class="board">
             <HomeBoard />
+        </div>
+        <div class="profession">
+            <HomeProfession />
         </div>
         <div class="newuser">
             <HomeNewUser />
@@ -18,11 +18,11 @@
         <div class="attendt">
             <HomeTrialAttend />
         </div>
-        <div class="rank">
-            <HomeTrialRank />
-        </div>
         <div class="attendb">
             <HomeBattleAttend />
+        </div>
+        <div class="rank">
+            <HomeTrialRank />
         </div>
         <div class="pig"></div>
         <div class="bg"></div>
@@ -111,9 +111,17 @@ onMounted(() => {
     .bg {
         background-size: auto;
     }
-
-
 }
+
+@media screen and (max-width: 1200px) {
+    .bg {
+        background-size: auto;
+    }
+    .pig-g {
+        display: none;
+    }
+}
+
 
 @media screen and (max-width: 768px) {
     .pig {
@@ -121,6 +129,7 @@ onMounted(() => {
     }
 
     .pig-g {
+        display: grid;
         position: static;
         padding: 0;
         margin: 0;

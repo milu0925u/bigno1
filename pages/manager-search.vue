@@ -74,12 +74,18 @@ const fetchSearch = async () => {
     try {
         const response = await axios.post("/api/search", { date: selectedDate.value });
         if (response.data.success) {
+            if(response.data.data.trianY.length === 0 && 
+            response.data.data.trianN.length === 0 && 
+            response.data.data.battleN.length === 0 && 
+            response.data.data.battleY.length === 0 && 
+            response.data.data.dayoff.length === 0
+            ){
+                toast.error("查無資料");
+            }
             data.value = response.data.data;
-        } else {
-            toast.error(response.data.message);
-        }
+        } 
     } catch (error) {
-        toast.error("錯誤");
+        toast.error("請重新再試！");
     }
 };
 const data2 = ref({ data: [], days: [] });

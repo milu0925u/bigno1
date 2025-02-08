@@ -3,7 +3,7 @@ export const useUser = () => useState("user", () => null);
 export const useUsers = () => useState("users", () => []);
 
 
-export const fetchAllUsers = async () => {
+export const fetchAllUsers = async (retries = 3, delay = 1000) => {
   try {
     const response = await axios.get("/api/user");
     const users = useUsers();
@@ -11,7 +11,16 @@ export const fetchAllUsers = async () => {
       users.value = response.data.users;
     } 
   } catch (error) {
-    console.log(error, "抓取會員資料失敗，請重新抓取");
+    console.log(error, "抓取所有成員資料失敗，請重新抓取！");
+    if (error.response && error.response.status === 503) {
+      console.log(`正在重試... 剩餘次數: ${retries}`);
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+        return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+      } else {
+        console.log("重試次數已達上限，請稍後再試！");
+      }
+    }
   }
 };
 

@@ -83,7 +83,6 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: calc(100vh - 20px - 50px - 28px);
-  border: none;
   resize: none;
   padding: 10px;
   font-size: 16px;

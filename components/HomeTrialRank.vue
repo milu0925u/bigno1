@@ -31,7 +31,7 @@ import axios from 'axios';
 const ranking = ref([]);
 const loading = useState('loading');
 const updated = ref(false);
-const fetchRanking = async () => {
+const fetchRanking = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get("/api/trial");
 
@@ -39,7 +39,16 @@ const fetchRanking = async () => {
             ranking.value = response.data.users.sort((a, b) => b.value - a.value)
         }
     } catch (error) {
-        console.log(error, "執行錯誤，請前往修改代碼，試煉排行。");
+    console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+    if (error.response && error.response.status === 503) {
+      console.log(`正在重試... 剩餘次數: ${retries}`);
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+        return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+      } else {
+        console.log("重試次數已達上限，請稍後再試！");
+      }
+    }
     }
 };
 onMounted(() => {

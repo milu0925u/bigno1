@@ -26,7 +26,7 @@
 
         <div class="container" v-else-if="currentActive === 'addboard'">
 
-            <div>
+            <div class="editer-content">
                 <div class="title-group">
                     <span>標題：</span>
                     <input type="text" v-model="title" />
@@ -195,6 +195,10 @@ watch(currentActive, (newValue) => {
         background: rgba(20, 17, 17, 0.788);
         color: white;
     }
+}
+
+.editer-content{
+    margin-bottom: 3rem;
 }
 
 @media screen and (max-width: 768px) {

@@ -68,10 +68,6 @@ watch(() => [route.params.bid], (newBid) => {
     --title:rgba(105, 82, 72, 1);
     --text:rgba(253, 233, 224, 1);
     --border:rgba(86, 38, 16, 1);
-    // --background:rgba(84, 89, 86, 1);
-    // --title:rgba(34, 40, 37, 1);
-    // --text:rgba(145, 12, 7, 1);
-    // --border:rgba(182, 174, 166, 1);
     margin-inline:auto;
     background:var(--background);
     display:flex;
@@ -129,7 +125,7 @@ watch(() => [route.params.bid], (newBid) => {
     .title{
     display: flex;
     justify-content: space-between;
-    padding: 8px 12px;
+    padding: 36px 12px;
     height:50px;
     color:white;
     align-items: center;

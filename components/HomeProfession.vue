@@ -5,11 +5,12 @@
             <Loading />
         </div>
         <div v-else class="align">
-            <div class="go" @click="goToJobPage"><i class="fa-brands fa-golang"></i></div>
+            <!-- <div class="go" @click="goToJobPage"><i class="fa-brands fa-golang"></i></div> -->
             <div v-for="key in jobKeys" class="flex">
                 <div class="at">{{ key }}</div>
                 <div class="ac">{{ jobCount && jobCount[key] }}</div>
             </div>
+            <div class="go" @click="goToJobPage">查看</div>
         </div>
     </div>
 </template>
@@ -68,11 +69,15 @@ const jobKeys = computed(() => {
     position: relative;
 
     .go {
-        position: absolute;
-        right: 0;
-        margin-left: auto;
-        color: red;
-        font-size: 24px;
+        // position: absolute;
+        // top: -25px;
+        // right: 0;
+        // font-size: 24px;
+        font-size: 12px;
+        border:1px solid black;
+        // width: 50px;
+        // margin-left: auto;
+        margin-top: 16px;
 
         &:hover {
             cursor: pointer;
@@ -94,7 +99,12 @@ const jobKeys = computed(() => {
 
 @media screen and (max-width: 768px) {
     .align {
+        width: 100%;
         align-items: center;
+    }
+    .go {
+        width: 50%;
+        padding: 2px 8px;
     }
 }
 </style>
