@@ -43,7 +43,7 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import Editer from '~/components/EEditer.vue';
+import Editer from '~/components/Editer.vue';
 import { useToast } from 'vue-toastification';
 const toast = useToast();
 const user = useState("user");
