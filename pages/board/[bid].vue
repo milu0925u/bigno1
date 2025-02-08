@@ -5,13 +5,13 @@
             <Editer ref="deltaContent" :isViewing="isViewing" />
         </div>
         <div class="content-reply"> 
-            <div class="reply" v-for="m in allmessage">
+            <!-- <div class="reply" v-for="m in allmessage">
                 <div class="content-message"><b>{{m && getUserById(m.uid).username}}</b><p>{{m && m.content}}</p><div class="createdate">{{m && m.createdate}}</div></div>
-         </div>
-         <div class="text-btn">
+         </div> -->
+         <!-- <div class="text-btn">
                 <input type="text" v-model="message" />
                 <button class="btn" @click="sendMessage">傳送</button>
-            </div>
+            </div> -->
         </div>    
         <div class="btn-group">
             <button class="btn" @click="goToHome">返回</button>
@@ -97,21 +97,16 @@ const getUserById = (uid) => {
     return users.value.find(user => user.id === uid);
 };
 
-let shouldFetchReplyData = true;
-
+// 監聽路由變更
 watch(() => [route.params.bid], (newBid) => {
-    if (newBid && shouldFetchReplyData) {
-        fetchData(newBid);
-        fetchReplyData(newBid);
+    if (newBid) {
+        fetchData(newBid) 
+        fetchReplyData(newBid)
     };
 }, { immediate: true });
 
-watch(() => allmessage.value, () => {
-    // 只在必要时调用 fetchReplyData
-    if (shouldFetchReplyData) {
-        fetchReplyData();
-    }
-});
+
+
 </script>
 
 <style lang="scss" scoped>
