@@ -64,14 +64,14 @@ watch(() => [route.params.bid], (newBid) => {
 
 <style lang="scss" scoped>
 .container{
-    // --background:rgba(131, 211, 212, 1);
-    // --title:rgba(29, 82, 83, 1);
+    --background:rgba(161, 132, 119, 1);
+    --title:rgba(105, 82, 72, 1);
+    --text:rgba(253, 233, 224, 1);
+    --border:rgba(86, 38, 16, 1);
+    // --background:rgba(84, 89, 86, 1);
+    // --title:rgba(34, 40, 37, 1);
     // --text:rgba(145, 12, 7, 1);
-    // --border:rgba(108, 167, 168, 1);
-    --background:rgba(182, 174, 166, 1);
-    --title:rgba(34, 40, 37, 1);
-    --text:rgba(145, 12, 7, 1);
-    --border:rgba(79, 81, 82, 1);
+    // --border:rgba(182, 174, 166, 1);
     margin-inline:auto;
     background:var(--background);
     display:flex;
@@ -80,6 +80,7 @@ watch(() => [route.params.bid], (newBid) => {
     .content{
         width:75%;
         background:#FCFCFC;
+        background:var(--text);
         >div{
             border-style: solid;
             border-color: var(--border);
@@ -107,7 +108,7 @@ watch(() => [route.params.bid], (newBid) => {
             border:1px solid var(--border);
         }
         button{
-            background:var(--title);
+            // background:var(--title);
         }
         .reply{
         display:flex;
