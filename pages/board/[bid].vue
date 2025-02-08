@@ -64,12 +64,15 @@ watch(() => [route.params.bid], (newBid) => {
 
 <style lang="scss" scoped>
 .container{
-    --background:rgba(131, 211, 212, 1);
-    --title:rgba(29, 82, 83, 1);
+    // --background:rgba(131, 211, 212, 1);
+    // --title:rgba(29, 82, 83, 1);
+    // --text:rgba(145, 12, 7, 1);
+    // --border:rgba(108, 167, 168, 1);
+    --background:rgba(182, 174, 166, 1);
+    --title:rgba(34, 40, 37, 1);
     --text:rgba(145, 12, 7, 1);
-    --border:rgba(108, 167, 168, 1);
+    --border:rgba(79, 81, 82, 1);
     margin-inline:auto;
-    width:90%;
     background:var(--background);
     display:flex;
     padding:24px;
