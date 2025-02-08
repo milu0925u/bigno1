@@ -68,6 +68,7 @@ watch(() => users.value, () => {
     .content {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
         gap: 16px;
         font-size: 12px;
 
@@ -198,5 +199,140 @@ watch(() => users.value, () => {
 
         }
     }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        margin-top:40px;
+    .content {
+        flex-direction: column;
+        gap: 0px;
+        .color-block {
+            position: relative;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 48px 12px 24px 12px;
+            margin-block: 4px;
+
+            span {
+                position: absolute;
+                top: 12px;
+                left: 12px;
+            }
+
+            >div {
+                width: 150px;
+                border: 1px solid rgba(171, 171, 235, 0.5);
+                border-radius: 6px;
+                background: white;
+                padding: 8px 12px;
+            }
+        }
+
+        .red {
+            --color: 255, 210, 210;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .green {
+            --color: 193, 255, 228;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .blue {
+            --color: 210, 233, 255;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .purple {
+            --color: 211, 221, 255;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .gray {
+            --color: 208, 208, 208;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+
+        .yellow {
+            --color: 255, 244, 193;
+            background: rgba(var(--color), 0.5);
+
+            span {
+                background: rgba(var(--color), 1);
+            }
+
+            >div {
+                border: 1px solid rgba(var(--color), 1);
+            }
+        }
+    }
+
+    >button {
+        position: absolute;
+        top: 8px;
+        right: 16px;
+        width: 30px;
+        text-align: center;
+        font-size: 12px;
+        border: 1px solid black;
+        padding: 4px 8px;
+
+
+        background: linear-gradient(135deg, transparent 50%, #c5cfff 50%);
+        background-size: 300% 300%;
+        background-position: 0% 0%;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-position 0.4s ease-in-out;
+
+        &:hover {
+            background-position: 100% 100%;
+            color: rgb(148, 148, 148);
+
+        }
+    }
+}
+
 }
 </style>

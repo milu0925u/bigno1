@@ -78,7 +78,8 @@ onMounted(() => {
 @media screen and (max-width: 768px) {
     .board {
         margin-inline: auto;
-        width: 60%;
+        width: 100%;
+        padding: 12px 24px;
     }
 }
 </style>
