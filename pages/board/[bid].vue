@@ -5,16 +5,12 @@
             <Editer ref="deltaContent" :isViewing="isViewing" />
         </div>
         <div class="content-reply"> 
-            <div class="reply">
-                <div><b>玩家A</b><p>待新增回應貼文!!!!</p></div>
-                <div><b>玩家C</b><p>測試</p></div>
-                <div><b>玩家B</b><p>測試測試</p></div>
-                <div><b>玩家G</b><p>太測試</p></div>
-                <div><b>玩家D</b><p>測試</p></div>
+            <div class="reply" v-for="m in allmessage">
+                <div class="content-message"><b>{{m && getUserById(m.uid).username}}</b><p>{{m && m.content}}</p><div class="createdate">{{m && m.createdate}}</div></div>
          </div>
          <div class="text-btn">
-                <input type="text" />
-                <button class="btn">傳送</button>
+                <input type="text" v-model="message" />
+                <button class="btn" @click="sendMessage">傳送</button>
             </div>
         </div>    
         <div class="btn-group">
@@ -26,40 +22,96 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
+import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router';
+const { $swal } = useNuxtApp();
 const user = useState('user');
+const users = useState('users');
 const route = useRoute();
+const toast = useToast();
 
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
 
-const fetchData = async () => {
-    const bid = route.params.bid;
+const fetchData = async (bid) => {
         try {
             const response = await axios.get(`/api/board/${bid}`);
             if (response.data.success) {
                 title.value = response.data.data.title;
                 deltaContent.value?.setEditorContent(response.data.data.content)
-
             }
         } catch (error) {
             toast.error(response.data.message)
         };
     }
-
+    const fetchReplyData = async (bid) => {
+        try {
+            const response = await axios.get(`/api/boardreply/${bid}`);
+            if (response.data.success) {
+                allmessage.value = response.data.data
+                await nextTick();
+            }
+        } catch (error) {
+            toast.error(error)
+        };
+    }
 // 回首頁
 const goToHome = () => {
     navigateTo('/')
 };
 
+// 留言
+const message = ref('');
+const allmessage = ref([]);
+const sendMessage = async()=>{
+    const bid = route.params.bid; // 文章編號
+    // 假設未登入
+    if (!user.value){
+        await $swal.fire({
+        title: "您尚未登入，是否前往登入?",
+        showCancelButton: true,
+        confirmButtonText: "登入",
+        cancelButtonText: "取消",
+        }).then((result) => {
+        if (result.isConfirmed) {
+            navigateTo('/login')
+        } 
+        });
+    return
+    }
+        try {
+            const response = await axios.post(`/api/boardreply/${bid}`,{type:'add',uid:user.value.id,content:message.value});
+            if (response.data.success) {
+                allmessage.value = response.data.data
+            }
+        } catch (error) {
+            console.log(error)
+            
+        };
 
-// 監聽路由變更
+}
+
+// 取得名稱
+const getUserById = (uid) => {
+    return users.value.find(user => user.id === uid);
+};
+
+let shouldFetchReplyData = true;
+
 watch(() => [route.params.bid], (newBid) => {
-    if (newBid) fetchData();
+    if (newBid && shouldFetchReplyData) {
+        fetchData(newBid);
+        fetchReplyData(newBid);
+    };
 }, { immediate: true });
 
-
+watch(() => allmessage.value, () => {
+    // 只在必要时调用 fetchReplyData
+    if (shouldFetchReplyData) {
+        fetchReplyData();
+    }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -142,6 +194,13 @@ watch(() => [route.params.bid], (newBid) => {
     top:24px;
     right:24px;
     }
+}
+
+.content-message{
+    display:flex;
+    flex-direction: column;
+    div{
+    margin-left:auto;}
 }
 
 @media screen and (max-width: 768px) {

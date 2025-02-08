@@ -145,7 +145,6 @@ definePageMeta({
     display: flex;
     justify-content: center;
 
-
     .content {
         width: 85%;
 
