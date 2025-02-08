@@ -78,7 +78,14 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .editor-container {
-    width: 100%;
-    height: 400px;
+    position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 20px - 50px - 28px);
+  border: none;
+  resize: none;
+  padding: 10px;
+  font-size: 16px;
 }
 </style>

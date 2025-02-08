@@ -6,21 +6,20 @@
         </div>
         <div class="content-reply"> 
             <div class="reply">
-                待新增回應貼文!!!!
-                <!-- <div><b>你好笨</b><p>太好看了吧</p></div>
-                <div><b>你好笨</b><p>太好看了吧</p></div>
-                <div><b>你好笨</b><p>太好看了好看了好看了好看了吧</p></div>
-                <div><b>你好笨</b><p>太好看了吧</p></div>
-                <div><b>你好笨</b><p>太好看了看了看了吧</p></div> -->
+                <div><b>玩家A</b><p>待新增回應貼文!!!!</p></div>
+                <div><b>玩家C</b><p>測試</p></div>
+                <div><b>玩家B</b><p>測試測試</p></div>
+                <div><b>玩家G</b><p>太測試</p></div>
+                <div><b>玩家D</b><p>測試</p></div>
+         </div>
+         <div class="text-btn">
+                <input type="text" />
+                <button class="btn">傳送</button>
             </div>
-            <div class="text-btn-group">
-                <!-- <input type="text" /> -->
-                <!-- <button class="btn">傳送</button> -->
-            </div>
-        </div>    <div class="btn-group">
- 
-        <button class="btn" @click="goToHome">返回</button>
-    </div>
+        </div>    
+        <div class="btn-group">
+            <button class="btn" @click="goToHome">返回</button>
+        </div>
     </div>
 </template>
 
@@ -69,8 +68,6 @@ watch(() => [route.params.bid], (newBid) => {
     --title:rgba(29, 82, 83, 1);
     --text:rgba(145, 12, 7, 1);
     --border:rgba(108, 167, 168, 1);
-
-    margin-top:2rem;
     margin-inline:auto;
     width:90%;
     background:var(--background);
@@ -90,6 +87,9 @@ watch(() => [route.params.bid], (newBid) => {
             border-width: 0 2px 2px 2px;
             }
         }
+        .text-btn{
+            margin-top:auto;
+        }
     };
     .content-reply{
         flex:1;
@@ -100,17 +100,18 @@ watch(() => [route.params.bid], (newBid) => {
         input[type="text"]{
             width:100%;
             padding:8px 8px;
-            margin-block:8px;
+            margin-block:4px;
             border:1px solid var(--border);
         }
         button{
             background:var(--title);
         }
         .reply{
-            display:flex;
+        display:flex;
         flex-direction: column;
         gap:6px;
         font-size:12px; 
+        margin-top:80px;
             >div{
             border:1px solid var(--border);
             border-radius: 8px;
@@ -118,9 +119,6 @@ watch(() => [route.params.bid], (newBid) => {
             padding:12px 16px;
             background:#FCFCFC;
             }
-        }
-        .text-btn-group{
-            margin-top:auto;
         }
     }
     
@@ -141,8 +139,8 @@ watch(() => [route.params.bid], (newBid) => {
     width:80px;
     height:25px;
     }
-    bottom:-50px;
-    right:0;
+    top:24px;
+    right:24px;
     }
 }
 
