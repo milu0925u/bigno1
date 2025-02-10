@@ -5,12 +5,13 @@
             <Editer ref="deltaContent" :isViewing="isViewing" />
         </div>
         <div class="content-reply">
-            <div class="reply" v-for="m in allmessage">
-                <div class="content-message"><b>{{ m && getUserById(m.uid).username }}</b>
+            <transition-group name="slide-up" tag="div" class="reply">
+                <div class="content-message" v-for="m in allmessage">
+                    <b>{{ m && getUserById(m.uid).username }}</b>
                     <p>{{ m && m.content }}</p>
                     <div class="createdate">{{ m && m.createdate }}</div>
                 </div>
-            </div>
+            </transition-group>
             <div class="text-btn">
                 <input type="text" v-model="message" />
                 <button class="btn" @click="sendMessage">傳送</button>
@@ -53,7 +54,6 @@ const fetchReplyData = async (bid) => {
         const response = await axios.get(`/api/boardreply/${bid}`);
         if (response.data.success) {
             allmessage.value = response.data.data
-            await nextTick();
         }
     } catch (error) {
         toast.error(error)
@@ -86,7 +86,8 @@ const sendMessage = async () => {
     try {
         const response = await axios.post(`/api/boardreply/${bid}`, { type: 'add', uid: user.value.id, content: message.value });
         if (response.data.success) {
-            allmessage.value = response.data.data
+            allmessage.value = [response.data.data, ...allmessage.value];
+            message.value = '';
         }
     } catch (error) {
         console.log(error)
@@ -101,10 +102,10 @@ const getUserById = (uid) => {
 };
 
 // 監聽路由變更
-watch(() => [route.params.bid], (newBid) => {
+watch(() => [route.params.bid], async (newBid) => {
     if (newBid) {
-        fetchData(newBid)
-        fetchReplyData(newBid)
+        await fetchData(newBid)
+        await fetchReplyData(newBid)
     };
 }, { immediate: true });
 
@@ -129,6 +130,8 @@ watch(() => [route.params.bid], (newBid) => {
         background: #FCFCFC;
         background: var(--text);
 
+
+
         >div {
             border-style: solid;
             border-color: var(--border);
@@ -139,6 +142,7 @@ watch(() => [route.params.bid], (newBid) => {
 
             &:last-child {
                 border-width: 0 2px 2px 2px;
+
             }
         }
 
@@ -147,13 +151,10 @@ watch(() => [route.params.bid], (newBid) => {
         }
     }
 
-    ;
-
     .content-reply {
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         padding-left: 16px;
 
         input[type="text"] {
@@ -161,10 +162,10 @@ watch(() => [route.params.bid], (newBid) => {
             padding: 8px 8px;
             margin-block: 4px;
             border: 1px solid var(--border);
-        }
 
-        button {
-            // background:var(--title);
+            &:focus {
+                outline: var(--title);
+            }
         }
 
         .reply {
@@ -172,7 +173,32 @@ watch(() => [route.params.bid], (newBid) => {
             flex-direction: column;
             gap: 6px;
             font-size: 12px;
-            margin-top: 80px;
+            margin-top: 60px;
+            overflow-y: auto;
+            height: calc(100vh - 20px - 50px - 28px);
+            padding-right: 8px;
+            animation: slide-up 0.3s forwards;
+            transition: all 0.3s ease-in-out;
+
+            &::-webkit-scrollbar {
+                width: 2px;
+                height: 8px;
+                margin: 10px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--border);
+                border-radius: 10px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background-color: #555;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: #f1f1f1;
+                border-radius: 10px;
+            }
 
             >div {
                 border: 1px solid var(--border);
@@ -182,6 +208,7 @@ watch(() => [route.params.bid], (newBid) => {
                 background: #FCFCFC;
             }
         }
+
     }
 
     .title {
@@ -207,14 +234,52 @@ watch(() => [route.params.bid], (newBid) => {
         top:24px;
         right:24px;
     }
+
+
 }
+
+@keyframes slide-up {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 
 .content-message {
     display: flex;
     flex-direction: column;
+    opacity: 0;
+    animation: fade-in 0.5s forwards;
 
     div {
         margin-left: auto;
+    }
+}
+
+.message-fade-enter-active,
+.message-fade-leave-active {
+    transition: opacity 1s;
+}
+
+.message-fade-enter,
+.message-fade-leave-to {
+    opacity: 0;
+}
+
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
 

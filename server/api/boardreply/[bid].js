@@ -50,6 +50,7 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       message: '留言成功！',
+      data:{uid:uid,content:content,createdate:today},
     };
     }
 
