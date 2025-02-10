@@ -47,10 +47,11 @@ export default defineEventHandler(async (event) => {
       },
     }
     }catch(error){
+      
       return {
         success: false,
         message: "取得結果失敗",
-        error,
+        error:error,
       }
     }
 

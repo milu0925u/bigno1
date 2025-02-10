@@ -98,8 +98,9 @@ const fetchSearchTotal = async () => {
             toast.error(response.data.message);
         }
     } catch (error) {
-        toast.error("錯誤");
+        console.log(error.error);
         toast.error(error.message);
+
     }
 };
 
