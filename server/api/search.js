@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
 
   if (event.req.method === "GET") {
 
-    const BattleX = [];
     const battle = await Battlefield.find({}, {  uid: 1, attend: 1, date: 1 }).lean();
 
     // Set 取得不重複的日期
