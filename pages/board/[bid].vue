@@ -1,33 +1,39 @@
 <template>
-    <div class="container">
-        <div class="content">
-            <div class="title" v-if="!edit">
-                {{ title }}
-                <button v-if="user?.position === '管理員'" class="edit-button" @:click="openEdit">編輯</button>
-            </div>
-            <div class="title-group" v-else-if="edit">
-                <input type="text" v-model="title" />
-                <button class="btn" @click="clearEditor">清除內容</button>
-                <button class="btn" @click="sendEditor">送出</button>
-                <button class="btn" @click="closeEdit">返回</button>
-            </div>
-            <Editer ref="deltaContent" :isViewing="isViewing" />
+    <div>
+        <div v-if="loading" class="loading">
+            <Loading />
+            LOADING
         </div>
-        <div class="content-reply">
-            <transition-group name="slide-up" tag="div" class="reply">
-                <div class="content-message" v-for="m in allmessage">
-                    <b>{{ m && getUserById(m.uid).username }}</b>
-                    <p>{{ m && m.content }}</p>
-                    <div class="createdate">{{ m && m.createdate }}</div>
+        <div v-else class="container">
+            <div class="content">
+                <div class="title" v-if="!edit">
+                    {{ title }}
+                    <button v-if="user?.position === '管理員'" class="edit-button" @:click="openEdit">編輯</button>
                 </div>
-            </transition-group>
-            <div class="text-btn">
-                <input type="text" v-model="message" />
-                <button class="btn" @click="sendMessage">傳送</button>
+                <div class="title-group" v-else-if="edit">
+                    <input type="text" v-model="title" />
+                    <button class="btn" @click="clearEditor">清除內容</button>
+                    <button class="btn" @click="sendEditor">送出</button>
+                    <button class="btn" @click="closeEdit">返回</button>
+                </div>
+                <Editer ref="deltaContent" :isViewing="isViewing" />
             </div>
-        </div>
-        <div class="btn-group">
-            <button class="btn" @click="goToHome">返回</button>
+            <div class="content-reply">
+                <transition-group name="slide-up" tag="div" class="reply">
+                    <div class="content-message" v-for="m in allmessage">
+                        <b>{{ m && getUserById(m.uid).username }}</b>
+                        <p>{{ m && m.content }}</p>
+                        <div class="createdate">{{ m && m.createdate }}</div>
+                    </div>
+                </transition-group>
+                <div class="text-btn">
+                    <input type="text" v-model="message" />
+                    <button class="btn" @click="sendMessage">傳送</button>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" @click="goToHome">返回</button>
+            </div>
         </div>
     </div>
 </template>
@@ -37,12 +43,13 @@ import axios from "axios";
 import Editer from '~/components/Editer.vue';
 import { useToast } from 'vue-toastification';
 const toast = useToast();
-
+import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
 const user = useState('user');
 const users = useState('users');
 const route = useRoute();
+const loading = ref(true);
 
 
 const title = ref('');
@@ -56,8 +63,8 @@ const fetchData = async (bid) => {
         if (response.data.success) {
             title.value = response.data.data.title;
             deltaContent.value?.setEditorContent(response.data.data.content)
-            sendContent.value = response.data.data.content
-
+            sendContent.value = response.data.data.content;
+            loading.value = false;
         }
     } catch (error) {
         toast.error(response.data.message)

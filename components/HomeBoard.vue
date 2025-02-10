@@ -21,7 +21,7 @@
 import HomeTitle from '~/components/HomeTitle.vue';
 import Loading from '~/components/Loading.vue';
 import axios from 'axios';
-const loading = useState('loading');
+const loading = ref(true);
 
 const board = ref([])
 const fetchboard = async () => {
@@ -31,6 +31,7 @@ const fetchboard = async () => {
         if (response.data.success) {
             // 抓取前五則最新的使用
             board.value = response.data.data.filter(v => !v.hiddendate).sort((a, b) => b.bid - a.bid).slice(0, 3);
+            loading.value = false;
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼，試煉排行。");

@@ -38,8 +38,9 @@ const jobCount = computed(() => {
 
 const jobKeys = computed(() => {
     if (users.value) {
-    return Object.keys(jobCount.value).sort((a, b) => jobCount.value[b] - jobCount.value[a]);
-}});
+        return Object.keys(jobCount.value).sort((a, b) => jobCount.value[b] - jobCount.value[a]);
+    }
+});
 
 
 
@@ -74,7 +75,7 @@ const jobKeys = computed(() => {
         // right: 0;
         // font-size: 24px;
         font-size: 12px;
-        border:1px solid black;
+        border: 1px solid black;
         // width: 50px;
         // margin-left: auto;
         margin-top: 16px;
@@ -102,6 +103,7 @@ const jobKeys = computed(() => {
         width: 100%;
         align-items: center;
     }
+
     .go {
         width: 50%;
         padding: 2px 8px;

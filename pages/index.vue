@@ -58,11 +58,9 @@ import { fetchAllUsers } from '~/store/st_user.js';
 const loading = useState('loading', () => true);
 
 onMounted(() => {
-
     setTimeout(() => {
         loading.value = false;
     }, 2000);
-
     fetchAllUsers();
 });
 
@@ -117,6 +115,7 @@ onMounted(() => {
     .bg {
         background-size: auto;
     }
+
     .pig-g {
         display: none;
     }

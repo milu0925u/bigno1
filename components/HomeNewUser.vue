@@ -29,6 +29,7 @@ const sortedUsers = computed(() => {
     if (!users.value || users.value.length === 0) {
         return []; // 資料尚未加載時，回傳空陣列
     }
+
     return users.value
         .filter(user => user.verify === true) // 過濾掉 verify === false 的使用者
         .slice() // 創建一個副本，避免改動原始陣列

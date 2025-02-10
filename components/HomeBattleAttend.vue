@@ -15,7 +15,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const loading = useState('loading');
+const loading = ref(true);
 const chartRef = ref(null)
 const datas = ref([0, 0, 0])
 
@@ -73,19 +73,20 @@ const fetchData = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get("/api/total-chart");
         if (response.data.success) {
-            datas.value = response.data.data
+            datas.value = response.data.data;
+            loading.value = false;
         }
     } catch (error) {
         console.log(error, "抓取所有成員戰場出席失敗，請重新抓取！");
-    if (error.response && error.response.status === 503) {
-      console.log(`正在重試... 剩餘次數: ${retries}`);
-      if (retries > 0) {
-        await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-        return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
-      } else {
-        console.log("重試次數已達上限，請稍後再試！");
-      }
-    }
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
     };
 }
 

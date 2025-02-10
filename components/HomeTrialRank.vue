@@ -29,26 +29,26 @@ import HomeTitle from '~/components/HomeTitle.vue';
 import Loading from "~/components/Loading.vue"
 import axios from 'axios';
 const ranking = ref([]);
-const loading = useState('loading');
-const updated = ref(false);
+const loading = ref(true);
 const fetchRanking = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get("/api/trial");
 
         if (response.data.success) {
             ranking.value = response.data.users.sort((a, b) => b.value - a.value)
+            loading.value = false;
         }
     } catch (error) {
-    console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-    if (error.response && error.response.status === 503) {
-      console.log(`正在重試... 剩餘次數: ${retries}`);
-      if (retries > 0) {
-        await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-        return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
-      } else {
-        console.log("重試次數已達上限，請稍後再試！");
-      }
-    }
+        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
     }
 };
 onMounted(() => {

@@ -20,7 +20,7 @@ import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title, Toolti
 ChartJS.register(LineElement, PointElement, LinearScale, Title, Tooltip, Legend, CategoryScale);
 
 const user = useState('user');
-const loading = useState('loading');
+const loading = ref(true)
 
 const chartRef = ref(null)
 const datas = ref({ label: [], data: [] })
@@ -74,12 +74,10 @@ const goToHome = () => {
 const fetchData = async () => {
     try {
         const response = await axios.patch("/api/user", { uid: user.value.id });
-
-        console.log(response.data, '德');
-
         if (response.data.success) {
             datas.value.label = response.data.label;
             datas.value.data = response.data.data;
+            loading.value = false;
         }
     } catch (error) {
         console.error('保存失敗', error);

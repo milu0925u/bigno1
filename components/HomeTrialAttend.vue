@@ -15,7 +15,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const loading = useState('loading');
+const loading = ref(true)
 const chartRef = ref(null)
 const datas = ref([0, 0])
 
@@ -76,19 +76,19 @@ const fetchData = async (retries = 3, delay = 1000) => {
             const ptrue = response.data.ynsers.yesp;
             const pfalse = response.data.ynsers.nop;
             datas.value = [ptrue, pfalse]
-
+            loading.value = false;
         }
     } catch (error) {
-    console.log(error, "抓取所有成員試煉失敗，請重新抓取！");
-    if (error.response && error.response.status === 503) {
-      console.log(`正在重試... 剩餘次數: ${retries}`);
-      if (retries > 0) {
-        await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-        return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
-      } else {
-        console.log("重試次數已達上限，請稍後再試！");
-      }
-    }
+        console.log(error, "抓取所有成員試煉失敗，請重新抓取！");
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
     };
 };
 
