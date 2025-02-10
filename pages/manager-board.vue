@@ -44,8 +44,7 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import VueToastification from 'vue-toastification';
-const toast = VueToastification.default();
+const toast = useToast();
 
 
 const user = useState("user");

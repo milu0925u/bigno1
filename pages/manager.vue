@@ -81,8 +81,7 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import { fetchAllUsers } from '~/store/st_user.js';
-import VueToastification from 'vue-toastification';
-const toast = VueToastification.default();
+const toast = useToast();
 
 
 const currentActive = ref("seeAll");

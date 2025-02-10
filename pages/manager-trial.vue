@@ -30,8 +30,7 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import VueToastification from 'vue-toastification';
-const toast = VueToastification.default();
+const toast = useToast();
 
 
 
