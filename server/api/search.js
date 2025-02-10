@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
 
   if (event.req.method === "GET") {
-    try{
+
     const BattleX = [];
     const battle = await Battlefield.find({}, {  uid: 1, attend: 1, date: 1 }).lean();
 
@@ -19,41 +19,27 @@ export default defineEventHandler(async (event) => {
       // Set 取得不重複的ID
     const uids = [...new Set(battle.map(b => b.uid))]; 
 
-    for (const uid of uids) {
-      const attendances = await Promise.all(uniqueDates.map(async (date) => {
-  
-        const found = battle.find(b => b.uid === uid && moment(b.date).format("YYYY-MM-DD") === date);
-    
-        const user = await User.findOne({ id: uid, verify: true }); 
-    
-        if (!user) {
-          return 'leave';  
-        }
+    // 一次查詢所有 verify = true 的用戶
+const users = await User.find({ id: { $in: uids }, verify: true }).lean();
+const verifiedUids = new Set(users.map(user => user.id)); // 用 Set() 加快查詢速度
 
-    
-        return found ? found.attend : 'nodata';   
-      }));
-    
-      BattleX.push({ uid, attendance: attendances });
-    }
-    const newBattle = BattleX.filter(v => !v.attendance.some(att => att === 'leave'));
+const BattleX = uids.map(uid => {
+  const attendances = uniqueDates.map(date => {
+    const found = battle.find(b => b.uid === uid && moment(b.date).format("YYYY-MM-DD") === date);
+    return verifiedUids.has(uid) ? (found ? found.attend : 'nodata') : 'leave';
+  });
 
-    return {
-      success: true,
-      message: "取得結果",
-      data: {
-       days:uniqueDates,
-       data:newBattle,
-      },
-    }
-    }catch(error){
-      
-      return {
-        success: false,
-        message: "取得結果失敗",
-        error:error,
-      }
-    }
+  return { uid, attendance: attendances };
+});
+
+// 過濾掉 'leave' 的用戶
+const newBattle = BattleX.filter(v => !v.attendance.includes('leave'));
+
+return {
+  success: true,
+  message: "取得結果",
+  data: { days: uniqueDates, data: newBattle },
+};
 
   }
 
