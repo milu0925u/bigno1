@@ -304,6 +304,11 @@ watch(() => [route.params.bid], async (newBid) => {
 
         .content-reply {
             padding: 0;
+
+            .reply {
+                padding: 0;
+                height: auto;
+            }
         }
 
         .btn-group {
