@@ -26,7 +26,8 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification'
+import VueToastification from 'vue-toastification';
+const { useToast } = VueToastification;
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
 const user = useState('user');

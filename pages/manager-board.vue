@@ -44,7 +44,8 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification'
+import VueToastification from 'vue-toastification';
+const { useToast } = VueToastification;
 const toast = useToast();
 
 const user = useState("user");
@@ -197,7 +198,7 @@ watch(currentActive, (newValue) => {
     }
 }
 
-.editer-content{
+.editer-content {
     margin-bottom: 3rem;
 }
 
