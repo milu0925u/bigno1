@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="container">
-
             <div class="content">
                 <div v-if="loading" class="loading">
                     <Loading />
@@ -20,8 +19,6 @@
                 </div>
                 <Editer ref="deltaContent" :isViewing="isViewing" />
             </div>
-
-
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
                     <div class="content-message" v-for="m in allmessage">
@@ -107,8 +104,10 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+
+    const base64Content = btoa(JSON.stringify(jsonContent));
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
+        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: base64Content });
         if (response.data.success) {
             toast.success(response.data.message)
             closeEdit();

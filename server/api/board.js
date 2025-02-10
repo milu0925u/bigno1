@@ -27,6 +27,9 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
+    const decodedContent = Buffer.from(jsondata, 'base64').toString('utf-8');
+    const newjsondata = JSON.parse(decodedContent);
+
     if (type === "addboard"){
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
@@ -70,7 +73,7 @@ export default defineEventHandler(async (event) => {
           $set: { 
             uid: uid,
             title: title,
-            content: jsondata,
+            content: newjsondata,
             updatedate: new Date()
           }
         },
