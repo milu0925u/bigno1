@@ -10,8 +10,6 @@ export default defineEventHandler(async (event) => {
 
   if (event.req.method === "GET") {
     const oneboard = await Board.findOne({ bid: bid }).lean()
-
-
     const formattedBoard = {
       ...oneboard,
       createdate: moment(oneboard.createdate).format('YYYY-MM-DD'),
@@ -22,9 +20,7 @@ export default defineEventHandler(async (event) => {
     return { success: true, message:'讀取成功！',data:formattedBoard }
   } 
 
-  if (event.req.method === "POST") 
-    {
+  if (event.req.method === "POST"){
       console.log('opst, [bid]');
-      
     }
 })

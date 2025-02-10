@@ -1,7 +1,16 @@
 <template>
     <div class="container">
         <div class="content">
-            <div class="title">{{ title }}</div>
+            <div class="title" v-if="!edit">
+                {{ title }}
+                <button v-if="user?.position === '管理員'" class="edit-button" @:click="openEdit">編輯</button>
+            </div>
+            <div class="title-group" v-else-if="edit">
+                <input type="text" v-model="title" />
+                <button class="btn" @click="clearEditor">清除內容</button>
+                <button class="btn" @click="sendEditor">送出</button>
+                <button class="btn" @click="closeEdit">返回</button>
+            </div>
             <Editer ref="deltaContent" :isViewing="isViewing" />
         </div>
         <div class="content-reply">
@@ -39,6 +48,7 @@ const route = useRoute();
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
+const sendContent = ref(null);
 
 const fetchData = async (bid) => {
     try {
@@ -46,6 +56,8 @@ const fetchData = async (bid) => {
         if (response.data.success) {
             title.value = response.data.data.title;
             deltaContent.value?.setEditorContent(response.data.data.content)
+            sendContent.value = response.data.data.content
+
         }
     } catch (error) {
         toast.error(response.data.message)
@@ -64,6 +76,18 @@ const fetchReplyData = async (bid) => {
 // 回首頁
 const goToHome = () => {
     navigateTo('/')
+};
+
+// 編輯文章
+const edit = ref(false)
+const openEdit = () => {
+    isViewing.value = false;
+    edit.value = true;
+}
+// 回首頁
+const closeEdit = () => {
+    isViewing.value = true;
+    edit.value = false;
 };
 
 // 留言
@@ -106,11 +130,11 @@ const getUserById = (uid) => {
 };
 
 // 監聽路由變更
-watch(() => [route.params.bid], async (newBid) => {
-    if (newBid) {
-        await fetchData(newBid)
-        await fetchReplyData(newBid)
-    };
+watch(() => [route.params.bid], async ([newBid]) => {
+    if (!newBid) return;
+
+    await fetchData(newBid)
+    await fetchReplyData(newBid)
 }, { immediate: true });
 
 
@@ -127,9 +151,6 @@ watch(() => [route.params.bid], async (newBid) => {
     --title: rgb(15, 10, 8);
     --text: white;
     --border: rgb(15, 10, 8);
-
-
-
     margin-inline: auto;
     background: var(--background);
     display: flex;
@@ -186,7 +207,8 @@ watch(() => [route.params.bid], async (newBid) => {
             font-size: 12px;
             margin-top: 60px;
             overflow-y: auto;
-            height: calc(100vh - 20px - 50px - 28px);
+            min-height: 300px;
+            max-width: calc(100vh - 150px);
             padding-right: 8px;
             animation: slide-up 0.3s forwards;
             transition: all 0.3s ease-in-out;
@@ -246,7 +268,38 @@ watch(() => [route.params.bid], async (newBid) => {
         right:24px;
     }
 
+    .title-group {
+        display: flex;
+        padding: 0px 12px;
+        align-items: center;
+        border-width: 1px 1px 0 1px;
+        border-style: solid;
+        border-color: rgb(209, 198, 198);
 
+        span {
+            white-space: nowrap;
+        }
+
+        input {
+            border: none;
+            outline: none;
+            width: 60%;
+            height: 30px;
+            border: 1px solid black;
+            padding-inline: 8px;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        button {
+            font-size: 12px;
+            margin: 8px;
+            width: 80px;
+            height: 25px;
+        }
+    }
 }
 
 @keyframes slide-up {
@@ -261,6 +314,15 @@ watch(() => [route.params.bid], async (newBid) => {
     }
 }
 
+.edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    padding: 2px 4px;
+    font-size: 12px;
+    background: rgb(92, 88, 83);
+}
 
 .content-message {
     display: flex;
@@ -282,6 +344,8 @@ watch(() => [route.params.bid], async (newBid) => {
 .message-fade-leave-to {
     opacity: 0;
 }
+
+
 
 
 @keyframes fade-in {

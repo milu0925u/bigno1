@@ -25,7 +25,6 @@
         </div>
 
         <div class="container" v-else-if="currentActive === 'addboard'">
-
             <div class="editer-content">
                 <div class="title-group">
                     <span>標題：</span>

@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div v-else>暫無公告</div>
+        <div v-else class="center">暫無公告</div>
     </div>
 </template>
 
@@ -30,7 +30,7 @@ const fetchboard = async () => {
 
         if (response.data.success) {
             // 抓取前五則最新的使用
-            board.value = response.data.data.sort((a, b) => b.bid - a.bid).slice(0, 3);
+            board.value = response.data.data.filter(v => !v.hiddendate).sort((a, b) => b.bid - a.bid).slice(0, 3);
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼，試煉排行。");
@@ -62,6 +62,7 @@ onMounted(() => {
     margin-bottom: 8px;
     cursor: pointer;
     width: 100%;
+
     &:hover {
         transform: scale(1.03);
         border-width: 0 0 1px 0;
@@ -69,9 +70,14 @@ onMounted(() => {
         border-style: solid;
     }
 
-    div:last-child{
-       margin-left: auto;
+    div:last-child {
+        margin-left: auto;
     }
+}
+
+.center {
+    display: flex;
+    justify-content: center;
 }
 
 

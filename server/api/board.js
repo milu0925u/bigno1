@@ -63,6 +63,8 @@ export default defineEventHandler(async (event) => {
       success: true,
       message: '變更成功！',
     };
+    }else if (type ==="updateboard"){
+
     }
   };
 });

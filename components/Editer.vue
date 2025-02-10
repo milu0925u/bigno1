@@ -61,30 +61,71 @@ defineExpose({
     setEditorContent
 });
 
-onMounted(() => {
-    quill = new Quill(editor.value, {  //會把 div 轉換成 Quill 編輯器
+// 初始 Quill 編輯器設定
+const initializeQuill = () => {
+    quill = new Quill(editor.value, {
         debug: 'info',
         modules: {
-            toolbar: props.isViewing ? false : options
+            toolbar: options
         },
-        bounds: editor.value, // 限制彈跳視窗範圍
-        theme: "snow",
+        bounds: editor.value,  // 限制編輯範圍
+        theme: 'snow',
         formats: formats,
         readOnly: props.isViewing
     });
+};
+
+// 監聽 isViewing 的變化
+watch(() => props.isViewing, () => {
+    if (quill) {
+        // 根據 isViewing 更新工具列顯示與否
+        const toolbar = quill.getModule('toolbar');
+        if (toolbar) {
+            toolbar.container.style.display = props.isViewing ? 'none' : 'block';
+        }
+
+        // 根據 isViewing 更新編輯器的只讀狀態
+        quill.enable(!props.isViewing);
+    }
 });
+
+// 初始載入時設置 Quill 編輯器
+onMounted(() => {
+    initializeQuill();
+    // 初始時設置工具列顯示狀態
+    if (quill) {
+        const toolbar = quill.getModule('toolbar');
+        if (toolbar) {
+            toolbar.container.style.display = props.isViewing ? 'none' : 'block';
+        }
+    }
+});
+
+
+// // 監聽 isViewing 的變化
+// watch(() => props.isViewing, async () => {
+
+//     initializeQuill();
+// });
+
+
+// // 初始載入時設置 Quill 編輯器
+// onMounted(() => {
+//     initializeQuill();
+// });
+
 </script>
 
 
 <style lang="scss" scoped>
 .editor-container {
     position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 20px - 50px - 28px);
-  resize: none;
-  padding: 10px;
-  font-size: 16px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 20px - 50px - 28px);
+    resize: none;
+    padding: 10px;
+    font-size: 16px;
 }
 </style>

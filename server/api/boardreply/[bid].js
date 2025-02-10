@@ -60,6 +60,5 @@ export default defineEventHandler(async (event) => {
       data:{uid:uid,content:content,createdate:today},
     };
     }
-
     }
 });
