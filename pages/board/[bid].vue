@@ -90,6 +90,8 @@ const sendMessage = async () => {
         if (response.data.success) {
             allmessage.value = [response.data.data, ...allmessage.value];
             message.value = '';
+        } else {
+            toast.error(response.data.message)
         }
     } catch (error) {
         console.log(error)

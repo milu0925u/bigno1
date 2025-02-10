@@ -1,5 +1,5 @@
 import { connectToDatabase } from "../../db";
-import { BoardReply } from "../model";
+import { BoardReply,User } from "../model";
 import moment from "moment";
 
 // 處理 HTTP 請求
@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
         updatedate: b.updatedate ? moment(b.updatedate).format('YYYY-MM-DD') : null,
         hiddendate: b.hiddendate ? moment(b.hiddendate).format('YYYY-MM-DD') : null
       }))
+      .sort((a, b) => b.brid - a.brid);
       return {
         success: true,
         message: '取得成功',
@@ -29,11 +30,17 @@ export default defineEventHandler(async (event) => {
 
   if (event.req.method === "POST") {
     const { type,brid,uid,content,updatedate,hiddendate} = await readBody(event);
+    const findVerifyUser = await User.findOne({id:uid,verify:true});
+    if(!findVerifyUser){
+      return {
+        success: false,
+        message: '您目前未審核通過，無法使用此功能！',
+      };
+    }
 
-      console.log(uid);
-      
 
     if(type==='add'){
+
           // 抓到最後一筆編號
     let lastNum = await BoardReply.findOne().sort({ bid: -1 }).limit(1);
     const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
