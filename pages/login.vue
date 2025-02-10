@@ -21,8 +21,8 @@
 
 <script setup>
 import VueToastification from 'vue-toastification';
-const { useToast } = VueToastification;
-const toast = useToast();
+const toast = VueToastification.default();
+
 import axios from 'axios';
 import { useUser } from '~/store/st_user.js';
 const user = useUser();

@@ -27,13 +27,13 @@
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
 import VueToastification from 'vue-toastification';
-const { useToast } = VueToastification;
+const toast = VueToastification.default();
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
 const user = useState('user');
 const users = useState('users');
 const route = useRoute();
-const toast = useToast();
+
 
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容

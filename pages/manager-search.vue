@@ -60,8 +60,8 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import VueToastification from 'vue-toastification';
-const { useToast } = VueToastification;
-const toast = useToast();
+const toast = VueToastification.default();
+
 
 const currentActive = ref("searchdata"); // 接收子層組件
 const updateCurrentActive = (newValue) => {

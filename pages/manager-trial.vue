@@ -31,8 +31,8 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import VueToastification from 'vue-toastification';
-const { useToast } = VueToastification;
-const toast = useToast();
+const toast = VueToastification.default();
+
 
 
 import { WatcherUser, fetchAllUsers } from '~/store/st_user.js';
