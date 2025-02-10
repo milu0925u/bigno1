@@ -1,23 +1,27 @@
 <template>
     <div>
-        <div v-if="loading" class="loading">
-            <Loading />
-            LOADING
-        </div>
-        <div v-else class="container">
+        <div class="container">
+
             <div class="content">
-                <div class="title" v-if="!edit">
-                    {{ title }}
-                    <button v-if="user?.position === '管理員'" class="edit-button" @:click="openEdit">編輯</button>
+                <div v-if="loading" class="loading">
+                    <Loading />
                 </div>
-                <div class="title-group" v-else-if="edit">
-                    <input type="text" v-model="title" />
-                    <button class="btn" @click="clearEditor">清除內容</button>
-                    <button class="btn" @click="sendEditor">送出</button>
-                    <button class="btn" @click="closeEdit">返回</button>
+                <div v-else>
+                    <div class="title" v-if="!edit">
+                        {{ title }}
+                        <button v-if="user?.position === '管理員'" class="edit-button" @:click="openEdit">編輯</button>
+                    </div>
+                    <div class="title-group" v-else-if="edit">
+                        <input type="text" v-model="title" />
+                        <button class="btn" @click="clearEditor">清除內容</button>
+                        <button class="btn" @click="sendEditor">送出</button>
+                        <button class="btn" @click="closeEdit">返回</button>
+                    </div>
                 </div>
                 <Editer ref="deltaContent" :isViewing="isViewing" />
             </div>
+
+
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
                     <div class="content-message" v-for="m in allmessage">
