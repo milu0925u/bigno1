@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
 
 
   if (event.req.method === "GET") {
+    try{
     const BattleX = [];
     const battle = await Battlefield.find({}, {  uid: 1, attend: 1, date: 1 }).lean();
 
@@ -35,7 +36,6 @@ export default defineEventHandler(async (event) => {
     
       BattleX.push({ uid, attendance: attendances });
     }
-
     const newBattle = BattleX.filter(v => !v.attendance.some(att => att === 'leave'));
 
     return {
@@ -46,7 +46,13 @@ export default defineEventHandler(async (event) => {
        data:newBattle,
       },
     }
-  
+    }catch(error){
+      return {
+        success: false,
+        message: "取得結果失敗",
+        error,
+      }
+    }
 
   }
 
