@@ -84,6 +84,28 @@ const openEdit = () => {
     isViewing.value = false;
     edit.value = true;
 }
+
+const clearEditor = () => {
+    deltaContent.value?.clearEditor();
+};
+
+// 傳送編輯器內文
+const sendEditor = async () => {
+    if (!title.value) {
+        toast.error("請輸入標題")
+        return
+    }
+    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+    try {
+        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
+        if (response.data.success) {
+            toast.success(response.data.message)
+            closeEdit();
+        }
+    } catch (error) {
+        toast.error(response.data.message)
+    };
+}
 // 回首頁
 const closeEdit = () => {
     isViewing.value = true;

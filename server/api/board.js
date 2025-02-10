@@ -64,7 +64,24 @@ export default defineEventHandler(async (event) => {
       message: '變更成功！',
     };
     }else if (type ==="updateboard"){
-
+      const updatedBoard = await Board.findOneAndUpdate(
+        { bid: bid },
+        { 
+          $set: { 
+            uid: uid,
+            title: title,
+            content: jsondata,
+            updatedate: new Date()
+          }
+        },
+        { new: true } 
+      );
+    
+   return {
+     success: true,
+     message: '更新成功！',
+     data:updatedBoard,
+   };
     }
   };
 });
