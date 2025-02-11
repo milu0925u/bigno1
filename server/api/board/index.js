@@ -1,6 +1,8 @@
 import { connectToDatabase } from "../../db";
 import { Board } from "../model";
 import moment from "moment";
+import LZString from "lz-string";
+
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
   await connectToDatabase(); // 確保資料庫連接
@@ -71,11 +73,14 @@ export default defineEventHandler(async (event) => {
     
       // const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
       // const newjson = JSON.parse(jsonString); 
-      const buffer = Buffer.from(jsondata, 'base64');
-      const jsonString = new TextDecoder().decode(buffer);
-      const newjson = JSON.parse(jsonString);
 
+      // const buffer = Buffer.from(jsondata, 'base64');
+      // const jsonString = new TextDecoder().decode(buffer);
+      // const newjson = JSON.parse(jsonString);
 
+      const jsonDatas = LZString.decompressFromUTF16(jsondata);
+      const newjson = JSON.parse(jsonDatas);
+      
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 

@@ -45,6 +45,7 @@ import axios from "axios";
 import Editer from '~/components/Editer.vue';
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
+import LZString from "lz-string";
 const { $swal } = useNuxtApp();
 const user = useState('user');
 const users = useState('users');
@@ -121,9 +122,11 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = deltaContent.value.getEditorContent();
-    const jsonString = JSON.stringify(jsonContent);  // 假设这是您要编码的 JSON 字符串
-    const uint8Array = new TextEncoder().encode(jsonString);
-    const packedData = btoa(String.fromCharCode(...uint8Array));
+
+    const packedData = LZString.compressToUTF16(JSON.stringify(jsonContent));
+    // const jsonString = JSON.stringify(jsonContent);  // 假设这是您要编码的 JSON 字符串
+    // const uint8Array = new TextEncoder().encode(jsonString);
+    // const packedData = btoa(String.fromCharCode(...uint8Array));
 
     try {
         loading.value = true;
