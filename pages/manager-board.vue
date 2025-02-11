@@ -80,7 +80,7 @@ const sendEditor = async () => {
     const packedData = msgpack.encode(jsonContent);
 
     try {
-        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: packedData });
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
