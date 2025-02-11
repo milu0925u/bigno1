@@ -184,7 +184,6 @@ const getUserById = (uid) => {
 
 // 監聽路由變更
 watch(() => deltaContent.value, async () => {
-    if (!newBid) return;
 
     await fetchData(bid)
     await fetchReplyData(bid)
