@@ -43,7 +43,6 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import msgpack from 'msgpack-lite';
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
@@ -110,6 +109,14 @@ const openEdit = () => {
     edit.value = true;
 }
 
+const packedData = ref(null);
+if (process.client) {
+    import('msgpack-lite').then((msgpack) => {
+        // 這裡使用 msgpack 進行編碼或解碼
+        packedData = msgpack.encode(deltaContent.value.getEditorContent());
+    });
+};
+
 // 傳送編輯器內文
 const sendEditor = async () => {
     if (!title.value) {
@@ -121,8 +128,8 @@ const sendEditor = async () => {
         });
         return
     }
-    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-    const packedData = msgpack.encode(jsonContent);
+    // const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+    // const packedData = msgpack.encode(jsonContent);
 
     try {
         const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData });
