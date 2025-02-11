@@ -104,10 +104,13 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+    // const jsonString = JSON.stringify(jsonContent); // 將 JSON 轉換為字串，確保特殊字符不會丟失
+    // const utf8Content = new TextEncoder().encode(jsonString);     // 使用 TextEncoder 將 JSON 字串轉換為 UTF-8 字節流
 
-    const base64Content = btoa(JSON.stringify(jsonContent));
+    // // 將字節流轉換為 Base64 字符串
+    // const base64Content = btoa(String.fromCharCode(...utf8Content));
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: base64Content });
+        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
         if (response.data.success) {
             toast.success(response.data.message)
             closeEdit();
