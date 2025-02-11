@@ -16,14 +16,14 @@
                         <button class="btn" @click="closeEdit">返回</button>
                     </div>
                 </div>
-                <!-- <ClientOnly>
+                <ClientOnly>
                     <Editer ref="deltaContent" :isViewing="isViewing" />
-                    </ClientOnly> -->
+                </ClientOnly>
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
                     <div class="content-message" v-for="m in allmessage">
-                        <!-- <b>{{ m && getUserById(m.uid).username }}</b> -->
+                        <b>{{ m && getUserById(m.uid).username }}</b>
                         <p>{{ m && m.content }}</p>
                         <div class="createdate">{{ m && m.createdate }}</div>
                     </div>
@@ -42,7 +42,7 @@
 
 <script setup>
 import axios from "axios";
-// import Editer from '~/components/Editer.vue';
+import Editer from '~/components/Editer.vue';
 // // import { useToast } from 'vue-toastification';
 import msgpack from 'msgpack-lite';
 // // const toast = useToast();
@@ -59,28 +59,28 @@ const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
 
 const defaultContent = ref();
-const fetchData = async (retries = 3, delay = 1000) => {
-    console.log(bid, '公佈欄編號');
-    try {
-        const response = await axios.get(`/api/board/${bid}`);
-        if (response.data.success) {
-            title.value = response.data.data.title;
-            defaultContent.value = response.data.data.content;
-            loading.value = false;
-        }
-    } catch (error) {
-        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        if (error.response && error.response.status === 503) {
-            console.log(`正在重試... 剩餘次數: ${retries}`);
-            if (retries > 0) {
-                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
-            } else {
-                console.log("重試次數已達上限，請稍後再試！");
-            }
-        }
-    }
-}
+// const fetchData = async (retries = 3, delay = 1000) => {
+//     console.log(bid, '公佈欄編號');
+//     try {
+//         const response = await axios.get(`/api/board/${bid}`);
+//         if (response.data.success) {
+//             title.value = response.data.data.title;
+//             defaultContent.value = response.data.data.content;
+//             loading.value = false;
+//         }
+//     } catch (error) {
+//         console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+//         if (error.response && error.response.status === 503) {
+//             console.log(`正在重試... 剩餘次數: ${retries}`);
+//             if (retries > 0) {
+//                 await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+//                 return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
+//             } else {
+//                 console.log("重試次數已達上限，請稍後再試！");
+//             }
+//         }
+//     }
+// }
 // const fetchReplyData = async (retries = 3, delay = 1000) => {
 //     try {
 //         const response = await axios.get(`/api/boardreply/${bid}`);
@@ -190,7 +190,7 @@ watch(() => defaultContent.value, async () => {
 
 onMounted(() => {
     fetchData()
-    fetchReplyData()
+    // fetchReplyData()
 });
 </script>
 
