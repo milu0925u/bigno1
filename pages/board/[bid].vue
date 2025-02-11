@@ -43,7 +43,7 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-// import msgpack from 'msgpack-lite';
+import msgpack from 'msgpack-lite';
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
@@ -123,10 +123,10 @@ const sendEditor = async () => {
             return
         }
         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-        // const packedData = msgpack.encode(jsonContent);
+        const packedData = msgpack.encode(jsonContent);
 
         try {
-            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent }, { headers: { "Content-Type": "application/msgpack" } });
+            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
             if (response.data.success) {
                 $swal.fire({
                     title: response.data.message,
