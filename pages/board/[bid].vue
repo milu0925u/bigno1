@@ -149,19 +149,19 @@ const message = ref('');
 const allmessage = ref([]);
 const sendMessage = async () => {
     // 假設未登入
-    if (!user.value) {
-        await $swal.fire({
-            title: "您尚未登入，是否前往登入?",
-            showCancelButton: true,
-            confirmButtonText: "登入",
-            cancelButtonText: "取消",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                navigateTo('/login')
-            }
-        });
-        return
-    }
+    // if (!user.value) {
+    //     await $swal.fire({
+    //         title: "您尚未登入，是否前往登入?",
+    //         showCancelButton: true,
+    //         confirmButtonText: "登入",
+    //         cancelButtonText: "取消",
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             navigateTo('/login')
+    //         }
+    //     });
+    //     return
+    // }
     try {
         const response = await axios.post(`/api/boardreply/${bid}`, { type: 'add', uid: user.value.id, content: message.value });
         if (response.data.success) {
