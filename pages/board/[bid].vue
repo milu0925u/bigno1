@@ -72,7 +72,7 @@ const fetchData = async (bid, retries = 3, delay = 1000) => {
             console.log(`正在重試... 剩餘次數: ${retries}`);
             if (retries > 0) {
                 await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+                return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
             } else {
                 console.log("重試次數已達上限，請稍後再試！");
             }
@@ -91,7 +91,7 @@ const fetchReplyData = async (bid, retries = 3, delay = 1000) => {
             console.log(`正在重試... 剩餘次數: ${retries}`);
             if (retries > 0) {
                 await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+                return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
             } else {
                 console.log("重試次數已達上限，請稍後再試！");
             }
