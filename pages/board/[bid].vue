@@ -48,7 +48,7 @@ import Editer from '~/components/Editer.vue';
 // // const toast = useToast();
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
-// const { $swal } = useNuxtApp();
+const { $swal } = useNuxtApp();
 const user = useState('user');
 const users = useState('users');
 const route = useRoute();
@@ -113,26 +113,26 @@ const openEdit = () => {
 }
 
 // 傳送編輯器內文
-// const sendEditor = async () => {
-//     if (process.client) {
-//         if (!title.value) {
-//             // toast.error("請輸入標題")
-//             return
-//         }
-//         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-//         const packedData = msgpack.encode(jsonContent);
+const sendEditor = async () => {
+    if (process.client) {
+        if (!title.value) {
+            // toast.error("請輸入標題")
+            return
+        }
+        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+        // const packedData = msgpack.encode(jsonContent);
 
-//         try {
-//             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
-//             if (response.data.success) {
-//                 // toast.success(response.data.message)
-//                 closeEdit();
-//             }
-//         } catch (error) {
-//             // toast.error(response.data.message)
-//         };
-//     }
-// }
+        try {
+            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent }, { headers: { "Content-Type": "application/msgpack" } });
+            if (response.data.success) {
+                // toast.success(response.data.message)
+                closeEdit();
+            }
+        } catch (error) {
+            // toast.error(response.data.message)
+        };
+    }
+}
 // 回首頁
 const closeEdit = () => {
     isViewing.value = true;
@@ -144,19 +144,19 @@ const message = ref('');
 const allmessage = ref([]);
 const sendMessage = async () => {
     // 假設未登入
-    // if (!user.value) {
-    //     await $swal.fire({
-    //         title: "您尚未登入，是否前往登入?",
-    //         showCancelButton: true,
-    //         confirmButtonText: "登入",
-    //         cancelButtonText: "取消",
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             navigateTo('/login')
-    //         }
-    //     });
-    //     return
-    // }
+    if (!user.value) {
+        await $swal.fire({
+            title: "您尚未登入，是否前往登入?",
+            showCancelButton: true,
+            confirmButtonText: "登入",
+            cancelButtonText: "取消",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigateTo('/login')
+            }
+        });
+        return
+    }
     try {
         const response = await axios.post(`/api/boardreply/${bid}`, { type: 'add', uid: user.value.id, content: message.value });
         if (response.data.success) {
