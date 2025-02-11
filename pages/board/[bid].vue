@@ -53,7 +53,7 @@ const user = useState('user');
 const users = useState('users');
 const route = useRoute();
 const loading = ref(true);
-
+const bid = route.params.bid;
 
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
@@ -183,15 +183,18 @@ const getUserById = (uid) => {
 };
 
 // 監聽路由變更
-watch(() => [route.params.bid], async ([newBid]) => {
+watch(() => deltaContent.value, async () => {
     if (!newBid) return;
 
-    await fetchData(newBid)
-    await fetchReplyData(newBid)
-}, { immediate: true });
+    await fetchData(bid)
+    await fetchReplyData(bid)
+});
 
 
-
+onMounted(() => {
+    fetchData(bid)
+    fetchReplyData(bid)
+});
 </script>
 
 <style lang="scss" scoped>
