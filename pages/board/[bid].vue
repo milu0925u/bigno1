@@ -23,7 +23,7 @@
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
                     <div class="content-message" v-for="m in allmessage">
-                        <b>{{ m && getUserById(m.uid).username }}</b>
+                        <!-- <b>{{ m && getUserById(m.uid).username }}</b> -->
                         <p>{{ m && m.content }}</p>
                         <div class="createdate">{{ m && m.createdate }}</div>
                     </div>
