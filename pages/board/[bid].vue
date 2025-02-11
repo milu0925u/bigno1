@@ -121,8 +121,13 @@ const sendEditor = async () => {
         });
         return
     }
-    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-    const packedData = Buffer.from(JSON.stringify(jsonContent), 'utf-8');
+
+    const jsonContent = deltaContent.value.getEditorContent();
+    const jsonString = JSON.stringify(jsonContent);
+    const packedData = btoa(jsonString);
+
+    // const jsonString = JSON.stringify(jsonContent);
+    // const packedData = Buffer.from(jsonString, 'utf-8');
 
     try {
         const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData });

@@ -25,12 +25,11 @@ export default defineEventHandler(async (event) => {
 
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
-      
-      let newjson;
-      const change = jsondata.toString('utf8');
-      newjson= JSON.parse(change);
-      console.log('newjson',newjson);
-  
+
+  const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
+  const newjson = JSON.parse(jsonString); 
+
+    
 
     if (type === "addboard"){
     // 抓到最後一筆編號
