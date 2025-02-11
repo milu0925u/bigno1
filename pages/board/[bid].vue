@@ -54,12 +54,11 @@ const users = useState('users');
 const route = useRoute();
 const loading = ref(true);
 const bid = route.params.bid;
-
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
 
-const fetchData = async (bid, retries = 3, delay = 1000) => {
+const fetchData = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get(`/api/board/${bid}`);
         if (response.data.success) {
@@ -80,7 +79,7 @@ const fetchData = async (bid, retries = 3, delay = 1000) => {
         }
     }
 }
-const fetchReplyData = async (bid, retries = 3, delay = 1000) => {
+const fetchReplyData = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get(`/api/boardreply/${bid}`);
         if (response.data.success) {
@@ -184,7 +183,6 @@ const getUserById = (uid) => {
 
 // 監聽路由變更
 watch(() => deltaContent.value, async () => {
-
     await fetchData(bid)
     await fetchReplyData(bid)
 });
