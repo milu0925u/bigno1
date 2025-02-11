@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="container">
-            <div class="content">
+            目前在頁面：{{ bid }}
+            <!-- <div class="content">
                 <div v-if="loading" class="loading">
                     <Loading />
                 </div>
@@ -16,9 +17,9 @@
                         <button class="btn" @click="closeEdit">返回</button>
                     </div>
                 </div>
-                <!-- <ClientOnly>
+                <ClientOnly>
                     <Editer ref="deltaContent" :isViewing="isViewing" />
-                </ClientOnly> -->
+                    </ClientOnly0>
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
@@ -35,165 +36,165 @@
             </div>
             <div class="btn-group">
                 <button class="btn" @click="goToHome">返回</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script setup>
-import axios from "axios";
-import Editer from '~/components/Editer.vue';
-// import { useToast } from 'vue-toastification';
-import msgpack from 'msgpack-lite';
-// const toast = useToast();
-import Loading from "~/components/Loading.vue"
+// import axios from "axios";
+// import Editer from '~/components/Editer.vue';
+// // import { useToast } from 'vue-toastification';
+// import msgpack from 'msgpack-lite';
+// // const toast = useToast();
+// import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
-const { $swal } = useNuxtApp();
-const user = useState('user');
-const users = useState('users');
+// const { $swal } = useNuxtApp();
+// const user = useState('user');
+// const users = useState('users');
 const route = useRoute();
-const loading = ref(true);
+// const loading = ref(true);
 const bid = route.params.bid;
-const title = ref('');
-const deltaContent = ref(null); //  存放 Delta 格式內容
-const isViewing = ref(true); // 編輯狀態
+// const title = ref('');
+// const deltaContent = ref(null); //  存放 Delta 格式內容
+// const isViewing = ref(true); // 編輯狀態
 
-const defaultContent = ref();
-const fetchData = async (retries = 3, delay = 1000) => {
-    console.log(bid, '公佈欄編號');
+// const defaultContent = ref();
+// const fetchData = async (retries = 3, delay = 1000) => {
+//     console.log(bid, '公佈欄編號');
 
-    try {
-        const response = await axios.get(`/api/board/${bid}`);
-        if (response.data.success) {
-            title.value = response.data.data.title;
-            defaultContent.value = response.data.data.content;
-            loading.value = false;
-        }
-    } catch (error) {
-        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        if (error.response && error.response.status === 503) {
-            console.log(`正在重試... 剩餘次數: ${retries}`);
-            if (retries > 0) {
-                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
-            } else {
-                console.log("重試次數已達上限，請稍後再試！");
-            }
-        }
-    }
-}
-const fetchReplyData = async (retries = 3, delay = 1000) => {
-    try {
-        const response = await axios.get(`/api/boardreply/${bid}`);
-        if (response.data.success) {
-            allmessage.value = response.data.data
-        }
-    } catch (error) {
-        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        if (error.response && error.response.status === 503) {
-            console.log(`正在重試... 剩餘次數: ${retries}`);
-            if (retries > 0) {
-                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
-            } else {
-                console.log("重試次數已達上限，請稍後再試！");
-            }
-        }
-    }
-}
-// 回首頁
-const goToHome = () => {
-    navigateTo('/')
-};
+//     try {
+//         const response = await axios.get(`/api/board/${bid}`);
+//         if (response.data.success) {
+//             title.value = response.data.data.title;
+//             defaultContent.value = response.data.data.content;
+//             loading.value = false;
+//         }
+//     } catch (error) {
+//         console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+//         if (error.response && error.response.status === 503) {
+//             console.log(`正在重試... 剩餘次數: ${retries}`);
+//             if (retries > 0) {
+//                 await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+//                 return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
+//             } else {
+//                 console.log("重試次數已達上限，請稍後再試！");
+//             }
+//         }
+//     }
+// }
+// const fetchReplyData = async (retries = 3, delay = 1000) => {
+//     try {
+//         const response = await axios.get(`/api/boardreply/${bid}`);
+//         if (response.data.success) {
+//             allmessage.value = response.data.data
+//         }
+//     } catch (error) {
+//         console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+//         if (error.response && error.response.status === 503) {
+//             console.log(`正在重試... 剩餘次數: ${retries}`);
+//             if (retries > 0) {
+//                 await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+//                 return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
+//             } else {
+//                 console.log("重試次數已達上限，請稍後再試！");
+//             }
+//         }
+//     }
+// }
+// // 回首頁
+// const goToHome = () => {
+//     navigateTo('/')
+// };
 
-// 編輯文章
-const edit = ref(false)
-const openEdit = () => {
-    isViewing.value = false;
-    edit.value = true;
-}
+// // 編輯文章
+// const edit = ref(false)
+// const openEdit = () => {
+//     isViewing.value = false;
+//     edit.value = true;
+// }
 
-// 傳送編輯器內文
-const sendEditor = async () => {
-    if (process.client) {
-        if (!title.value) {
-            // toast.error("請輸入標題")
-            return
-        }
-        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-        const packedData = msgpack.encode(jsonContent);
+// // 傳送編輯器內文
+// const sendEditor = async () => {
+//     if (process.client) {
+//         if (!title.value) {
+//             // toast.error("請輸入標題")
+//             return
+//         }
+//         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+//         const packedData = msgpack.encode(jsonContent);
 
-        try {
-            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
-            if (response.data.success) {
-                // toast.success(response.data.message)
-                closeEdit();
-            }
-        } catch (error) {
-            // toast.error(response.data.message)
-        };
-    }
-}
-// 回首頁
-const closeEdit = () => {
-    isViewing.value = true;
-    edit.value = false;
-    //假如有按清除內容又返回，要還原內容
-    if (clearContent) {
-        deltaContent.value?.setEditorContent(defaultContent)
-    }
+//         try {
+//             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+//             if (response.data.success) {
+//                 // toast.success(response.data.message)
+//                 closeEdit();
+//             }
+//         } catch (error) {
+//             // toast.error(response.data.message)
+//         };
+//     }
+// }
+// // 回首頁
+// const closeEdit = () => {
+//     isViewing.value = true;
+//     edit.value = false;
+//     //假如有按清除內容又返回，要還原內容
+//     if (clearContent) {
+//         deltaContent.value?.setEditorContent(defaultContent)
+//     }
 
-};
+// };
 
-// 留言
-const message = ref('');
-const allmessage = ref([]);
-const sendMessage = async () => {
-    const bid = route.params.bid; // 文章編號
-    // 假設未登入
-    if (!user.value) {
-        await $swal.fire({
-            title: "您尚未登入，是否前往登入?",
-            showCancelButton: true,
-            confirmButtonText: "登入",
-            cancelButtonText: "取消",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                navigateTo('/login')
-            }
-        });
-        return
-    }
-    try {
-        const response = await axios.post(`/api/boardreply/${bid}`, { type: 'add', uid: user.value.id, content: message.value });
-        if (response.data.success) {
-            allmessage.value = [response.data.data, ...allmessage.value];
-            message.value = '';
-        } else {
-            // toast.error(response.data.message)
-        }
-    } catch (error) {
-        console.log(error)
+// // 留言
+// const message = ref('');
+// const allmessage = ref([]);
+// const sendMessage = async () => {
+//     const bid = route.params.bid; // 文章編號
+//     // 假設未登入
+//     if (!user.value) {
+//         await $swal.fire({
+//             title: "您尚未登入，是否前往登入?",
+//             showCancelButton: true,
+//             confirmButtonText: "登入",
+//             cancelButtonText: "取消",
+//         }).then((result) => {
+//             if (result.isConfirmed) {
+//                 navigateTo('/login')
+//             }
+//         });
+//         return
+//     }
+//     try {
+//         const response = await axios.post(`/api/boardreply/${bid}`, { type: 'add', uid: user.value.id, content: message.value });
+//         if (response.data.success) {
+//             allmessage.value = [response.data.data, ...allmessage.value];
+//             message.value = '';
+//         } else {
+//             // toast.error(response.data.message)
+//         }
+//     } catch (error) {
+//         console.log(error)
 
-    };
+//     };
 
-}
+// }
 
-// 取得名稱
-const getUserById = (uid) => {
-    return users.value.find(user => user.id === uid);
-};
+// // 取得名稱
+// const getUserById = (uid) => {
+//     return users.value.find(user => user.id === uid);
+// };
 
-// 監聽路由變更
-watch(() => defaultContent.value, async () => {
-    deltaContent.value?.setEditorContent(defaultContent.value)
-});
+// // 監聽路由變更
+// watch(() => defaultContent.value, async () => {
+//     deltaContent.value?.setEditorContent(defaultContent.value)
+// });
 
 
-onMounted(() => {
-    fetchData()
-    fetchReplyData()
-});
+// onMounted(() => {
+//     fetchData()
+//     fetchReplyData()
+// });
 </script>
 
 <style lang="scss" scoped>
