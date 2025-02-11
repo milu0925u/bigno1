@@ -43,9 +43,9 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-// // import { useToast } from 'vue-toastification';
+import { useToast } from 'vue-toastification';
 // import msgpack from 'msgpack-lite';
-// // const toast = useToast();
+const toast = useToast();
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
@@ -70,15 +70,15 @@ const fetchData = async () => {
         }
     } catch (error) {
         console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        // if (error.response && error.response.status === 503) {
-        //     console.log(`正在重試... 剩餘次數: ${retries}`);
-        //     if (retries > 0) {
-        //         await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-        //         return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
-        //     } else {
-        //         console.log("重試次數已達上限，請稍後再試！");
-        //     }
-        // }
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
     }
 }
 const fetchReplyData = async () => {
@@ -89,15 +89,15 @@ const fetchReplyData = async () => {
         }
     } catch (error) {
         console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        // if (error.response && error.response.status === 503) {
-        //     console.log(`正在重試... 剩餘次數: ${retries}`);
-        //     if (retries > 0) {
-        //         await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-        //         return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
-        //     } else {
-        //         console.log("重試次數已達上限，請稍後再試！");
-        //     }
-        // }
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
     }
 }
 // 回首頁
@@ -116,7 +116,7 @@ const openEdit = () => {
 const sendEditor = async () => {
     if (process.client) {
         if (!title.value) {
-            // toast.error("請輸入標題")
+            toast.error("請輸入標題")
             return
         }
         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
@@ -125,11 +125,11 @@ const sendEditor = async () => {
         try {
             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent }, { headers: { "Content-Type": "application/msgpack" } });
             if (response.data.success) {
-                // toast.success(response.data.message)
+                toast.success(response.data.message)
                 closeEdit();
             }
         } catch (error) {
-            // toast.error(response.data.message)
+            toast.error(response.data.message)
         };
     }
 }
@@ -163,7 +163,7 @@ const sendMessage = async () => {
             allmessage.value = [response.data.data, ...allmessage.value];
             message.value = '';
         } else {
-            // toast.error(response.data.message)
+            toast.error(response.data.message)
         }
     } catch (error) {
         console.log(error)
