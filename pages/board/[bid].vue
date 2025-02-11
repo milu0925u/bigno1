@@ -17,7 +17,9 @@
                         <button class="btn" @click="closeEdit">返回</button>
                     </div>
                 </div>
-                <Editer ref="deltaContent" :isViewing="isViewing" />
+                <ClientOnly>
+                    <Editer ref="deltaContent" :isViewing="isViewing" />
+                </ClientOnly>
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
@@ -116,22 +118,24 @@ const clearEditor = () => {
 
 // 傳送編輯器內文
 const sendEditor = async () => {
-    if (!title.value) {
-        toast.error("請輸入標題")
-        return
-    }
-    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-    const packedData = msgpack.encode(jsonContent);
-
-    try {
-        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
-        if (response.data.success) {
-            toast.success(response.data.message)
-            closeEdit();
+    if (process.client) {
+        if (!title.value) {
+            toast.error("請輸入標題")
+            return
         }
-    } catch (error) {
-        toast.error(response.data.message)
-    };
+        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+        const packedData = msgpack.encode(jsonContent);
+
+        try {
+            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+            if (response.data.success) {
+                toast.success(response.data.message)
+                closeEdit();
+            }
+        } catch (error) {
+            toast.error(response.data.message)
+        };
+    }
 }
 // 回首頁
 const closeEdit = () => {

@@ -101,19 +101,6 @@ onMounted(() => {
     }
 });
 
-
-// // 監聽 isViewing 的變化
-// watch(() => props.isViewing, async () => {
-
-//     initializeQuill();
-// });
-
-
-// // 初始載入時設置 Quill 編輯器
-// onMounted(() => {
-//     initializeQuill();
-// });
-
 </script>
 
 
