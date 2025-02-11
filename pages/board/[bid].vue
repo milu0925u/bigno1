@@ -109,43 +109,39 @@ const openEdit = () => {
     isViewing.value = false;
     edit.value = true;
 }
-
+const packedData = ref(null);
 // 傳送編輯器內文
 const sendEditor = async () => {
-    if (process.client) {
-        if (!title.value) {
-            $swal.fire({
-                title: "請輸入標題",
-                icon: "error",
-                timer: 1500,
-                showConfirmButton: false
-            });
-            return
-        }
-        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-        const packedData = msgpack.encode(jsonContent);
-
-        try {
-            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
-            if (response.data.success) {
-                $swal.fire({
-                    title: response.data.message,
-                    icon: "success",
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-                closeEdit();
-            }
-        } catch (error) {
+    if (!title.value) {
+        $swal.fire({
+            title: "請輸入標題",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
+        return
+    }
+    try {
+        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+        if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
-                icon: "error",
+                icon: "success",
                 timer: 1500,
                 showConfirmButton: false
             });
-        };
-    }
+            closeEdit();
+        }
+    } catch (error) {
+        $swal.fire({
+            title: response.data.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
+    };
 }
+
 // 回首頁
 const closeEdit = () => {
     isViewing.value = true;
@@ -198,6 +194,10 @@ const getUserById = (uid) => {
 // 監聽路由變更
 watch(() => defaultContent.value, async () => {
     deltaContent.value?.setEditorContent(defaultContent.value)
+
+    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+    packedData.value = msgpack.encode(jsonContent);
+
 });
 
 
