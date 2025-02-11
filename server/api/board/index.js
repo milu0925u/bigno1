@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../db";
-import { Board } from "./model";
+import { connectToDatabase } from "../../db";
+import { Board } from "../model";
 import moment from "moment";
 import msgpack from 'msgpack-lite';
 // 處理 HTTP 請求
