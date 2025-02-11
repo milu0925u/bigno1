@@ -12,7 +12,6 @@
                     </div>
                     <div class="title-group" v-else-if="edit">
                         <input type="text" v-model="title" />
-                        <button class="btn" @click="clearEditor">清除內容</button>
                         <button class="btn" @click="sendEditor">送出</button>
                         <button class="btn" @click="closeEdit">返回</button>
                     </div>
@@ -112,10 +111,6 @@ const openEdit = () => {
     edit.value = true;
 }
 
-const clearEditor = () => {
-    deltaContent.value?.clearEditor();
-};
-
 // 傳送編輯器內文
 const sendEditor = async () => {
     if (process.client) {
@@ -141,6 +136,11 @@ const sendEditor = async () => {
 const closeEdit = () => {
     isViewing.value = true;
     edit.value = false;
+    //假如有按清除內容又返回，要還原內容
+    if (clearContent) {
+        deltaContent.value?.setEditorContent(defaultContent)
+    }
+
 };
 
 // 留言

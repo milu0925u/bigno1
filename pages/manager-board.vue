@@ -32,7 +32,9 @@
                     <button class="btn" @click="clearEditor">清除內容</button>
                     <button class="btn" @click="sendEditor">送出</button>
                 </div>
-                <Editer ref="quillRef" :isViewing="isViewing" />
+                <ClientOnly>
+                    <Editer ref="quillRef" :isViewing="isViewing" />
+                </ClientOnly>
             </div>
         </div>
     </div>

@@ -56,7 +56,6 @@ const props = defineProps({
 });
 // 傳遞給父層
 defineExpose({
-    clearEditor,
     getEditorContent,
     setEditorContent
 });
