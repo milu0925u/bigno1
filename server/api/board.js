@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../db";
 import { Board } from "./model";
 import moment from "moment";
-
+import msgpack from 'msgpack-lite';
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
   await connectToDatabase(); // 確保資料庫連接
@@ -27,10 +27,15 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
+
     if (type === "addboard"){
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
     const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
+
+      // 把buffer轉成json
+      let newjson = msgpack.decode(jsondata);
+      
 
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
@@ -38,7 +43,7 @@ export default defineEventHandler(async (event) => {
       bid:bnewid,
       uid:uid,
       title:title,
-      content:jsondata,
+      content:newjson,
       createdate: today ,
     });
     await newBoard.save();
@@ -64,13 +69,16 @@ export default defineEventHandler(async (event) => {
       message: '變更成功！',
     };
     }else if (type ==="updateboard"){
+
+      let newjson = msgpack.decode(jsondata);
+      
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
           $set: { 
             uid: uid,
             title: title,
-            content: jsondata,
+            content: newjson,
             updatedate: new Date()
           }
         },

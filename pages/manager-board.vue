@@ -42,6 +42,7 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
+import msgpack from 'msgpack-lite';
 import Editer from '~/components/Editer.vue';
 import { useToast } from 'vue-toastification';
 const toast = useToast();
@@ -69,8 +70,10 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
+    const packedData = msgpack.encode(jsonContent);
+
     try {
-        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
+        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
         if (response.data.success) {
             toast.success(response.data.message)
             title.value = ""

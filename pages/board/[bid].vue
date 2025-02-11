@@ -43,6 +43,7 @@
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
 import { useToast } from 'vue-toastification';
+import msgpack from 'msgpack-lite';
 const toast = useToast();
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
@@ -56,30 +57,46 @@ const loading = ref(true);
 const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
-const sendContent = ref(null);
 
-const fetchData = async (bid) => {
+const fetchData = async (bid, retries = 3, delay = 1000) => {
     try {
         const response = await axios.get(`/api/board/${bid}`);
         if (response.data.success) {
             title.value = response.data.data.title;
             deltaContent.value?.setEditorContent(response.data.data.content)
-            sendContent.value = response.data.data.content;
             loading.value = false;
         }
     } catch (error) {
-        toast.error(response.data.message)
-    };
+        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
+    }
 }
-const fetchReplyData = async (bid) => {
+const fetchReplyData = async (bid, retries = 3, delay = 1000) => {
     try {
         const response = await axios.get(`/api/boardreply/${bid}`);
         if (response.data.success) {
             allmessage.value = response.data.data
         }
     } catch (error) {
-        toast.error(error)
-    };
+        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+        if (error.response && error.response.status === 503) {
+            console.log(`正在重試... 剩餘次數: ${retries}`);
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+                return fetchAllUsers(retries - 1, delay); // 重新調用函數，減少重試次數
+            } else {
+                console.log("重試次數已達上限，請稍後再試！");
+            }
+        }
+    }
 }
 // 回首頁
 const goToHome = () => {
@@ -104,13 +121,10 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-    // const jsonString = JSON.stringify(jsonContent); // 將 JSON 轉換為字串，確保特殊字符不會丟失
-    // const utf8Content = new TextEncoder().encode(jsonString);     // 使用 TextEncoder 將 JSON 字串轉換為 UTF-8 字節流
+    const packedData = msgpack.encode(jsonContent);
 
-    // // 將字節流轉換為 Base64 字符串
-    // const base64Content = btoa(String.fromCharCode(...utf8Content));
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
+        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
         if (response.data.success) {
             toast.success(response.data.message)
             closeEdit();
