@@ -189,8 +189,8 @@ watch(() => defaultContent.value, async () => {
 
 
 onMounted(() => {
-    // fetchData()
-    // fetchReplyData()
+    fetchData()
+    fetchReplyData()
 });
 </script>
 
