@@ -7,6 +7,8 @@ import LZString from "lz-string";
 export default defineEventHandler(async (event) => {
   await connectToDatabase(); // 確保資料庫連接
 
+  try{
+
   if (event.req.method === "GET") {
     const boards = await Board.find().sort({ createdate: -1 }).lean();
 
@@ -77,10 +79,10 @@ export default defineEventHandler(async (event) => {
       // const buffer = Buffer.from(jsondata, 'base64');
       // const jsonString = new TextDecoder().decode(buffer);
       // const newjson = JSON.parse(jsonString);
-
+      
       const jsonDatas = LZString.decompressFromUTF16(jsondata);
       const newjson = JSON.parse(jsonDatas);
-      
+
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
@@ -94,11 +96,20 @@ export default defineEventHandler(async (event) => {
         { new: true } 
       );
     
-   return {
-     success: true,
-     message: '更新成功！',
-     data:updatedBoard,
-   };
+        return {
+          success: true,
+          message: '更新成功！',
+          data:updatedBoard,
+        };
     }
   };
+
+}catch(error){
+  console.log(error);
+  
+  return {
+    success: false,
+    message: '請求失敗',
+  };
+}
 });
