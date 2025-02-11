@@ -26,8 +26,14 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
-    const newjson = JSON.parse(jsondata.toString('utf8'))
-
+    let newjson;
+    if (Buffer.isBuffer(jsondata)) {
+      const change = jsondata.toString('utf8');
+      newjson= JSON.parse(change);
+  } else {
+      console.error('jsondata is not a Buffer!');
+  }
+  
 
     if (type === "addboard"){
     // 抓到最後一筆編號

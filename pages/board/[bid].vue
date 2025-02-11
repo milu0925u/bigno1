@@ -58,7 +58,6 @@ const isViewing = ref(true); // 編輯狀態
 
 const defaultContent = ref();
 const fetchData = async () => {
-    console.log(bid, '公佈欄編號');
     try {
         const response = await axios.get(`/api/board/${bid}`);
         if (response.data.success) {
@@ -138,7 +137,7 @@ const sendEditor = async () => {
         }
     } catch (error) {
         $swal.fire({
-            title: response.data.message,
+            title: error.message,
             icon: "error",
             timer: 1500,
             showConfirmButton: false
