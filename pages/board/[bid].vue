@@ -2,7 +2,7 @@
     <div>
         <div class="container">
             目前在頁面：{{ bid }}
-            <!-- <div class="content">
+            <div class="content">
                 <div v-if="loading" class="loading">
                     <Loading />
                 </div>
@@ -17,9 +17,9 @@
                         <button class="btn" @click="closeEdit">返回</button>
                     </div>
                 </div>
-                <ClientOnly>
+                <!-- <ClientOnly>
                     <Editer ref="deltaContent" :isViewing="isViewing" />
-                    </ClientOnly0>
+                    </ClientOnly0> -->
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
@@ -36,30 +36,30 @@
             </div>
             <div class="btn-group">
                 <button class="btn" @click="goToHome">返回</button>
-            </div> -->
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-// import axios from "axios";
+import axios from "axios";
 // import Editer from '~/components/Editer.vue';
 // // import { useToast } from 'vue-toastification';
 // import msgpack from 'msgpack-lite';
 // // const toast = useToast();
-// import Loading from "~/components/Loading.vue"
+import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 // const { $swal } = useNuxtApp();
-// const user = useState('user');
-// const users = useState('users');
+const user = useState('user');
+const users = useState('users');
 const route = useRoute();
-// const loading = ref(true);
+const loading = ref(true);
 const bid = route.params.bid;
-// const title = ref('');
-// const deltaContent = ref(null); //  存放 Delta 格式內容
-// const isViewing = ref(true); // 編輯狀態
+const title = ref('');
+const deltaContent = ref(null); //  存放 Delta 格式內容
+const isViewing = ref(true); // 編輯狀態
 
-// const defaultContent = ref();
+const defaultContent = ref();
 // const fetchData = async (retries = 3, delay = 1000) => {
 //     console.log(bid, '公佈欄編號');
 
@@ -102,49 +102,49 @@ const bid = route.params.bid;
 //         }
 //     }
 // }
-// // 回首頁
-// const goToHome = () => {
-//     navigateTo('/')
-// };
+// 回首頁
+const goToHome = () => {
+    navigateTo('/')
+};
 
-// // 編輯文章
-// const edit = ref(false)
-// const openEdit = () => {
-//     isViewing.value = false;
-//     edit.value = true;
-// }
+// 編輯文章
+const edit = ref(false)
+const openEdit = () => {
+    isViewing.value = false;
+    edit.value = true;
+}
 
-// // 傳送編輯器內文
-// const sendEditor = async () => {
-//     if (process.client) {
-//         if (!title.value) {
-//             // toast.error("請輸入標題")
-//             return
-//         }
-//         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-//         const packedData = msgpack.encode(jsonContent);
+// 傳送編輯器內文
+const sendEditor = async () => {
+    if (process.client) {
+        if (!title.value) {
+            // toast.error("請輸入標題")
+            return
+        }
+        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+        const packedData = msgpack.encode(jsonContent);
 
-//         try {
-//             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
-//             if (response.data.success) {
-//                 // toast.success(response.data.message)
-//                 closeEdit();
-//             }
-//         } catch (error) {
-//             // toast.error(response.data.message)
-//         };
-//     }
-// }
-// // 回首頁
-// const closeEdit = () => {
-//     isViewing.value = true;
-//     edit.value = false;
-//     //假如有按清除內容又返回，要還原內容
-//     if (clearContent) {
-//         deltaContent.value?.setEditorContent(defaultContent)
-//     }
+        try {
+            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+            if (response.data.success) {
+                // toast.success(response.data.message)
+                closeEdit();
+            }
+        } catch (error) {
+            // toast.error(response.data.message)
+        };
+    }
+}
+// 回首頁
+const closeEdit = () => {
+    isViewing.value = true;
+    edit.value = false;
+    //假如有按清除內容又返回，要還原內容
+    if (clearContent) {
+        deltaContent.value?.setEditorContent(defaultContent)
+    }
 
-// };
+};
 
 // // 留言
 // const message = ref('');
