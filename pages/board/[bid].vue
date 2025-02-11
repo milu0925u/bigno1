@@ -44,7 +44,7 @@
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
 // // import { useToast } from 'vue-toastification';
-import msgpack from 'msgpack-lite';
+// import msgpack from 'msgpack-lite';
 // // const toast = useToast();
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
@@ -113,26 +113,26 @@ const openEdit = () => {
 }
 
 // 傳送編輯器內文
-const sendEditor = async () => {
-    if (process.client) {
-        if (!title.value) {
-            // toast.error("請輸入標題")
-            return
-        }
-        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-        const packedData = msgpack.encode(jsonContent);
+// const sendEditor = async () => {
+//     if (process.client) {
+//         if (!title.value) {
+//             // toast.error("請輸入標題")
+//             return
+//         }
+//         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+//         const packedData = msgpack.encode(jsonContent);
 
-        try {
-            const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
-            if (response.data.success) {
-                // toast.success(response.data.message)
-                closeEdit();
-            }
-        } catch (error) {
-            // toast.error(response.data.message)
-        };
-    }
-}
+//         try {
+//             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+//             if (response.data.success) {
+//                 // toast.success(response.data.message)
+//                 closeEdit();
+//             }
+//         } catch (error) {
+//             // toast.error(response.data.message)
+//         };
+//     }
+// }
 // 回首頁
 const closeEdit = () => {
     isViewing.value = true;
