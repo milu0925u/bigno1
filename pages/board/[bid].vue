@@ -43,7 +43,7 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import msgpack from 'msgpack-lite';
+// import msgpack from 'msgpack-lite';
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
@@ -109,9 +109,8 @@ const openEdit = () => {
     isViewing.value = false;
     edit.value = true;
 }
-const packedData = ref(null);
-// 傳送編輯器內文
 
+// 傳送編輯器內文
 const sendEditor = async () => {
     if (!title.value) {
         $swal.fire({
@@ -122,8 +121,10 @@ const sendEditor = async () => {
         });
         return
     }
+    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
+        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
@@ -195,11 +196,6 @@ const getUserById = (uid) => {
 // 監聽路由變更
 watch(() => defaultContent.value, async () => {
     deltaContent.value?.setEditorContent(defaultContent.value)
-    if (process.client) {
-        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-        packedData.value = msgpack.encode(jsonContent);
-    }
-
 });
 
 
