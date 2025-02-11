@@ -9,6 +9,12 @@ export default defineEventHandler(async (event) => {
   const bbid = getRouterParam(event, 'bid')
   const bid = event.context.params.bid;
 
+  console.log(bbid,'ccccccccc');
+
+  console.log(bid,'bbbbbbbbbbbbb');
+  
+  
+
   if (event.req.method === "GET") {
     const oneboard = await Board.findOne({ bid: bid }).lean()
     const formattedBoard = {
