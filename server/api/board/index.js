@@ -25,14 +25,11 @@ export default defineEventHandler(async (event) => {
 
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
-
-    let newjson;
-    if (Buffer.isBuffer(jsondata)) {
+      
+      let newjson;
       const change = jsondata.toString('utf8');
       newjson= JSON.parse(change);
-  } else {
-      console.error('jsondata is not a Buffer!');
-  }
+      console.log('newjson',newjson);
   
 
     if (type === "addboard"){
