@@ -137,11 +137,6 @@ const openEdit = () => {
 const closeEdit = () => {
     isViewing.value = true;
     edit.value = false;
-    //假如有按清除內容又返回，要還原內容
-    if (clearContent) {
-        deltaContent.value?.setEditorContent(defaultContent)
-    }
-
 };
 
 // 留言
