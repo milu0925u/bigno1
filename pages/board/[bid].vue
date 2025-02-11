@@ -60,6 +60,8 @@ const isViewing = ref(true); // 編輯狀態
 
 const defaultContent = ref();
 const fetchData = async (retries = 3, delay = 1000) => {
+    console.log(bid, '公佈欄編號');
+
     try {
         const response = await axios.get(`/api/board/${bid}`);
         if (response.data.success) {
