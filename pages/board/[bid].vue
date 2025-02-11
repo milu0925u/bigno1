@@ -16,9 +16,9 @@
                         <button class="btn" @click="closeEdit">返回</button>
                     </div>
                 </div>
-                <ClientOnly>
+                <!-- <ClientOnly>
                     <Editer ref="deltaContent" :isViewing="isViewing" />
-                </ClientOnly>
+                </ClientOnly> -->
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
