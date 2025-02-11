@@ -113,7 +113,7 @@ const packedData = ref(null);
 if (process.client) {
     import('msgpack-lite').then((msgpack) => {
         // 這裡使用 msgpack 進行編碼或解碼
-        packedData = msgpack.encode(deltaContent.value.getEditorContent());
+        packedData.value = msgpack.encode(deltaContent.value.getEditorContent());
     });
 };
 
