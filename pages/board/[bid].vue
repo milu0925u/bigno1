@@ -43,9 +43,7 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification';
 // import msgpack from 'msgpack-lite';
-const toast = useToast();
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
@@ -184,8 +182,6 @@ watch(() => defaultContent.value, async () => {
 
 
 onMounted(() => {
-    console.log(bid, 'bbbbbbbbbbid');
-
     fetchData()
     fetchReplyData()
 });

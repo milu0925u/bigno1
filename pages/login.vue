@@ -20,8 +20,8 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 import axios from 'axios';
 import { useUser } from '~/store/st_user.js';
@@ -38,7 +38,11 @@ const login = async () => {
         if (response.data.success) {
             user.value = response.data.user;
             errorMessage.value = '';
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
             navigateTo('/');
 
         } else {

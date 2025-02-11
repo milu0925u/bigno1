@@ -30,8 +30,8 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 
 
@@ -56,7 +56,11 @@ const send = async (id, value) => {
         const response = await axios.post("/api/trial", { ...inputData.value, id: id, value: value, newdate: newdate.value });
         if (response.data.success) {
             fetchAllUsers()
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
         }
     } catch (error) {
         console.error('保存失敗', error);

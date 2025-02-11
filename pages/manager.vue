@@ -81,8 +81,8 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import { fetchAllUsers } from '~/store/st_user.js';
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 
 const currentActive = ref("seeAll");
@@ -127,7 +127,11 @@ const savedata = async () => {
         if (response.data.success) {
             fetchAllUsers();
             editUser.value = null;
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
         }
     } catch (error) {
         console.error('保存失敗', error);

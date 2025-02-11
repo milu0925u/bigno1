@@ -23,8 +23,8 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 import axios from 'axios';
 import { useUser, fetchAllUsers, WatcherUser } from '~/store/st_user.js';
@@ -57,7 +57,11 @@ const send = async () => {
         const response = await axios.post('/api/user', formData.value);
         if (response.data.success) {
             fetchAllUsers()
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
             goToHome();
         } else {
             toast.error(response.data.message);

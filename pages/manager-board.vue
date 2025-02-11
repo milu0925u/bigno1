@@ -46,8 +46,8 @@ import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import msgpack from 'msgpack-lite';
 import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 
 const user = useState("user");
@@ -101,7 +101,11 @@ const getboardstate = async (bid, state) => {
     try {
         const response = await axios.post('/api/board', { type: 'statechange', bid: bid, state: state })
         if (response.data.success) {
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
             fetchboard();
         }
     } catch (error) {

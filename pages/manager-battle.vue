@@ -35,8 +35,8 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 
 const users = useState("users")
@@ -54,7 +54,11 @@ const newData = async () => {
         try {
             const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'addin' });
             if (response.data.success) {
-                toast.success(response.data.message);
+                $swal.fire({
+                    title: response.data.message,
+                    icon: "success",
+                    draggable: true
+                });
             } else {
                 toast.error(response.data.message);
             }
@@ -84,7 +88,11 @@ const getData = async () => {
         if (response.data.success) {
             if (response.data.users.length > 0) {
                 getdata.value = response.data.users;
-                toast.success(response.data.message);
+                $swal.fire({
+                    title: response.data.message,
+                    icon: "success",
+                    draggable: true
+                });
                 return
             }
             changebtn.value = 'none';
@@ -111,7 +119,11 @@ const noData = async () => {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'get' });
         if (response.data.success) {
             getdata.value = response.data.users;
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
         } else {
             toast.error(response.data.message);
         }
@@ -125,7 +137,11 @@ const chosenData = async () => {
     try {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'chosen', ids: ids.value });
         if (response.data.success) {
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
         } else {
             toast.error(response.data.message);
         }
@@ -142,7 +158,11 @@ const chosenDeleteData = async () => {
     try {
         const response = await axios.post('/api/battlefield', { ...newDataDate.value, type: 'delete', ids: ids.value });
         if (response.data.success) {
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
         } else {
             toast.error(response.data.message);
         }

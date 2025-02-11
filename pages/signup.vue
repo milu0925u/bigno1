@@ -33,8 +33,8 @@
 </template>
 
 <script setup>
-import { useToast } from 'vue-toastification';
-const toast = useToast();
+
+const { $swal } = useNuxtApp();
 
 
 import axios from 'axios';
@@ -48,7 +48,11 @@ const signup = async () => {
     try {
         const response = await axios.post('/api/user', formData.value);
         if (response.data.success) {
-            toast.success(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                draggable: true
+            });
             navigateTo('/');
         } else {
             toast.error(response.data.message);
