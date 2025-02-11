@@ -45,6 +45,7 @@ import axios from "axios";
 import Editer from '~/components/Editer.vue';
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
+import { Buffer } from 'buffer';
 const { $swal } = useNuxtApp();
 const user = useState('user');
 const users = useState('users');
