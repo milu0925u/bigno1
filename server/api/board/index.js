@@ -1,7 +1,6 @@
 import { connectToDatabase } from "../../db";
 import { Board } from "../model";
 import moment from "moment";
-import msgpack from 'msgpack-lite';
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
   await connectToDatabase(); // 確保資料庫連接
@@ -27,11 +26,8 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
-       // 把buffer轉成json
-    let newjson;
-    if (jsondata) {
-      newjson = msgpack.decode(jsondata);
-    }
+    const newjson = JSON.parse(jsondata.toString('utf8'))
+
 
     if (type === "addboard"){
     // 抓到最後一筆編號
