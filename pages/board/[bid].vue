@@ -189,6 +189,8 @@ watch(() => defaultContent.value, async () => {
 
 
 onMounted(() => {
+    console.log(bid, 'bbbbbbbbbbid');
+
     fetchData()
     fetchReplyData()
 });
