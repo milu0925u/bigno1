@@ -72,6 +72,13 @@ export default defineEventHandler(async (event) => {
       const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
       const newjson = JSON.parse(jsonString); 
 
+      console.log(bid);
+      console.log(uid);
+      console.log(title);
+      
+      
+      
+
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 

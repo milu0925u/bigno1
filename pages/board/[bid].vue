@@ -121,16 +121,12 @@ const sendEditor = async () => {
         });
         return
     }
-
     const jsonContent = deltaContent.value.getEditorContent();
     const jsonString = JSON.stringify(jsonContent);
     const packedData = btoa(jsonString);
 
-    // const jsonString = JSON.stringify(jsonContent);
-    // const packedData = Buffer.from(jsonString, 'utf-8');
-
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData });
+        const response = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData });
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
