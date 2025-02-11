@@ -61,7 +61,6 @@ const isViewing = ref(true); // 編輯狀態
 const defaultContent = ref();
 const fetchData = async (retries = 3, delay = 1000) => {
     console.log(bid, '公佈欄編號');
-
     try {
         const response = await axios.get(`/api/board/${bid}`);
         if (response.data.success) {
@@ -82,25 +81,25 @@ const fetchData = async (retries = 3, delay = 1000) => {
         }
     }
 }
-const fetchReplyData = async (retries = 3, delay = 1000) => {
-    try {
-        const response = await axios.get(`/api/boardreply/${bid}`);
-        if (response.data.success) {
-            allmessage.value = response.data.data
-        }
-    } catch (error) {
-        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        if (error.response && error.response.status === 503) {
-            console.log(`正在重試... 剩餘次數: ${retries}`);
-            if (retries > 0) {
-                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
-            } else {
-                console.log("重試次數已達上限，請稍後再試！");
-            }
-        }
-    }
-}
+// const fetchReplyData = async (retries = 3, delay = 1000) => {
+//     try {
+//         const response = await axios.get(`/api/boardreply/${bid}`);
+//         if (response.data.success) {
+//             allmessage.value = response.data.data
+//         }
+//     } catch (error) {
+//         console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
+//         if (error.response && error.response.status === 503) {
+//             console.log(`正在重試... 剩餘次數: ${retries}`);
+//             if (retries > 0) {
+//                 await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
+//                 return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
+//             } else {
+//                 console.log("重試次數已達上限，請稍後再試！");
+//             }
+//         }
+//     }
+// }
 // 回首頁
 const goToHome = () => {
     navigateTo('/')
@@ -149,7 +148,6 @@ const closeEdit = () => {
 const message = ref('');
 const allmessage = ref([]);
 const sendMessage = async () => {
-    const bid = route.params.bid; // 文章編號
     // 假設未登入
     if (!user.value) {
         await $swal.fire({
