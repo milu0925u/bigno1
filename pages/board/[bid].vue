@@ -111,6 +111,7 @@ const openEdit = () => {
 }
 const packedData = ref(null);
 // 傳送編輯器內文
+
 const sendEditor = async () => {
     if (!title.value) {
         $swal.fire({
@@ -194,9 +195,10 @@ const getUserById = (uid) => {
 // 監聽路由變更
 watch(() => defaultContent.value, async () => {
     deltaContent.value?.setEditorContent(defaultContent.value)
-
-    const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
-    packedData.value = msgpack.encode(jsonContent);
+    if (process.client) {
+        const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
+        packedData.value = msgpack.encode(jsonContent);
+    }
 
 });
 
