@@ -26,8 +26,7 @@
     "sweetalert2": "^11.15.10",
     "vue": "latest",
     "vue-chartjs": "^5.3.2",
-    "vue-router": "latest",
-    "vue-toastification": "^2.0.0-rc.5"
+    "vue-router": "latest"
   },
   "devDependencies": {
     "sass": "^1.83.1"

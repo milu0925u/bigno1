@@ -17,9 +17,6 @@ export default defineNuxtConfig({
     css: {
       preprocessorMaxWorkers: true, // number of CPUs minus 1
     },
-    optimizeDeps: {
-      include: ['vue-toastification'], // 確保 Vite 會將此依賴包含進去
-    },
    
   },
   css: [

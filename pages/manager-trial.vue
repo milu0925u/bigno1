@@ -59,7 +59,8 @@ const send = async (id, value) => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
         }
     } catch (error) {
@@ -74,7 +75,12 @@ const fetchData = async () => {
         if (response.data.success) {
             printUser.value = response.data.users.sort((a, b) => a.ranking - b.ranking);
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.error('資料抓取錯誤', error);

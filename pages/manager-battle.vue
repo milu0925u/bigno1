@@ -57,16 +57,34 @@ const newData = async () => {
                 $swal.fire({
                     title: response.data.message,
                     icon: "success",
-                    draggable: true
+                    timer: 1500,
+                    showConfirmButton: false
                 });
             } else {
-                toast.error(response.data.message);
+                $swal.fire({
+                    title: response.data.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             }
         } catch (error) {
-            console.log(error, "執行錯誤，請前往修改代碼");
+            $swal.fire({
+                title: "執行錯誤，請前往修改代碼",
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
+
         }
     } else {
-        toast.error('請選擇禮拜六的時間')
+        $swal.fire({
+            title: '請選擇禮拜六的時間',
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
+
     }
 };
 // 切換成選擇按鈕
@@ -77,7 +95,12 @@ const getdata = ref([])
 const getData = async () => {
 
     if (newDataDate.value.date === "") {
-        toast.error("沒有選擇日期");
+        $swal.fire({
+            title: "沒有選擇日期",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
 
@@ -91,14 +114,25 @@ const getData = async () => {
                 $swal.fire({
                     title: response.data.message,
                     icon: "success",
-                    draggable: true
+                    timer: 1500,
+                    showConfirmButton: false
                 });
                 return
             }
             changebtn.value = 'none';
-            toast.error("您未新增此日期的人");
+            $swal.fire({
+                title: "您未新增此日期的人",
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");
@@ -108,7 +142,12 @@ const getData = async () => {
 const noData = async () => {
 
     if (newDataDate.value.date === "") {
-        toast.error("沒有選擇日期");
+        $swal.fire({
+            title: "沒有選擇日期",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
 
@@ -122,10 +161,16 @@ const noData = async () => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");
@@ -140,10 +185,16 @@ const chosenData = async () => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");
@@ -151,7 +202,12 @@ const chosenData = async () => {
 }
 const chosenDeleteData = async () => {
     if (!newDataDate.value || !ids.value) {
-        toast.error("沒有選擇日期&人");
+        $swal.fire({
+            title: "沒有選擇日期&人",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
 
@@ -161,10 +217,16 @@ const chosenDeleteData = async () => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.log(error, "執行錯誤，請前往修改代碼");

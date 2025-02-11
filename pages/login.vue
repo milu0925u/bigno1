@@ -41,12 +41,18 @@ const login = async () => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
             navigateTo('/');
 
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
             errorMessage.value = response.data.message || '登入失敗';
         }
     } catch (error) {

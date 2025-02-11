@@ -114,7 +114,12 @@ const openEdit = () => {
 const sendEditor = async () => {
     if (process.client) {
         if (!title.value) {
-            toast.error("請輸入標題")
+            $swal.fire({
+                title: "請輸入標題",
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
             return
         }
         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
@@ -123,11 +128,21 @@ const sendEditor = async () => {
         try {
             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: jsonContent }, { headers: { "Content-Type": "application/msgpack" } });
             if (response.data.success) {
-                toast.success(response.data.message)
+                $swal.fire({
+                    title: response.data.message,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
                 closeEdit();
             }
         } catch (error) {
-            toast.error(response.data.message)
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         };
     }
 }
@@ -161,7 +176,12 @@ const sendMessage = async () => {
             allmessage.value = [response.data.data, ...allmessage.value];
             message.value = '';
         } else {
-            toast.error(response.data.message)
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.log(error)

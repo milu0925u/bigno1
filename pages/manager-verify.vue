@@ -72,8 +72,12 @@ const updateVerify = async (newSelected) => {
         const response = await axios.post('/api/user', { id: newSelected, type: 'verifyuser' });
         if (response.data.success) {
             fetchAllUsers()
-
-            toast.success(response.data.message)
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
         } else {
             errorMessage.value = response.data.message || '審核失敗';
         }
@@ -87,7 +91,12 @@ const updateVerify2 = async (newSelected) => {
         const response = await axios.post('/api/dayoff', { id: newSelected, type: "verify", reviewer_id: user.value.id });
         if (response.data.success) {
             fetchAllDayoff();
-            toast.success(response.data.message)
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
         } else {
             errorMessage.value = response.data.message || '審核失敗';
         }

@@ -130,7 +130,8 @@ const savedata = async () => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
         }
     } catch (error) {

@@ -81,12 +81,22 @@ const fetchSearch = async () => {
                 response.data.data.battleY.length === 0 &&
                 response.data.data.dayoff.length === 0
             ) {
-                toast.error("查無資料");
+                $swal.fire({
+                    title: "查無資料",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             }
             data.value = response.data.data;
         }
     } catch (error) {
-        toast.error("請重新再試！");
+        $swal.fire({
+            title: "請重新再試！",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 };
 const data2 = ref({ data: [], days: [] });
@@ -96,12 +106,20 @@ const fetchSearchTotal = async () => {
         if (response.data.success) {
             data2.value = response.data.data;
         } else {
-            toast.error(response.data.message);
+            $swal.fire({
+                title: response.data.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
-        console.log(error.error);
-        toast.error(error.message);
-
+        $swal.fire({
+            title: error.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 };
 

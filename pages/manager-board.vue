@@ -68,7 +68,12 @@ const clearEditor = () => {
 // 傳送編輯器內文
 const sendEditor = async () => {
     if (!title.value) {
-        toast.error("請輸入標題")
+        $swal.fire({
+            title: "請輸入標題",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
@@ -77,12 +82,22 @@ const sendEditor = async () => {
     try {
         const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
         if (response.data.success) {
-            toast.success(response.data.message)
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
             title.value = ""
             clearEditor();
         }
     } catch (error) {
-        toast.error(response.data.message)
+        $swal.fire({
+            title: response.data.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     };
 }
 // 抓取公告
@@ -93,7 +108,12 @@ const fetchboard = async () => {
             alltitle.value = response.data.data
         }
     } catch (error) {
-        toast.error(response.data.message);
+        $swal.fire({
+            title: response.data.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 }
 // 開啟/隱藏公告
@@ -104,12 +124,18 @@ const getboardstate = async (bid, state) => {
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
-                draggable: true
+                timer: 1500,
+                showConfirmButton: false
             });
             fetchboard();
         }
     } catch (error) {
-        toast.error(response.data.message);
+        $swal.fire({
+            title: response.data.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 }
 // 前往內文
