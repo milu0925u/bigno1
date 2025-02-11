@@ -6,7 +6,8 @@ import moment from "moment";
 export default defineEventHandler(async (event) => {
   await connectToDatabase();
 
-  const bid = getRouterParam(event, 'bid')
+  const bbid = getRouterParam(event, 'bid')
+  const bid = event.context.params.bid;
 
   if (event.req.method === "GET") {
     const oneboard = await Board.findOne({ bid: bid }).lean()

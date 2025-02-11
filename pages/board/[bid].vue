@@ -58,12 +58,13 @@ const title = ref('');
 const deltaContent = ref(null); //  存放 Delta 格式內容
 const isViewing = ref(true); // 編輯狀態
 
+const defaultContent = ref();
 const fetchData = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get(`/api/board/${bid}`);
         if (response.data.success) {
             title.value = response.data.data.title;
-            deltaContent.value?.setEditorContent(response.data.data.content)
+            defaultContent.value = response.data.data.content;
             loading.value = false;
         }
     } catch (error) {
@@ -182,9 +183,8 @@ const getUserById = (uid) => {
 };
 
 // 監聽路由變更
-watch(() => deltaContent.value, async () => {
-    await fetchData()
-    await fetchReplyData()
+watch(() => defaultContent.value, async () => {
+    deltaContent.value?.setEditorContent(defaultContent.value)
 });
 
 
