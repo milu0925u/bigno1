@@ -43,9 +43,9 @@
 <script setup>
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import { useToast } from 'vue-toastification';
+// import { useToast } from 'vue-toastification';
 import msgpack from 'msgpack-lite';
-const toast = useToast();
+// const toast = useToast();
 import Loading from "~/components/Loading.vue"
 import { useRoute } from 'vue-router';
 const { $swal } = useNuxtApp();
@@ -114,7 +114,7 @@ const openEdit = () => {
 const sendEditor = async () => {
     if (process.client) {
         if (!title.value) {
-            toast.error("請輸入標題")
+            // toast.error("請輸入標題")
             return
         }
         const jsonContent = deltaContent.value.getEditorContent(); // JSON 內容
@@ -123,11 +123,11 @@ const sendEditor = async () => {
         try {
             const response = await axios.post("/api/board", { type: 'updateboard', uid: user.value.id, title: title.value, jsondata: packedData }, { headers: { "Content-Type": "application/msgpack" } });
             if (response.data.success) {
-                toast.success(response.data.message)
+                // toast.success(response.data.message)
                 closeEdit();
             }
         } catch (error) {
-            toast.error(response.data.message)
+            // toast.error(response.data.message)
         };
     }
 }
@@ -167,7 +167,7 @@ const sendMessage = async () => {
             allmessage.value = [response.data.data, ...allmessage.value];
             message.value = '';
         } else {
-            toast.error(response.data.message)
+            // toast.error(response.data.message)
         }
     } catch (error) {
         console.log(error)
@@ -183,14 +183,14 @@ const getUserById = (uid) => {
 
 // 監聽路由變更
 watch(() => deltaContent.value, async () => {
-    await fetchData(bid)
-    await fetchReplyData(bid)
+    await fetchData()
+    await fetchReplyData()
 });
 
 
 onMounted(() => {
-    fetchData(bid)
-    fetchReplyData(bid)
+    fetchData()
+    fetchReplyData()
 });
 </script>
 

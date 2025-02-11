@@ -27,16 +27,17 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
+       // 把buffer轉成json
+    let newjson;
+    if (jsondata) {
+      newjson = msgpack.decode(jsondata);
+    }
 
     if (type === "addboard"){
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
     const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
-
-      // 把buffer轉成json
-      let newjson = msgpack.decode(jsondata);
-      
-
+   
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
     const newBoard = new Board({
@@ -69,9 +70,7 @@ export default defineEventHandler(async (event) => {
       message: '變更成功！',
     };
     }else if (type ==="updateboard"){
-
-      let newjson = msgpack.decode(jsondata);
-      
+    
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
