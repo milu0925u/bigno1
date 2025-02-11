@@ -26,12 +26,12 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
-  const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
-  const newjson = JSON.parse(jsonString); 
-
-    
 
     if (type === "addboard"){
+      const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
+      const newjson = JSON.parse(jsonString); 
+
+      
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
     const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
@@ -69,6 +69,9 @@ export default defineEventHandler(async (event) => {
     };
     }else if (type ==="updateboard"){
     
+      const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
+      const newjson = JSON.parse(jsonString); 
+
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
