@@ -121,10 +121,12 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = deltaContent.value.getEditorContent();
-    const jsonString = JSON.stringify(jsonContent);
-    const packedData = btoa(jsonString);
+    const jsonString = JSON.stringify(jsonContent);  // 假设这是您要编码的 JSON 字符串
+    const uint8Array = new TextEncoder().encode(jsonString);
+    const packedData = btoa(String.fromCharCode(...uint8Array));
 
     try {
+        loading.value = true;
         const response = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData });
         if (response.data.success) {
             $swal.fire({
@@ -134,6 +136,7 @@ const sendEditor = async () => {
                 showConfirmButton: false
             });
             closeEdit();
+            loading.value = false;
         }
     } catch (error) {
         $swal.fire({

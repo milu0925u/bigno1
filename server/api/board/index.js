@@ -69,8 +69,12 @@ export default defineEventHandler(async (event) => {
     };
     }else if (type ==="updateboard"){
     
-      const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
-      const newjson = JSON.parse(jsonString); 
+      // const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
+      // const newjson = JSON.parse(jsonString); 
+      const buffer = Buffer.from(jsondata, 'base64');
+      const jsonString = new TextDecoder().decode(buffer);
+      const newjson = JSON.parse(jsonString);
+
 
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
