@@ -183,9 +183,9 @@ const getUserById = (uid) => {
 };
 
 // 監聽路由變更
-// watch(() => defaultContent.value, async () => {
-//     deltaContent.value?.setEditorContent(defaultContent.value)
-// });
+watch(() => defaultContent.value, async () => {
+    deltaContent.value?.setEditorContent(defaultContent.value)
+});
 
 
 onMounted(() => {
