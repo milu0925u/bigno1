@@ -29,5 +29,4 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'vercel', // 使用 Vercel 
   },
-
 });

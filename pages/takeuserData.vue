@@ -4,10 +4,6 @@
             <div class="announce">*此為公會網站密碼，請勿使用常用的密碼設置。</div>
             <div class="announce">*如忘記密碼可找「米路露」尋回。</div>
             <div class="announce">*僅提供觀看、成員請假與成員試煉數值輸入。</div>
-
-            <div class="error">
-                <p v-if="errorMessage">{{ errorMessage }}</p>
-            </div>
             <input type="number" v-model="formData.id" hidden />
             <div><label>遊戲名稱</label><input type="text" v-model="formData.username" /></div>
             <div><label>網站密碼</label><input type="password" v-model="formData.password" /></div>
@@ -23,16 +19,11 @@
 </template>
 
 <script setup>
-
-const { $swal } = useNuxtApp();
-
 import axios from 'axios';
-import { useUser, fetchAllUsers, WatcherUser } from '~/store/st_user.js';
-const user = useUser();
-
+import { fetchAllUsers, WatcherUser } from '~/store/st_user.js';
+const user = useState("user");
+const { $swal } = useNuxtApp();
 const formData = ref({ type: 'update', id: user?.id });
-const errorMessage = ref('');
-
 WatcherUser((newUser) => {
     if (newUser) {
         formData.value = {
@@ -47,16 +38,18 @@ WatcherUser((newUser) => {
 
 // 輸入請假
 const send = async () => {
-
     if (!formData.value.password && !formData.value.lineID && !formData.value.lineName) {
-        errorMessage.value = '未輸入任何資料更改';
+        $swal.fire({
+            title: '未輸入任何資料更改',
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
-
     try {
         const response = await axios.post('/api/user', formData.value);
         if (response.data.success) {
-            fetchAllUsers()
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
@@ -71,10 +64,14 @@ const send = async () => {
                 timer: 1500,
                 showConfirmButton: false
             });
-            errorMessage.value = response.data.message || '更新失敗';
         }
     } catch (error) {
-        errorMessage.value = 'Please try again';
+        $swal.fire({
+            title: 'Please try again',
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 };
 // 回首頁
@@ -82,6 +79,9 @@ const goToHome = () => {
     navigateTo('/')
 };
 
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 <style lang="scss" scoped>
 .container {
@@ -145,28 +145,10 @@ const goToHome = () => {
     }
 }
 
-.error {
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-
-    >p {
-        text-align: center;
-        width: 80%;
-        background: red;
-        padding: 3px;
-    }
-}
 
 @media screen and (max-width: 768px) {
     .content {
         width: auto;
-    }
-
-    .error {
-        height: auto;
     }
 }
 </style>

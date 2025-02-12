@@ -25,10 +25,10 @@
                 <div>請假理由</div>
                 <div>審核</div>
             </div>
-            <div v-for="user in dayoffUser" :key="user?.id" class="content">
-                <div>{{ user?.date }}</div>
-                <div>{{ user.uid ? getUsernameByUid(user.uid) : "" }}</div>
-                <div>{{ user?.reason }}</div>
+            <div v-for="u in dayoffUser" :key="u.uid" class="content">
+                <div>{{ u?.date }}</div>
+                <div>{{ u.uid ? getUsernameByUid(u.uid) : "" }}</div>
+                <div>{{ u?.reason }}</div>
                 <div>
                     <button class="btn" @click="updateVerify2(user?.id)">通過</button>
                 </div>
@@ -43,7 +43,6 @@ import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 
 const { $swal } = useNuxtApp();
-
 import { fetchAllUsers } from '~/store/st_user.js';
 
 
@@ -111,10 +110,26 @@ const fetchAllDayoff = async () => {
     try {
         const response = await axios.get("/api/dayoff");
         if (response.data.success) {
-            dayoffUser.value = response.data.dayoff.filter((v) => v.verify === false);
+            if (response.data.dayoff.length === 0) {
+                dayoffUser.value = [];
+                $swal.fire({
+                    title: "目前無資料",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                return
+            }
+            const newuser = response.data.dayoff.filter((v) => v.verify === false);
+            dayoffUser.value = newuser;
         }
     } catch (error) {
-        console.log(error, "執行錯誤，請前往修改代碼");
+        $swal.fire({
+            title: "讀取失敗，請重新再試",
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 };
 onMounted(() => {
@@ -129,6 +144,9 @@ const getUsernameByUid = computed(() => {
     };
 });
 
+definePageMeta({
+    middleware: ['manager', 'check-login']
+});
 </script>
 
 <style lang="scss" scoped>

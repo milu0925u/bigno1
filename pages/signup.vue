@@ -73,6 +73,10 @@ const signup = async () => {
 const goToHome = () => {
     navigateTo('/')
 };
+
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 
 <style lang="scss" scoped>

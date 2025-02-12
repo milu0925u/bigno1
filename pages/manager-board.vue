@@ -157,6 +157,10 @@ watch(currentActive, (newValue) => {
         fetchboard();
     }
 });
+
+definePageMeta({
+    middleware: ['manager', 'check-login']
+});
 </script>
 
 <style lang="scss" scoped>

@@ -84,7 +84,6 @@ import { fetchAllUsers } from '~/store/st_user.js';
 
 const { $swal } = useNuxtApp();
 
-
 const currentActive = ref("seeAll");
 const updateCurrentActive = (newValue) => {
     currentActive.value = newValue;
@@ -95,28 +94,28 @@ const printUser = ref([]); //顯示的使用者項目
 const editUser = ref(null); // 編輯的項目
 
 // 監控目前位置
-watch(
-    [currentActive, users],
-    ([newCurrentActive, newUsers]) => {
-        let filteredUsers;
+onMounted(() => {
+    watch([currentActive, users],
+        ([newCurrentActive, newUsers]) => {
+            let filteredUsers;
 
-        if (newCurrentActive === "seeAllcontainLeave") {
-            filteredUsers = newUsers?.filter((user) => user.leaveDate);
-        } else if (newCurrentActive === "seeNoUser") {
-            filteredUsers = newUsers?.filter(
-                (user) => user.leaveDate === null && user.verify === false
+            if (newCurrentActive === "seeAllcontainLeave") {
+                filteredUsers = newUsers?.filter((user) => user.leaveDate);
+            } else if (newCurrentActive === "seeNoUser") {
+                filteredUsers = newUsers?.filter(
+                    (user) => user.leaveDate === null && user.verify === false
+                );
+            } else {
+                filteredUsers = newUsers?.filter((user) => user.leaveDate === null);
+            }
+
+            // 统一排序逻辑
+            printUser.value = filteredUsers?.sort(
+                (a, b) => new Date(a.createDate) - new Date(b.createDate)
             );
-        } else {
-            filteredUsers = newUsers?.filter((user) => user.leaveDate === null);
-        }
-
-        // 统一排序逻辑
-        printUser.value = filteredUsers?.sort(
-            (a, b) => new Date(a.createDate) - new Date(b.createDate)
-        );
-    },
-    { immediate: true, deep: true }
-);
+        }, { immediate: true, deep: true }
+    );
+});
 
 const edit = (user) => {
     editUser.value = { ...user };
@@ -139,10 +138,10 @@ const savedata = async () => {
     }
 };
 
-definePageMeta({
-    middleware: ['manager'],  // 只有經過管理員中介層的用戶可以訪問
-});
 
+definePageMeta({
+    middleware: ['manager', 'check-login']
+});
 </script>
 
 <style lang="scss" scoped>

@@ -4,9 +4,6 @@
             <div class="announce">*我們是休閒公會但希望大家都是很團結活躍的</div>
             <div class="announce">*請假是為了讓資料好登記以及會長了解狀況</div>
             <div class="announce">*感謝各位成員配合。</div>
-            <div class="error">
-                <p v-if="errorMessage">{{ errorMessage }}</p>
-            </div>
             <input type="number" v-model="formData.id" hidden />
             <div>
                 <label>名稱</label>
@@ -29,10 +26,9 @@
 const { $swal } = useNuxtApp();
 
 import axios from 'axios';
-import { useUser, fetchAllUsers, WatcherUser } from '~/store/st_user.js';
-const user = useUser();
+import { fetchAllUsers, WatcherUser } from '~/store/st_user.js';
+const user = useState("user");
 const formData = ref({ type: 'add', id: user?.id });
-const errorMessage = ref('');
 
 WatcherUser((newUser) => {
     if (newUser) {
@@ -47,15 +43,23 @@ WatcherUser((newUser) => {
 
 // 輸入請假
 const send = async () => {
-    errorMessage.value = ""
-
     if (!formData.value.date) {
-        errorMessage.value = '請選擇請假日期';
+        $swal.fire({
+            title: '請選擇請假日期',
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
 
     if (!formData.value.reason) {
-        errorMessage.value = '請輸入請假事由';
+        $swal.fire({
+            title: '請輸入請假事由',
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
 
@@ -77,10 +81,14 @@ const send = async () => {
                 timer: 1500,
                 showConfirmButton: false
             });
-            errorMessage.value = response.data.message || '請假失敗';
         }
     } catch (error) {
-        errorMessage.value = 'Please try again';
+        $swal.fire({
+            title: 'Please try again',
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 };
 // 回首頁
@@ -88,6 +96,9 @@ const goToHome = () => {
     navigateTo('/')
 };
 
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 
 <style lang="scss" scoped>
@@ -156,28 +167,10 @@ const goToHome = () => {
     }
 }
 
-.error {
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-
-    >p {
-        text-align: center;
-        width: 80%;
-        background: red;
-        padding: 3px;
-    }
-}
 
 @media screen and (max-width: 768px) {
     .content {
         width: auto;
-    }
-
-    .error {
-        height: auto;
     }
 }
 </style>

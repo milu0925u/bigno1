@@ -24,8 +24,7 @@
 const { $swal } = useNuxtApp();
 
 import axios from 'axios';
-import { useUser } from '~/store/st_user.js';
-const user = useUser();
+const user = useState("user");
 
 const formData = ref({ type: 'login', username: '', password: '' });
 const errorMessage = ref('');

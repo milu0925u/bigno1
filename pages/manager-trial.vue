@@ -101,6 +101,10 @@ onMounted(() => {
     fetchData();
 });
 
+
+definePageMeta({
+    middleware: ['manager', 'check-login']
+});
 </script>
 
 

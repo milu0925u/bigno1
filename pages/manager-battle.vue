@@ -244,6 +244,9 @@ watch(() => newDataDate.value.date, () => {
     changebtn.value = 'none';
 });
 
+definePageMeta({
+    middleware: ['manager', 'check-login']
+});
 </script>
 
 <style lang="scss" scoped>

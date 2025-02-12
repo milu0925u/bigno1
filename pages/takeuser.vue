@@ -97,6 +97,10 @@ watch([user, datas, loading], async () => {
 onMounted(() => {
     fetchData();
 });
+
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 
 <style lang="scss" scoped></style>

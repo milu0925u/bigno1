@@ -41,30 +41,32 @@ import HomeNavbar from '~/components/HomeNavbar.vue';
 import HomeProfession from '~/components/HomeProfession.vue';
 
 // 設置此頁的title跟關鍵字搜尋
-// useHead({
-//     title: '天下第一霸豬',
-//     meta: [
-//         { name: 'description', content: 'This is RO rebirth Game\'s Guild - Swagger Pig No.1 ' },
-//         { name: 'keywords', content: 'rebirth,game,guild,nuxt,RO' }
-//     ],
-//     link: [
-//         { rel: 'icon', type: 'image/png', href: '/images/logo.png' } // 指定新的 LOGO 路徑
-//     ]
-// });
+useHead({
+    title: '天下第一霸豬',
+    meta: [
+        { name: 'description', content: 'This is RO rebirth Game\'s Guild - Swagger Pig No.1 ' },
+        { name: 'keywords', content: 'rebirth,game,guild,nuxt,RO' }
+    ],
+    link: [
+        { rel: 'icon', type: 'image/png', href: '/images/logo.png' } // 指定新的 LOGO 路徑
+    ]
+});
 
-import { fetchAllUsers } from '~/store/st_user.js';
-
-// 加載進度條
 const loading = useState('loading', () => true);
+const user = useState("user", () => null);
+const users = useState("users", () => []);
+const trail = useState("trail", () => []);
+const battle = useState("battle", () => []);
 
 onMounted(() => {
     setTimeout(() => {
         loading.value = false;
     }, 2000);
-    fetchAllUsers();
 });
 
-
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 
 

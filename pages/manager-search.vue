@@ -134,6 +134,10 @@ const getUserById = (uid) => {
 onMounted(() => {
     fetchSearchTotal();
 });
+
+definePageMeta({
+    middleware: ['manager', 'check-login']
+});
 </script>
 
 

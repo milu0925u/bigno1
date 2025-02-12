@@ -26,9 +26,8 @@
 </template>
 
 <script setup>
-import { useUser } from '~/store/st_user';
 import Loading from "~/components/Loading.vue"
-const user = useUser();
+const user = useState("user");
 const loading = useState('loading');
 
 

@@ -5,11 +5,6 @@
             <div class="announce">*自行輸入讓資料更精確，感謝各位成員配合，</div>
             <div class="announce">*未輸入者於每日清晨五/七點會匯入昨日資訊。</div>
             <div class="announce">*僅供會員輸日當日打完的數值資訊。</div>
-
-            <div class="error">
-                <p v-if="errorMessage">{{ errorMessage }}</p>
-            </div>
-
             <div>
                 <label>日期</label>
                 <div>{{ new Date().toISOString().split("T")[0] }}</div>
@@ -35,15 +30,11 @@
 </template>
 
 <script setup>
-
-const { $swal } = useNuxtApp();
-
 import axios from 'axios';
-import { useUser, fetchAllUsers, WatcherUser } from '~/store/st_user.js';
-const user = useUser();
-
+import { fetchAllUsers, WatcherUser } from '~/store/st_user.js';
+const { $swal } = useNuxtApp();
+const user = useState("user");
 const formData = ref({ id: user?.id, value: 0 });
-const errorMessage = ref('');
 
 WatcherUser((newUser) => {
     if (newUser) {
@@ -59,19 +50,24 @@ WatcherUser((newUser) => {
 
 // 輸入數值
 const send = async () => {
-    errorMessage.value = ""
-
     if (formData.value.radio === null) {
-        errorMessage.value = '請選擇數值單位';
+        $swal.fire({
+            title: '請選擇數值單位',
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
-
     if (!formData.value.value) {
-        errorMessage.value = '請輸入數值';
+        $swal.fire({
+            title: '請輸入數值',
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
         return
     }
-
-
     try {
         const response = await axios.post('/api/trial', formData.value);
         if (response.data.success) {
@@ -90,16 +86,24 @@ const send = async () => {
                 timer: 1500,
                 showConfirmButton: false
             });
-            errorMessage.value = response.data.message || '輸入失敗';;
         }
     } catch (error) {
-        errorMessage.value = 'Please try again';
+        $swal.fire({
+            title: 'Please try again',
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
     }
 };
 // 回首頁
 const goToHome = () => {
     navigateTo('/')
 };
+
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 <style lang="scss" scoped>
 .container {
@@ -169,28 +173,9 @@ const goToHome = () => {
     }
 }
 
-.error {
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-
-    >p {
-        text-align: center;
-        width: 80%;
-        background: red;
-        padding: 3px;
-    }
-}
-
 @media screen and (max-width: 768px) {
     .content {
         width: auto;
-    }
-
-    .error {
-        height: auto;
     }
 }
 </style>

@@ -1,8 +1,7 @@
 import { connectToDatabase} from "../db";
-import cookie from "cookie";
 import { User,Trial } from "./model";
 import moment from "moment";
-
+import jwt from 'jsonwebtoken'
 
 // 用來處理HTTP請求
 export default defineEventHandler(async (event) => {
@@ -65,21 +64,21 @@ export default defineEventHandler(async (event) => {
         }
         // 設定 Cookie
         const cookieOptions = {
+          domain: 'localhost',
           httpOnly:  false,
           maxAge: 60 * 60 * 24,
-        sameSite: "Lax",
-          secure: true,
+         sameSite: 'Lax',
+          secure: true
         };
 
+        
+        const secret = 'no1pigg'; // 設定密鑰
+        const jwtTokenPayload = {id: users.id}
+        const jwtToken = jwt.sign(jwtTokenPayload, secret, { expiresIn: '1h' });
+
         // 儲存用戶資訊到 Cookie
-        event.res.setHeader(
-          "Set-Cookie",
-          cookie.serialize(
-            "ipx",
-            JSON.stringify({ id: users.id }),
-            cookieOptions
-          )
-        );
+        setCookie(event,"ipx", jwtToken, {...cookieOptions})
+
         return {
           success: true,
           message: "登入成功",

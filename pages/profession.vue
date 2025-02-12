@@ -60,7 +60,9 @@ watch(() => users.value, () => {
 }, { immediate: true });
 
 
-
+definePageMeta({
+    middleware: 'check-login'
+});
 </script>
 
 <style lang="scss" scoped>

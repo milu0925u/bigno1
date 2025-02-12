@@ -1,22 +1,31 @@
 <template>
-    <div v-if="user && user.position === '管理員'" class="btn-group">
-        <button class="btn" @click="goToManager">管理者模式</button>
-    </div>
-    <div v-else-if="user && user.username" class="btn-group">
-    </div>
-    <div v-else class="btn-group">
+    <div v-if="user === null || !user" class="btn-group">
         <button class="btn" @click="goToSignup">註冊</button>
         <button class="btn" @click="goToLogin">登入</button>
     </div>
+    <div v-else-if="user.position === '管理員'" class="btn-group">
+        <button class="btn" @click="goToManager">管理者模式</button>
+        <button class="btn" @click="goToLogout">登出</button>
+    </div>
+    <div v-else="user || user.verify" class="btn-group">
+        <button class="btn" @click="goToLogout">登出</button>
+    </div>
+  
 </template>
 
 <script setup>
-import { useUser } from '~/store/st_user';
-const user = useUser();
+const user = useState("user");
 
 const goToLogin = () => { navigateTo('/login') };
 const goToSignup = () => { navigateTo('/signup') };
 const goToManager = () => { navigateTo('/manager') };
+const goToLogout = () => {
+
+    const cookie = useCookie("ipx");
+    cookie.value = ''; 
+    cookie.expires = new Date(0);
+        user.value = null;
+    };
 </script>
 
 <style lang="scss" scoped>
