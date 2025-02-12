@@ -30,6 +30,9 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
+    // console.log(jsondata,'查看檔案型態');
+
+    
 
     if (type === "addboard"){
       const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');

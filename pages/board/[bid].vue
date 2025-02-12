@@ -19,6 +19,9 @@
                 <ClientOnly>
                     <Editer ref="deltaContent" :isViewing="isViewing" />
                 </ClientOnly>
+                <div v-if="sendloading" class="send-loading">
+                    <Loading2 />
+                </div>
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
@@ -44,6 +47,7 @@
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
 import Loading from "~/components/Loading.vue"
+import Loading2 from "~/components/Loading2.vue"
 import { useRoute } from 'vue-router';
 import LZString from "lz-string";
 const { $swal } = useNuxtApp();
@@ -111,6 +115,7 @@ const openEdit = () => {
 
 
 // 傳送編輯器內文
+const sendLoading = ref(false);
 const sendEditor = async () => {
     if (!title.value) {
         $swal.fire({
@@ -121,15 +126,12 @@ const sendEditor = async () => {
         });
         return
     }
+    sendLoading.value = true;
     const jsonContent = deltaContent.value.getEditorContent();
 
     const packedData = LZString.compressToUTF16(JSON.stringify(jsonContent));
-    // const jsonString = JSON.stringify(jsonContent);  // 假设这是您要编码的 JSON 字符串
-    // const uint8Array = new TextEncoder().encode(jsonString);
-    // const packedData = btoa(String.fromCharCode(...uint8Array));
 
     try {
-        loading.value = true;
         const response = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData });
         if (response.data.success) {
             $swal.fire({
@@ -139,7 +141,7 @@ const sendEditor = async () => {
                 showConfirmButton: false
             });
             closeEdit();
-            loading.value = false;
+            sendLoading.value = false;
         }
     } catch (error) {
         $swal.fire({
@@ -370,6 +372,18 @@ onMounted(() => {
             width: 80px;
             height: 25px;
         }
+    }
+
+    .send-loading {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
