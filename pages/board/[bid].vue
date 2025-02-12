@@ -257,10 +257,6 @@ onMounted(() => {
 
             }
         }
-
-        .text-btn {
-            margin-top: auto;
-        }
     }
 
     .content-reply {
@@ -322,7 +318,7 @@ onMounted(() => {
         }
 
         .text-btn {
-            // margin-top: auto;
+            margin-top: auto;
         }
 
     }
