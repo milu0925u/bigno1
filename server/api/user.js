@@ -64,6 +64,7 @@ export default defineEventHandler(async (event) => {
         }
         // 設定 Cookie
         const cookieOptions = {
+          domain: 'http://pigno1.vercel.app/',
           httpOnly: true,
           maxAge: 60 * 60 * 24,
          sameSite: 'Lax',
