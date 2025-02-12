@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isClient">
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
         <div class="container" v-if="currentActive === 'searchdata'">
             <div class="search-date">
@@ -25,7 +25,7 @@
                 </div>
                 <div v-if="data?.trianN?.length || 0">
                     <h4 class="title">試煉未出席:{{ data?.trianN?.length || 0 }}</h4>
-                    <div v-for="e in data?.trianN" :key="e.id">{{ getUserById(e.id)?.username }}</div>
+                    <div v-for="g in data?.trianN" :key="g.id">{{ getUserById(g.id)?.username }}</div>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div v-for="d in data2.data" :key="d.id" class="flex-d">
                     <div>{{ getUserById(d.uid)?.username }}</div>
-                    <div v-for="item in d.attendance" :key="i">
+                    <div v-for="(item, i) in d.attendance" :key="i">
                         <div v-if="item === 'nodata'"><i class="fa-solid fa-xmark red"></i></div>
                         <input v-else type="checkbox" :checked="item" :disabled="true" />
                     </div>
@@ -131,7 +131,9 @@ const getUserById = (uid) => {
 
 
 
+const isClient = ref(false);
 onMounted(() => {
+    isClient.value = true; // 客戶端渲染後顯示內容
     fetchSearchTotal();
 });
 

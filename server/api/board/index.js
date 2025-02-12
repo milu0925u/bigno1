@@ -30,13 +30,10 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { uid,title,jsondata,bid,type,state } = await readBody(event);
 
-    // console.log(jsondata,'查看檔案型態');
-
-    
 
     if (type === "addboard"){
-      const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
-      const newjson = JSON.parse(jsonString); 
+      const jsonDatas = LZString.decompressFromUTF16(jsondata);
+      const newjson = JSON.parse(jsonDatas);
 
       
     // 抓到最後一筆編號
@@ -75,13 +72,6 @@ export default defineEventHandler(async (event) => {
       message: '變更成功！',
     };
     }else if (type ==="updateboard"){
-    
-      // const jsonString = Buffer.from(jsondata, 'base64').toString('utf-8');
-      // const newjson = JSON.parse(jsonString); 
-
-      // const buffer = Buffer.from(jsondata, 'base64');
-      // const jsonString = new TextDecoder().decode(buffer);
-      // const newjson = JSON.parse(jsonString);
       
       const jsonDatas = LZString.decompressFromUTF16(jsondata);
       const newjson = JSON.parse(jsonDatas);

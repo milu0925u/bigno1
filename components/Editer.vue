@@ -57,13 +57,15 @@ const props = defineProps({
 // 傳遞給父層
 defineExpose({
     getEditorContent,
-    setEditorContent
+    setEditorContent,
+    clearEditor
 });
 
 // 初始 Quill 編輯器設定
 const initializeQuill = () => {
     quill = new Quill(editor.value, {
-        debug: 'info',
+        // debug: 'info',
+        debug: false,
         modules: {
             toolbar: options
         },

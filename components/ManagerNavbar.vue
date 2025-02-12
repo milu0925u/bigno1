@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isClient">
         <div class="btn-group">
             <button :class="{ activeColor: route.name === 'manager' }" @click="goToAllUser"><i
                     class="fa-solid fa-people-group"></i><span>所有成員</span></button>
@@ -40,7 +40,6 @@
                 <button :class="{ activeColor: props.currentActive === 'searchtotal' }"
                     @click="searchtotal">總出席表</button>
             </div>
-
             <div v-else-if='route.name === "manager-board"'>
                 <button :class="{ activeColor: props.currentActive === 'allboard' }" @click="allboard">所有公告</button>
                 <button :class="{ activeColor: props.currentActive === 'addboard' }" @click="addboard">新增公告</button>
@@ -112,6 +111,11 @@ const addboard = () => {
     emit('update:currentActive', "addboard");
 };
 
+
+const isClient = ref(false);
+onMounted(() => {
+  isClient.value = true; // 客戶端渲染後顯示內容
+});
 </script>
 
 <style lang="scss" scoped>

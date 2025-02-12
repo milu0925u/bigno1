@@ -19,13 +19,10 @@
                 <ClientOnly>
                     <Editer ref="deltaContent" :isViewing="isViewing" />
                 </ClientOnly>
-                <div v-if="sendloading" class="send-loading">
-                    <Loading2 />
-                </div>
             </div>
             <div class="content-reply">
                 <transition-group name="slide-up" tag="div" class="reply">
-                    <div class="content-message" v-for="m in allmessage">
+                    <div class="content-message" v-for="(m, index) in allmessage" :key="index">
                         <b>{{ m && getUserById(m.uid).username }}</b>
                         <p>{{ m && m.content }}</p>
                         <div class="createdate">{{ m && m.createdate }}</div>
@@ -38,6 +35,9 @@
             </div>
             <div class="btn-group">
                 <button class="btn" @click="goToHome">返回</button>
+            </div>
+            <div v-if="sendLoading" class="send-loading">
+                <Loading2 />
             </div>
         </div>
     </div>
@@ -128,7 +128,6 @@ const sendEditor = async () => {
     }
     sendLoading.value = true;
     const jsonContent = deltaContent.value.getEditorContent();
-
     const packedData = LZString.compressToUTF16(JSON.stringify(jsonContent));
 
     try {
@@ -150,6 +149,7 @@ const sendEditor = async () => {
             timer: 1500,
             showConfirmButton: false
         });
+        sendLoading.value = false;
     };
 }
 
@@ -376,6 +376,7 @@ onMounted(() => {
 
     .send-loading {
         position: absolute;
+        z-index: 1;
         top: 0;
         bottom: 0;
         left: 0;

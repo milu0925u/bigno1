@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="isClient">
         <ManagerNavbar :current-active="currentActive" @update:currentActive="updateCurrentActive" />
         <div class="container" v-if="currentActive === 'allboard'">
             <div class="grid-content title-color">
@@ -23,13 +23,11 @@
                 <div> <button @click="goToBoardDetail(t.bid)">查看</button></div>
             </div>
         </div>
-
         <div class="container" v-else-if="currentActive === 'addboard'">
             <div class="editer-content">
                 <div class="title-group">
                     <span>標題：</span>
                     <input type="text" v-model="title" />
-                    <button class="btn" @click="clearEditor">清除內容</button>
                     <button class="btn" @click="sendEditor">送出</button>
                 </div>
                 <ClientOnly>
@@ -44,12 +42,10 @@
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
-import msgpack from 'msgpack-lite';
 import Editer from '~/components/Editer.vue';
+import LZString from "lz-string";
 
 const { $swal } = useNuxtApp();
-
-
 const user = useState("user");
 const users = useState("users")
 const currentActive = ref("allboard"); // 接收子層組件
@@ -61,9 +57,6 @@ const alltitle = ref(null);
 const isViewing = ref(false); // 編輯狀態
 
 const quillRef = ref(null); // 取得編輯器內文
-const clearEditor = () => {
-    quillRef.value?.clearEditor();
-};
 
 // 傳送編輯器內文
 const sendEditor = async () => {
@@ -77,8 +70,7 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
-    const packedData = msgpack.encode(jsonContent);
-
+    const packedData = LZString.compressToUTF16(JSON.stringify(jsonContent));
     try {
         const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: packedData });
         if (response.data.success) {
@@ -89,7 +81,7 @@ const sendEditor = async () => {
                 showConfirmButton: false
             });
             title.value = ""
-            clearEditor();
+            quillRef.value?.clearEditor();
         }
     } catch (error) {
         $swal.fire({
@@ -147,9 +139,10 @@ const getUserById = (uid) => {
     return users.value.find(user => user.id === uid);
 };
 
-
+const isClient = ref(false);
 onMounted(() => {
     fetchboard();
+    isClient.value = true; // 客戶端渲染後顯示內容
 });
 
 watch(currentActive, (newValue) => {
@@ -159,7 +152,7 @@ watch(currentActive, (newValue) => {
 });
 
 definePageMeta({
-    middleware: ['manager', 'check-login']
+    middleware: ['manager'],
 });
 </script>
 
