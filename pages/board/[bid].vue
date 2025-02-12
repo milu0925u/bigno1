@@ -236,15 +236,13 @@ onMounted(() => {
     margin-inline: auto;
     background: var(--background);
     display: flex;
-    padding: 24px;
+    padding: 12px 5%;
     position: relative;
 
     .content {
         width: 75%;
         background: #FCFCFC;
         background: var(--text);
-
-
 
         >div {
             border-style: solid;
@@ -270,6 +268,7 @@ onMounted(() => {
         display: flex;
         flex-direction: column;
         padding-left: 16px;
+        height: calc(100vh - 25px - 16px);
 
         input[type="text"] {
             width: 100%;
@@ -289,8 +288,6 @@ onMounted(() => {
             font-size: 12px;
             margin-top: 60px;
             overflow-y: auto;
-            min-height: 300px;
-            max-width: calc(100vh - 150px);
             padding-right: 8px;
             animation: slide-up 0.3s forwards;
             transition: all 0.3s ease-in-out;
@@ -322,6 +319,10 @@ onMounted(() => {
                 padding: 12px 16px;
                 background: #FCFCFC;
             }
+        }
+
+        .text-btn {
+            // margin-top: auto;
         }
 
     }
