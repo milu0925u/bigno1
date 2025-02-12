@@ -26,7 +26,8 @@ const goToManager = () => { navigateTo('/manager') };
 const goToLogout = () => {
     const cookie = useCookie("ipx");
     cookie.value = ''; 
-        user.value = null;
+    cookie.maxAge = 0; 
+    user.value = null;
     };
 
 const isClient = ref(false);
