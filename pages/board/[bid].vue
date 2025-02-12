@@ -26,6 +26,8 @@
                         <b>{{ m && getUserById(m.uid).username }}</b>
                         <p>{{ m && m.content }}</p>
                         <div class="createdate">{{ m && m.createdate }}</div>
+                        <button v-if="user.id === m.uid" class="delete" @click="() => hiddenmessage(m.brid)"><i
+                                class="fa-regular fa-rectangle-xmark"></i></button>
                     </div>
                 </transition-group>
                 <div class="text-btn">
@@ -70,35 +72,19 @@ const fetchData = async () => {
             loading.value = false;
         }
     } catch (error) {
-        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        if (error.response && error.response.status === 503) {
-            console.log(`正在重試... 剩餘次數: ${retries}`);
-            if (retries > 0) {
-                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchData(retries - 1, delay); // 重新調用函數，減少重試次數
-            } else {
-                console.log("重試次數已達上限，請稍後再試！");
-            }
-        }
+        console.log(error);
     }
 }
 const fetchReplyData = async () => {
     try {
         const response = await axios.get(`/api/boardreply/${bid}`);
         if (response.data.success) {
-            allmessage.value = response.data.data
+            const newdata = response.data.data.filter(v => !v.hiddendate)
+            allmessage.value = newdata;
         }
     } catch (error) {
-        console.log(error, "抓取所有成員試煉排行失敗，請重新抓取！");
-        if (error.response && error.response.status === 503) {
-            console.log(`正在重試... 剩餘次數: ${retries}`);
-            if (retries > 0) {
-                await new Promise(resolve => setTimeout(resolve, delay)); // 延遲一段時間
-                return fetchReplyData(retries - 1, delay); // 重新調用函數，減少重試次數
-            } else {
-                console.log("重試次數已達上限，請稍後再試！");
-            }
-        }
+        console.log(error);
+
     }
 }
 // 回首頁
@@ -111,6 +97,29 @@ const edit = ref(false)
 const openEdit = () => {
     isViewing.value = false;
     edit.value = true;
+}
+
+// 隱藏留言
+const hiddenmessage = async (brid) => {
+    try {
+        const response = await axios.post(`/api/boardreply/${bid}`, { type: 'delete', uid: user.value.id, brid: brid });
+        if (response.data.success) {
+            allmessage.value = allmessage.value.filter(i => i.brid !== response.data.data.brid);
+            $swal.fire({
+                title: response.data.message,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+    } catch (error) {
+        $swal.fire({
+            title: error.message,
+            icon: "error",
+            timer: 1500,
+            showConfirmButton: false
+        });
+    };
 }
 
 
@@ -386,19 +395,14 @@ onMounted(() => {
         justify-content: center;
         align-items: center;
     }
-}
 
-@keyframes slide-up {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
+    .delete {
+        position: absolute;
+        top: 8px;
+        right: 16px;
     }
 }
+
 
 .edit-button {
     display: flex;
@@ -411,6 +415,7 @@ onMounted(() => {
 }
 
 .content-message {
+    position: relative;
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -418,6 +423,19 @@ onMounted(() => {
 
     div {
         margin-left: auto;
+    }
+}
+
+
+@keyframes slide-up {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 

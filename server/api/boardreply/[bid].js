@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "POST") {
     const { type,brid,uid,content,updatedate,hiddendate} = await readBody(event);
     const findVerifyUser = await User.findOne({id:uid,verify:true});
+
     if(!findVerifyUser){
       return {
         success: false,
@@ -40,10 +41,9 @@ export default defineEventHandler(async (event) => {
 
 
     if(type==='add'){
-
           // 抓到最後一筆編號
-    let lastNum = await BoardReply.findOne().sort({ bid: -1 }).limit(1);
-    const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
+    let lastNum = await BoardReply.findOne().sort({ brid: -1 }).limit(1);
+    const bnewid = lastNum ? Number(lastNum.brid) + 1 : 1;
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
     const newBoard = new BoardReply({
@@ -57,8 +57,23 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       message: '留言成功！',
-      data:{uid:uid,content:content,createdate:today},
+      data:{brid:bnewid,uid:uid,content:content,createdate:today},
     };
+    }else if(type==='delete'){
+      const hiddenBoardReply = await BoardReply.findOneAndUpdate(
+        { brid: brid },
+        { 
+          $set: { 
+            hiddendate: new Date()
+          }
+        },
+        { new: true } 
+      );
+    
+        return {
+          success: true,
+          message: '刪除成功！',
+          data:hiddenBoardReply,
+        };
     }
-    }
-});
+}});
