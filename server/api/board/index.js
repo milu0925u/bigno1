@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../../db";
 import { Board } from "../model";
 import moment from "moment";
-// import LZString from "lz-string";
+import LZString from "lz-string";
 import { IncomingForm } from 'formidable';
 
 // 處理 HTTP 請求
@@ -49,11 +49,14 @@ export default defineEventHandler(async (event) => {
 
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
+
+    // 解析base64
+   const newjson =  LZString.decompressFromBase64(jsondata)
     const newBoard = new Board({
       bid:bnewid,
       uid:uid,
       title:title,
-      content:jsondata,
+      content:newjson,
       createdate: today ,
     });
     await newBoard.save();
@@ -62,6 +65,9 @@ export default defineEventHandler(async (event) => {
         message: '發布成功！',
       };
     }else if (type ==="updateboard"){
+      // 解析base64
+      const newjson =  LZString.decompressFromBase64(jsondata)
+
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
