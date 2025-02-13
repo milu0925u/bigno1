@@ -84,6 +84,13 @@ const sendEditor = async () => {
             });
             title.value = ""
             quillRef.value?.clearEditor();
+        } else {
+            $swal.fire({
+                title: "發布失敗",
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         $swal.fire({
