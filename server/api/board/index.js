@@ -45,7 +45,8 @@ export default defineEventHandler(async (event) => {
     console.log('22完成');
     const jsonString = formData.jsondata?.[0] || "";  // 取出字串
     const {type,uid,title,jsondata} = JSON.parse(jsonString); // 解析 JSON
-    const newjson =  LZString.decompressFromBase64(jsondata)
+    const onlyjsonString = String(jsondata);
+    const newjson =  LZString.decompressFromBase64(onlyjsonString)
     console.log('33完成');
     if (type === "addboard"){
     // 抓到最後一筆編號
