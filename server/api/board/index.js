@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
 
   // 使用formdata
   if (event.req.method === "POST") {
-    const form = new IncomingForm();
+    const form = new IncomingForm({  maxFileSize: 8 * 1024 * 1024});
     const formData = await new Promise((resolve, reject) => {
       form.parse(event.node.req, (err, fields, files) => {
           if (err) {
