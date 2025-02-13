@@ -148,6 +148,8 @@ const sendEditor = async () => {
         const response = await axios.post("/api/board", formData, {
             headers: { "Content-Type": "multipart/form-data" }
         });
+        console.log(response, 'response!!!!!');
+
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
