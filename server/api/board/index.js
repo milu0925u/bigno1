@@ -2,7 +2,6 @@ import { connectToDatabase } from "../../db";
 import { Board } from "../model";
 import moment from "moment";
 import LZString from "lz-string";
-import { IncomingForm } from 'formidable';
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
@@ -28,30 +27,20 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  // 使用formdata
   if (event.req.method === "POST") {
-    const form = new IncomingForm({  maxFileSize: 8 * 1024 * 1024});
-    const formData = await new Promise((resolve, reject) => {
-      form.parse(event.node.req, (err, fields, files) => {
-          if (err) {
-              return reject({ success: false, message: '上傳失敗', error: err });
-          }
-          resolve(fields); // 只有成功時才會執行
-      });
-    });
-    const jsonString = formData.jsondata?.[0] || "";  // 取出字串
-    const {type,uid,title,jsondata} = JSON.parse(jsonString); // 解析 JSON
-    const newjson =  LZString.decompressFromBase64(jsondata)
-    
+    const { uid,title,jsondata,bid,type,state } = await readBody(event);
+
+
     if (type === "addboard"){
+      const jsonDatas = LZString.decompressFromBase64(jsondata);
+      const newjson = JSON.parse(jsonDatas);
+
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
     const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
-
+   
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
-
-    // 解析base64
     const newBoard = new Board({
       bid:bnewid,
       uid:uid,
@@ -64,7 +53,27 @@ export default defineEventHandler(async (event) => {
         success: true,
         message: '發布成功！',
       };
+    }else if (type === "statechange"){
+      if (!state){
+        await  Board.updateOne(
+          { bid: bid }, 
+          { $set: { hiddendate: null } } 
+      );
+      }else {
+        const now = new Date().toISOString().split("T")[0] 
+        await  Board.updateOne(
+          { bid: bid }, 
+          { $set: { hiddendate:  now } } 
+      );
+      }
+    return {
+      success: true,
+      message: '變更成功！',
+    };
     }else if (type ==="updateboard"){
+      
+      const jsonDatas = LZString.decompressFromBase64(jsondata);
+      const newjson = JSON.parse(jsonDatas);
 
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
@@ -86,26 +95,6 @@ export default defineEventHandler(async (event) => {
         };
     }
   };
-
-  if (event.req.method === "PATCH") {
-      const { uid,bid,type,state } = await readBody(event);
-
-       if (type === "statechange"){
-        if (!state){
-          await  Board.updateOne({ bid: bid },  { $set: { hiddendate: null } } );
-        }else {
-          const now = new Date().toISOString().split("T")[0] 
-          await  Board.updateOne({ bid: bid }, { $set: { hiddendate:  now } } );
-        }
-      return {
-        success: true,
-        message: '變更成功！',
-      };
-    }
-    };
-  
-
-
 
 }catch(error){
   console.log(error);
