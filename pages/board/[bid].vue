@@ -137,7 +137,7 @@ const sendEditor = async () => {
     }
     sendLoading.value = true;
     const jsonContent = deltaContent.value.getEditorContent();
-    const packedData = LZString.compressToUTF16(JSON.stringify(jsonContent));
+    const packedData = LZString.compressToBase64(JSON.stringify(jsonContent));
 
     try {
         const response = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData });
