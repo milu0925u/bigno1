@@ -74,7 +74,7 @@ const sendEditor = async () => {
     const mydata = { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent }
     formData.append("jsondata", JSON.stringify(mydata));
     try {
-        const response = await axios.post("/api/board", formData, {
+        const response = await axios.put("/api/board", formData, {
             headers: { "Content-Type": "multipart/form-data" }
         });
         if (response.data.success) {

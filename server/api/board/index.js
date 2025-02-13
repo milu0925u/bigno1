@@ -29,7 +29,9 @@ export default defineEventHandler(async (event) => {
   }
 
   // 使用formdata
-  if (event.req.method === "POST") {
+  if (event.req.method === "PUT") {
+    console.log('formdata開始');
+    
     const form = new IncomingForm({  maxFileSize: 8 * 1024 * 1024});
     console.log('11完成');
     

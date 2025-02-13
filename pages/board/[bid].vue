@@ -145,7 +145,7 @@ const sendEditor = async () => {
 
 
     try {
-        const response = await axios.post("/api/board", formData, {
+        const response = await axios.put("/api/board", formData, {
             headers: { "Content-Type": "multipart/form-data" }
         });
         console.log(response, 'response!!!!!');
