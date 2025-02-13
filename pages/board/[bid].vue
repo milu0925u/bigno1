@@ -26,7 +26,7 @@
                         <b>{{ m && getUserById(m.uid).username }}</b>
                         <p>{{ m && m.content }}</p>
                         <div class="createdate">{{ m && m.createdate }}</div>
-                        <button v-if="user.id === m.uid" class="delete" @click="() => hiddenmessage(m.brid)"><i
+                        <button v-if="user && user.id === m.uid" class="delete" @click="() => hiddenmessage(m.brid)"><i
                                 class="fa-regular fa-rectangle-xmark"></i></button>
                     </div>
                 </transition-group>
@@ -208,7 +208,7 @@ const sendMessage = async () => {
 
 // 取得名稱
 const getUserById = (uid) => {
-    return users.value.find(user => user.id === uid);
+    return users?.value?.find(user => user.id === uid) || {};
 };
 
 // 監聽路由變更
