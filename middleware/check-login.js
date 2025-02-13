@@ -1,4 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const ipx = useCookie("ipx").value;
