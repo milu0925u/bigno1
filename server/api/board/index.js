@@ -70,8 +70,8 @@ export default defineEventHandler(async (event) => {
       success: true,
       message: '變更成功！',
     };
-    }else if (type ==="updateboard"){
-      
+   }else if (type ==="updateboard"){
+       
       const jsonDatas = LZString.decompressFromBase64(jsondata);
       const newjson = JSON.parse(jsonDatas);
 

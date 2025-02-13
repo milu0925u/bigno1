@@ -75,6 +75,8 @@ const sendEditor = async () => {
 
     try {
         const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: base64Data });
+        console.log(response, '收不到?');
+
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
