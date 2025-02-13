@@ -41,7 +41,8 @@ export default defineEventHandler(async (event) => {
     });
     const jsonString = formData.jsondata?.[0] || "";  // 取出字串
     const {type,uid,title,jsondata} = JSON.parse(jsonString); // 解析 JSON
-    
+    const newjson =  LZString.decompressFromBase64(jsondata)
+
     if (type === "addboard"){
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
@@ -50,8 +51,6 @@ export default defineEventHandler(async (event) => {
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
 
-    // 解析base64
-   const newjson =  LZString.decompressFromBase64(jsondata)
     const newBoard = new Board({
       bid:bnewid,
       uid:uid,
@@ -66,8 +65,6 @@ export default defineEventHandler(async (event) => {
       };
     }else if (type ==="updateboard"){
       // 解析base64
-      const newjson =  LZString.decompressFromBase64(jsondata)
-
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
