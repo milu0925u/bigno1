@@ -64,6 +64,8 @@ export default defineEventHandler(async (event) => {
         message: '發布成功！',
       };
     }else if (type ==="updateboard"){
+      console.log('我有夾帶資料進入');
+      
       // 解析base64
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
