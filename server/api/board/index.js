@@ -4,7 +4,7 @@ import moment from "moment";
 import LZString from "lz-string";
 import { IncomingForm } from 'formidable';
 
-
+// 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
   await connectToDatabase(); // 確保資料庫連接
 
@@ -29,12 +29,8 @@ export default defineEventHandler(async (event) => {
   }
 
   // 使用formdata
-  if (event.req.method === "PUT") {
-    console.log('formdata開始');
-    
+  if (event.req.method === "POST") {
     const form = new IncomingForm({  maxFileSize: 8 * 1024 * 1024});
-    console.log('11完成');
-    
     const formData = await new Promise((resolve, reject) => {
       form.parse(event.node.req, (err, fields, files) => {
           if (err) {
@@ -43,13 +39,10 @@ export default defineEventHandler(async (event) => {
           resolve(fields); // 只有成功時才會執行
       });
     });
-
-    console.log('22完成');
     const jsonString = formData.jsondata?.[0] || "";  // 取出字串
     const {type,uid,title,jsondata} = JSON.parse(jsonString); // 解析 JSON
-    const onlyjsonString = String(jsondata);
-    const newjson =  LZString.decompressFromBase64(onlyjsonString)
-    console.log('33完成');
+    const newjson =  LZString.decompressFromBase64(jsondata)
+    
     if (type === "addboard"){
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
@@ -58,6 +51,7 @@ export default defineEventHandler(async (event) => {
     // 抓到今天日期
     const today = new Date().toISOString().split('T')[0]
 
+    // 解析base64
     const newBoard = new Board({
       bid:bnewid,
       uid:uid,
@@ -71,9 +65,7 @@ export default defineEventHandler(async (event) => {
         message: '發布成功！',
       };
     }else if (type ==="updateboard"){
-      console.log('我有夾帶資料進入');
-      
-      // 解析base64
+
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
@@ -124,4 +116,3 @@ export default defineEventHandler(async (event) => {
   };
 }
 });
-
