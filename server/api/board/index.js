@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
 
     if (type === "addboard"){
-      const jsonDatas = LZString.compressToBase64(jsondata);
+      const jsonDatas = LZString.decompressFromBase64(jsondata);
       const newjson = JSON.parse(jsonDatas);
 
       
@@ -73,7 +73,7 @@ export default defineEventHandler(async (event) => {
     };
     }else if (type ==="updateboard"){
       
-      const jsonDatas = LZString.compressToBase64(jsondata);
+      const jsonDatas = LZString.dedecompressFromBase64(jsondata);
       const newjson = JSON.parse(jsonDatas);
 
       const updatedBoard = await Board.findOneAndUpdate(
