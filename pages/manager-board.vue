@@ -70,13 +70,14 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
-    const formData = new FormData();
-    const mydata = { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent }
-    formData.append("jsondata", JSON.stringify(mydata));
+    // const formData = new FormData();
+    // const mydata = { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent }
+    // formData.append("jsondata", JSON.stringify(mydata));
     try {
-        const response = await axios.put("/api/board", formData, {
-            headers: { "Content-Type": "multipart/form-data" }
-        });
+        const response = await axios.put("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent });
+        // const response = await axios.put("/api/board", formData, {
+        //     headers: { "Content-Type": "multipart/form-data" }
+        // });
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
