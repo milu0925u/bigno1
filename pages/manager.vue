@@ -110,7 +110,7 @@ onMounted(() => {
             }
 
             // 统一排序逻辑
-            printUser.value = filteredUsers?.sort(
+            printUser.value = [...(filteredUsers || [])].sort(
                 (a, b) => new Date(a.createDate) - new Date(b.createDate)
             );
         }, { immediate: true, deep: true }

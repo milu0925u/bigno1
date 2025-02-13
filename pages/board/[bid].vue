@@ -137,10 +137,16 @@ const sendEditor = async () => {
     }
     sendLoading.value = true;
     const jsonContent = deltaContent.value.getEditorContent();
-    const packedData = LZString.compressToBase64(JSON.stringify(jsonContent));
+    // 使用formdata
+    const formData = new FormData();
+    const mydata = { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: jsonContent }
+    formData.append("jsondata", mydata);
+    // const packedData = LZString.compressToBase64(JSON.stringify(jsonContent));
 
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData });
+        const response = await axios.post("/api/board", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,

@@ -70,9 +70,13 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
-    const packedData = LZString.compressToUTF16(JSON.stringify(jsonContent));
+    const formData = new FormData();
+    const mydata = { type: 'addboard', uid: user.value.id, title: title.value, jsondata: jsonContent }
+    formData.append("jsondata", JSON.stringify(mydata));
     try {
-        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: packedData });
+        const response = await axios.post("/api/board", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
@@ -111,7 +115,7 @@ const fetchboard = async () => {
 // 開啟/隱藏公告
 const getboardstate = async (bid, state) => {
     try {
-        const response = await axios.post('/api/board', { type: 'statechange', bid: bid, state: state })
+        const response = await axios.patch('/api/board', { type: 'statechange', bid: bid, state: state })
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
