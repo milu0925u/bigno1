@@ -35,9 +35,8 @@
 <script setup>
 
 const { $swal } = useNuxtApp();
-
-
 import axios from 'axios';
+import { fetchAllUsers } from '~/store/st_user';
 
 const formData = ref({
     type: 'signup', username: '', password: '', job: '選擇職業', lineName: '', lineID: ''
@@ -48,6 +47,7 @@ const signup = async () => {
     try {
         const response = await axios.post('/api/user', formData.value);
         if (response.data.success) {
+            fetchAllUsers();
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
