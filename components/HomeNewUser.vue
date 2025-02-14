@@ -33,7 +33,7 @@ const sortedUsers = computed(() => {
     return users.value
         .filter(user => user.verify === true) // 過濾掉 verify === false 的使用者
         .slice() // 創建一個副本，避免改動原始陣列
-        .sort((a, b) => new Date(b.createDate) - new Date(a.createDate)) // 按日期排序
+        .sort((a, b) => b.id - a.id) // 按日期排序
         .slice(0, 5); // 取前 5 個
 });
 

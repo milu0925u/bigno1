@@ -50,6 +50,7 @@ const send = async () => {
     try {
         const response = await axios.post('/api/user', formData.value);
         if (response.data.success) {
+            fetchAllUsers();
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
