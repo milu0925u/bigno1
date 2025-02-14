@@ -88,6 +88,18 @@ const Dayoff =
     })
   );
 
+  const BoardImg =
+  mongoose.models.boardimgs ||
+  mongoose.model(
+    "boardimgs",
+    new mongoose.Schema({
+      bid: Number,
+      iidx: String,
+      url:String,
+    })
+  );
+
+
   const BoardReply =
   mongoose.models.boardreplys ||
   mongoose.model(
@@ -109,4 +121,4 @@ const Dayoff =
     })
   );
 
-export { User, Battlefield, Trial, Dayoff ,Board,BoardReply};
+export { User, Battlefield, Trial, Dayoff ,Board,BoardReply,BoardImg};

@@ -1,7 +1,6 @@
 import { connectToDatabase } from "../../db";
-import { Board } from "../model";
+import { Board, BoardImg } from "../model";
 import moment from "moment";
-import LZString from "lz-string";
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
@@ -12,12 +11,17 @@ export default defineEventHandler(async (event) => {
   if (event.req.method === "GET") {
     const boards = await Board.find().sort({ createdate: -1 }).lean();
 
+
+    console.log('只有這?');
+    
+
     const formattedBoards = boards.map(b => ({
       ...b,
       createdate: moment(b.createdate).format('YYYY-MM-DD'),
       updatedate: b.updatedate ? moment(b.updatedate).format('YYYY-MM-DD') : null,
       hiddendate: b.hiddendate ? moment(b.hiddendate).format('YYYY-MM-DD') : null
     }))
+
 
 
     return {
@@ -28,13 +32,10 @@ export default defineEventHandler(async (event) => {
   }
 
   if (event.req.method === "POST") {
-    const { uid,title,jsondata,bid,type,state } = await readBody(event);
+    const { uid,title,jsondata,bid,type,state} = await readBody(event);
 
 
     if (type === "addboard"){
-      const jsonDatas = LZString.decompressFromBase64(jsondata);
-      const newjson = JSON.parse(jsonDatas);
-
     // 抓到最後一筆編號
     let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
     const bnewid = lastNum ? Number(lastNum.bid) + 1 : 1;
@@ -45,7 +46,7 @@ export default defineEventHandler(async (event) => {
       bid:bnewid,
       uid:uid,
       title:title,
-      content:newjson,
+      content:jsondata,
       createdate: today ,
     });
     await newBoard.save();
@@ -53,7 +54,22 @@ export default defineEventHandler(async (event) => {
         success: true,
         message: '發布成功！',
       };
-    }else if (type === "statechange"){
+    }else if (type === "addboardimg"){
+      // 抓到最後一筆編號
+let lastNum = await Board.findOne().sort({ bid: -1 }).limit(1);
+
+const newBoard = new BoardImg({
+  bid:Number(lastNum.bid),
+  iidx:jsondata.index,
+  url:jsondata.url,
+});
+
+await newBoard.save();
+return {
+  success: true,
+  message: '圖片儲存成功！',
+};
+}else if (type === "statechange"){
       if (!state){
         await  Board.updateOne(
           { bid: bid }, 
@@ -71,17 +87,13 @@ export default defineEventHandler(async (event) => {
       message: '變更成功！',
     };
    }else if (type ==="updateboard"){
-       
-      const jsonDatas = LZString.decompressFromBase64(jsondata);
-      const newjson = JSON.parse(jsonDatas);
-
       const updatedBoard = await Board.findOneAndUpdate(
         { bid: bid },
         { 
           $set: { 
             uid: uid,
             title: title,
-            content: newjson,
+            content: jsondata,
             updatedate: new Date()
           }
         },
@@ -92,6 +104,20 @@ export default defineEventHandler(async (event) => {
           success: true,
           message: '更新成功！',
           data:updatedBoard,
+        };
+    }else if (type ==="updateboardimg"){
+      await BoardImg.deleteMany({ bid });
+
+      const newBoard = new BoardImg({
+        bid:bid,
+        iidx:jsondata.index,
+        url:jsondata.url,
+      });
+      await newBoard.save();
+
+        return {
+          success: true,
+          message: '更新成功！'
         };
     }
   };

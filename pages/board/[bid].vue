@@ -51,7 +51,7 @@ import Editer from '~/components/Editer.vue';
 import Loading from "~/components/Loading.vue"
 import Loading2 from "~/components/Loading2.vue"
 import { useRoute } from 'vue-router';
-import LZString from "lz-string";
+
 const { $swal } = useNuxtApp();
 const user = useState('user');
 const users = useState('users');
@@ -66,6 +66,8 @@ const defaultContent = ref();
 const fetchData = async () => {
     try {
         const response = await axios.get(`/api/board/${bid}`);
+        console.log(response, '123');
+
         if (response.data.success) {
             title.value = response.data.data.title;
             defaultContent.value = response.data.data.content;
@@ -122,6 +124,23 @@ const hiddenmessage = async (brid) => {
     };
 }
 
+const Reorganization = async (json) => {
+    const imageUrlAndIndex = [];  // 用來儲存圖片的位置
+    const newOps = [];        // 儲存修改後的 ops
+    let imageCount = 1;
+
+    for (let i = 0; i < json.ops.length; i++) {
+        const op = json.ops[i];
+        if (op.insert && op.insert.image) {
+            const base64Image = op.insert.image;
+            imageUrlAndIndex.push({ index: i, url: base64Image });
+            newOps.push({ insert: { image: `img${imageCount}` } });
+            imageCount++;
+        } else { newOps.push(op) }
+    }
+
+    return { image: imageUrlAndIndex, ops: newOps }
+}
 
 // 傳送編輯器內文
 const sendLoading = ref(false);
@@ -137,15 +156,13 @@ const sendEditor = async () => {
     }
     sendLoading.value = true;
     const jsonContent = deltaContent.value.getEditorContent();
-    const packedData = LZString.compressToBase64(JSON.stringify(jsonContent));
-    // 使用formdata
-    const formData = new FormData();
-    const mydata = { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData }
-    formData.append("jsondata", mydata);
-
+    const { image, ops } = await Reorganization(jsonContent)
 
     try {
-        const response = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: packedData });
+        const boardApiRequest = await axios.post("/api/board", { type: 'updateboard', bid: bid, uid: user.value.id, title: title.value, jsondata: ops });
+        const imageApiRequests = image && image.length > 0 ? image.map((v) => axios.post("/api/board", { type: 'updateboardimg', bid: bid, jsondata: v })) : [];
+        const [response, ...imageResponses] = await Promise.all([boardApiRequest, ...imageApiRequests]);
+
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,

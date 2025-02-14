@@ -43,7 +43,6 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
-import LZString from "lz-string";
 
 const { $swal } = useNuxtApp();
 const user = useState("user");
@@ -58,6 +57,24 @@ const isViewing = ref(false); // 編輯狀態
 
 const quillRef = ref(null); // 取得編輯器內文
 
+const Reorganization = async (json) => {
+    const imageUrlAndIndex = [];  // 用來儲存圖片的位置
+    const newOps = [];        // 儲存修改後的 ops
+    let imageCount = 1;
+
+    for (let i = 0; i < json.ops.length; i++) {
+        const op = json.ops[i];
+        if (op.insert && op.insert.image) {
+            const base64Image = op.insert.image;
+            imageUrlAndIndex.push({ index: `img${imageCount}`, url: base64Image });
+            newOps.push({ insert: { image: `img${imageCount}` } });
+            imageCount++;
+        } else { newOps.push(op) }
+    }
+
+    return { image: imageUrlAndIndex, ops: newOps }
+}
+
 // 傳送編輯器內文
 const sendEditor = async () => {
     if (!title.value) {
@@ -70,12 +87,13 @@ const sendEditor = async () => {
         return
     }
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
-    const base64Data = LZString.compressToBase64(JSON.stringify(jsonContent));
-
+    const { image, ops } = await Reorganization(jsonContent)
 
     try {
-        const response = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: base64Data });
-        console.log(response, '收不到?');
+        const boardApiRequest = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: ops });
+        const imageApiRequests = image && image.length > 0 ? image.map((v) => axios.post("/api/board", { type: 'addboardimg', jsondata: v })) : [];
+        const [response, ...imageResponses] = await Promise.all([boardApiRequest, ...imageApiRequests]);
+        console.log(response, 'resppppppp');
 
         if (response.data.success) {
             $swal.fire({
