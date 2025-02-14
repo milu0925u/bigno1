@@ -2,17 +2,20 @@ import { connectToDatabase } from "../db";
 import { User, Trial } from "./model";
 import moment from "moment";
 
-// 依照日期搜尋 Trail 有沒有值
-const getTrialDataByDate = async (dateString) => {
-  const startOfDay = moment(dateString, "YYYY-MM-DD").startOf("day").toDate();
-  const endOfDay = moment(dateString, "YYYY-MM-DD").endOf("day").toDate();
-  
-  const data = await Trial.find({ date: { $gte: startOfDay, $lt: endOfDay } }).sort({ value: -1 }).lean();
-  return data;
-};
 
 // 排名
-const getUserRankingData = (users, startDateData, previousDateData) => {
+const getUserRankingData = async(users, date) => {
+      // 昨日
+    const startOfyesDay = new Date(moment(date).clone().subtract(1, 'days').startOf('day').toDate())
+    const endOfyesDay = new Date(moment(date).clone().subtract(1, 'days').endOf('day').toDate())
+
+    // 今日
+    const startOfDay = new Date(moment(date).startOf("day").toISOString());
+    const endOfDay = new Date(moment(date).endOf("day").toISOString());
+
+    const startDateData = await Trial.find({date: { $gte: startOfDay, $lt: endOfDay }}).lean();
+    const  previousDateData = await Trial.find({date: { $gte: startOfyesDay, $lt: endOfyesDay }}).lean();
+
   return users.map(user => {
     const userStartData = startDateData.find(data => data.id === user.id);
     const userPreviousData = previousDateData.find(data => data.id === user.id);
@@ -21,56 +24,10 @@ const getUserRankingData = (users, startDateData, previousDateData) => {
       ? (userPreviousData.ranking - userStartData.ranking) 
       : 0;
 
-    return { ...user, ...userStartData, pro };
+    return { ...user,...userStartData,  pro };
   });
 };
 
- // 判斷是否存在昨天的數據，若不存在則處理從最後一筆資料往前推的數據
- const getYesterdayData = async (date) => {
-  let data = await getTrialDataByDate(date);
-  if (data.length === 0) {
-    // 抓取最後一筆資料
-    const lastData = await Trial.findOne().sort({ date: -1 }).limit(1).lean();
-    const lastDataDate = moment(lastData.date).format("YYYY-MM-DD"); // 轉換為 YYYY-MM-DD 格式 昨日
-    const beforeyesterday = new Date(lastDataDate);
-    beforeyesterday.setDate(beforeyesterday.getDate() - 1);  // 前日
-
-    // 繼續抓取數據
-    data = await getTrialDataByDate(lastDataDate);
-    return { data, beforeyesterday };
-  }
-  return { data, beforeyesterday: null };
-};
-
-// 比對 userData 的每個 ID 的 value 是否有變化 (試煉參加與否)
-const compareParticipation = (userData, yesterdayData, beforeyesterdayData) => {
-  const participationStats = {
-    yesp: 0,
-    nop: 0
-  };
-
-  // 遍歷 userData，並比較今天與前一天的 value
-  userData.forEach(user => {
-    // 找出今天的 user 資料
-    const todayData = yesterdayData.find(data => data.id === user.id);
-    // 找出前一天的 user 資料
-    const prevData = beforeyesterdayData ? beforeyesterdayData.find(data => data.id === user.id) : null;
-
-    if (todayData && prevData) {
-      // 比對今天與前一天的 value
-      if (todayData.value > prevData.value) {
-        participationStats.yesp += 1; // 有參加
-      } else {
-        participationStats.nop += 1; // 沒有參加
-      }
-    } else {
-      // 如果今天或前一天的數據找不到，視為沒有參加
-      participationStats.nop += 1;
-    }
-  });
-
-  return participationStats;
-};
 
 // 處理 HTTP 請求
 export default defineEventHandler(async (event) => {
@@ -78,36 +35,60 @@ export default defineEventHandler(async (event) => {
   await connectToDatabase(); // 確保資料庫連接
 
   try {
+
     if (event.req.method === "GET") {
-      // 抓到目前的會員
-      const users = await User.find({ verify: true }).lean();
-   
-      // 今天日期
-      const now = new Date().toISOString().split("T")[0];  // 2025-01-01
-      // 昨天日期
-      const yesterdayDate = new Date(now);
-      yesterdayDate.setDate(yesterdayDate.getDate() - 1);  // 2024-12-31
+      const today = new Date().toISOString().split('T')[0];  
+      const users = await User.find({ verify: true }).select('id username').lean();
+    // 昨日
+    const startOfyesDay = new Date(moment(today).clone().subtract(1, 'days').startOf('day').toDate())
+    const endOfyesDay = new Date(moment(today).clone().subtract(1, 'days').endOf('day').toDate())
+    const oneDayData = await Trial.find({date: { $gte: startOfyesDay, $lt: endOfyesDay }}).lean();
+    // 前日
+    const startOfyesDay2 = new Date(moment(today).clone().subtract(2, 'days').startOf('day').toDate())
+    const endOfyesDay2 = new Date(moment(today).clone().subtract(2, 'days').endOf('day').toDate())
+    let twoDayData = await Trial.find({date: { $gte: startOfyesDay2, $lt: endOfyesDay2 }}).lean();
 
+      // 假如前日數據抓不到
+      const allFalse = (Array.isArray(twoDayData) ? twoDayData : []).every(trial => !trial.value);
+          if(allFalse){
+            const latestTrial = await Trial.findOne({ date: { $lt:  startOfyesDay2}, value: { $exists: true, $ne: null } }).sort({ date: -1 }).lean();
+            if(latestTrial){
+            const lastdate = latestTrial.date
+            const newstartOfyesDay = new Date(moment(lastdate).startOf("day").toISOString());
+            const newendOfyesDay = new Date(moment(lastdate).endOf("day").toISOString());
+            twoDayData = await Trial.find({date: { $gte: newstartOfyesDay, $lt: newendOfyesDay  }}).lean();
+            }
+          }
 
-      // 取得昨天的數據及前日數據
-    const { data: yesterdayData, beforeyesterday } = await getYesterdayData(yesterdayDate);
+          const newoneUserData = users.map((u)=>{
+            const trialData = oneDayData.find((tr)=>tr.id === u.id)
+            const trialData2 = twoDayData.find((tr)=>tr.id === u.id)
+            const isNewEntry = !trialData2;
 
-    let beforeyesterdayData = [];
-    if (beforeyesterday) {
-      beforeyesterdayData = await getTrialDataByDate(beforeyesterday);  // 前日數據
+            const value = trialData ? trialData.value : 0;
+            const ranking =  trialData2 && trialData  ? trialData.ranking - trialData2.ranking : 0         
+            let attend = false;
+            if(isNewEntry && trialData && !trialData2){
+              attend = true;
+            }else if (trialData && trialData2 && trialData.value - trialData2.value !== 0){
+              attend = true;
+            }
+
+            return {
+              id:u.id,
+              username:u.username,
+              value:value,
+              attend:attend,
+              ranking:ranking
+            }
+          })
+
+      return {
+            success: true,
+            message: "抓取成功！",
+            users: newoneUserData,
+          };
     }
-
-    const userData = getUserRankingData(users, yesterdayData, beforeyesterdayData);
-
-    const participationStats = compareParticipation(userData, yesterdayData, beforeyesterdayData);
-    
-    return {
-      success: true,
-      message: "抓取成功！",
-      users: userData, 
-      ynsers: participationStats,
-    };
-  };
 
     if (event.req.method === "POST") {
       const { id, value, date, mid, type ,newdate,radio} = await readBody(event);

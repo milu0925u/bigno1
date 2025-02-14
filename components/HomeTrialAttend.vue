@@ -73,9 +73,10 @@ const fetchData = async (retries = 3, delay = 1000) => {
     try {
         const response = await axios.get("/api/trial");
         if (response.data.success) {
-            const ptrue = response.data.ynsers.yesp;
-            const pfalse = response.data.ynsers.nop;
-            datas.value = [ptrue, pfalse]
+            const newdata = response.data.users;
+            const y = newdata.filter(v => v.attend)
+            const n = newdata.filter(v => !v.attend)
+            datas.value = [y.length, n.length];
             loading.value = false;
         }
     } catch (error) {

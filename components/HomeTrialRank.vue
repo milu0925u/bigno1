@@ -12,8 +12,8 @@
                     <div>{{ user.username }}</div>
                     <div>{{ user.value }}K</div>
                     <div class="pro">
-                        <i v-if="user.pro > 0" class="fa-solid fa-up-long up-color"></i>
-                        <i v-else-if="user.pro < 0" class="fa-solid fa-down-long down-color"></i>
+                        <i v-if="user.ranking < 0" class="fa-solid fa-up-long up-color"></i>
+                        <i v-else-if="user.ranking > 0" class="fa-solid fa-down-long down-color"></i>
                         <i v-else class="fa-solid fa-minus"></i>
                     </div>
                 </div>

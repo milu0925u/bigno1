@@ -69,9 +69,6 @@ return {
       const latestTrial = await Trial.findOne({ date: { $lt: startOfDay }, value: { $exists: true, $ne: null } }).sort({ date: -1 }).lean();
       const lastdate = latestTrial.date
       
-      console.log(lastdate);
-      
-
       const newstartOfyesDay = new Date(moment(lastdate).startOf("day").toISOString());
       const newendOfyesDay = new Date(moment(lastdate).endOf("day").toISOString());
       
@@ -93,7 +90,6 @@ return {
         hasChanged,
       };
     });
-console.log(trialResults);
 
     const users = await User.find({verify:true}).lean(); 
 
