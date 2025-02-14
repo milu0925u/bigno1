@@ -89,6 +89,9 @@ const fetchSearch = async () => {
                 });
             }
             data.value = response.data.data;
+
+            console.log(response.data.data, 'dd');
+
         }
     } catch (error) {
         $swal.fire({

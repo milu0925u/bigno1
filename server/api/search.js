@@ -48,11 +48,11 @@ return {
     // 昨日
     const startOfyesDay = new Date(moment(date).clone().subtract(1, 'days').startOf('day').toDate())
     const endOfyesDay = new Date(moment(date).clone().subtract(1, 'days').endOf('day').toDate())
+
     // 今日
     const startOfDay = new Date(moment(date).startOf("day").toISOString());
     const endOfDay = new Date(moment(date).endOf("day").toISOString());
 
-    const userdata = await User.find({ verify: true }).lean();
     const battlesdata = await Battlefield.find({date: { $gte: startOfDay, $lt: endOfDay }}).lean();
     const dayoffsdata = await Dayoff.find({date: { $gte: startOfDay, $lt: endOfDay },verify: true}).lean();
     // 戰場出席/未出席 (有請假要扣除)
@@ -61,26 +61,63 @@ return {
 
 
     const trialsdata = await Trial.find({date: { $gte: startOfDay, $lt: endOfDay }}).lean();
-    const trialsyesdata = await Trial.find({date: { $gte: startOfyesDay, $lt: endOfyesDay }}).lean();
+    let trialsyesdata = await Trial.find({date: { $gte: startOfyesDay, $lt: endOfyesDay }}).lean();
+
+    // 假如昨日的是空陣列
+    const allFalse = trialsyesdata.every(trial => !trial.value); 
+    if(allFalse){
+      const latestTrial = await Trial.findOne({ date: { $lt: startOfDay }, value: { $exists: true, $ne: null } }).sort({ date: -1 }).lean();
+      const lastdate = latestTrial.date
+      
+      console.log(lastdate);
+      
+
+      const newstartOfyesDay = new Date(moment(lastdate).startOf("day").toISOString());
+      const newendOfyesDay = new Date(moment(lastdate).endOf("day").toISOString());
+      
+      trialsyesdata = await Trial.find({date: { $gte: newstartOfyesDay, $lt: newendOfyesDay  }}).lean();
+    }
 
     const trialsyesMap = trialsyesdata.reduce((map, trial) => {
       map[trial.id] = trial.value; 
       return map;
     }, {});
     const trialResults = trialsdata.map(trial => {
-      const yesterdayValue = trialsyesMap[trial.id] || null;
-      const hasChanged = yesterdayValue !== null && yesterdayValue !== trial.value;
+      const isNewEntry = !trialsyesMap.hasOwnProperty(trial.id);  // 新人
+      const yesterdayValue =  isNewEntry ? null : trialsyesMap[trial.id] || 0;
+      const hasChanged = trial.value - yesterdayValue > 0;
       return {
         id: trial.id,
         todayValue: trial.value,
         yesterdayValue,
-        hasChanged, 
+        hasChanged,
       };
     });
-    const unsubmitted = trialResults.filter(trial => !trial.hasChanged);
-const submitted = trialResults.filter(trial => trial.hasChanged); 
+console.log(trialResults);
 
+    const users = await User.find({verify:true}).lean(); 
 
+    const usersResults = users.map(u => {
+      const existingTrial = trialResults.some(tr => tr.id === u.id);
+      
+      if (!existingTrial) {
+        return {
+          id: u.id,
+          todayValue: null, 
+          yesterdayValue: null,
+          hasChanged: false,  
+        };
+      }
+      return null; 
+    }).filter(item => item !== null);
+    
+    const newtrialResults = [...trialResults, ...usersResults];
+    
+
+   let unsubmitted = newtrialResults.filter(trial => !trial.hasChanged); // 昨日是空值 或 沒打
+   let submitted = newtrialResults.filter(trial => trial.hasChanged); // 昨日是有值
+
+  
 
     return {
       success: true,
