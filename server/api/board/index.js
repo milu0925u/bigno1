@@ -10,11 +10,6 @@ export default defineEventHandler(async (event) => {
 
   if (event.req.method === "GET") {
     const boards = await Board.find().sort({ createdate: -1 }).lean();
-
-
-    console.log('只有這?');
-    
-
     const formattedBoards = boards.map(b => ({
       ...b,
       createdate: moment(b.createdate).format('YYYY-MM-DD'),

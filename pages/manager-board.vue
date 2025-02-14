@@ -34,6 +34,9 @@
                     <Editer ref="quillRef" :isViewing="isViewing" />
                 </ClientOnly>
             </div>
+            <div v-if="sendLoading" class="send-loading">
+                <Loading2 />
+            </div>
         </div>
     </div>
 
@@ -43,8 +46,10 @@
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import axios from "axios";
 import Editer from '~/components/Editer.vue';
+import Loading2 from '~/components/Loading2.vue';
 
 const { $swal } = useNuxtApp();
+const sendLoading = ref(false);
 const user = useState("user");
 const users = useState("users")
 const currentActive = ref("allboard"); // 接收子層組件
@@ -86,6 +91,7 @@ const sendEditor = async () => {
         });
         return
     }
+    sendLoading.value = true;
     const jsonContent = quillRef.value.getEditorContent(); // JSON 內容
     const { image, ops } = await Reorganization(jsonContent)
 
@@ -93,8 +99,6 @@ const sendEditor = async () => {
         const boardApiRequest = await axios.post("/api/board", { type: 'addboard', uid: user.value.id, title: title.value, jsondata: ops });
         const imageApiRequests = image && image.length > 0 ? image.map((v) => axios.post("/api/board", { type: 'addboardimg', jsondata: v })) : [];
         const [response, ...imageResponses] = await Promise.all([boardApiRequest, ...imageApiRequests]);
-        console.log(response, 'resppppppp');
-
         if (response.data.success) {
             $swal.fire({
                 title: response.data.message,
@@ -102,6 +106,7 @@ const sendEditor = async () => {
                 timer: 1500,
                 showConfirmButton: false
             });
+            sendLoading.value = false;
             title.value = ""
             quillRef.value?.clearEditor();
         } else {
@@ -189,6 +194,7 @@ definePageMeta({
 .container {
     width: 75%;
     margin-inline: auto;
+    position: relative;
 }
 
 .grid-content {
@@ -260,6 +266,19 @@ definePageMeta({
 
 .editer-content {
     margin-bottom: 3rem;
+}
+
+.send-loading {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media screen and (max-width: 768px) {

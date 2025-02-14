@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <HomeTitle title="試煉總排名" />
-        <span class="tt">Fetch data to the last one</span>
         <div class="rank-content card">
             <div v-if="loading" class="loading">
                 <Loading />
@@ -59,15 +58,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 .container {
     position: relative;
-}
-
-.tt {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    font-size: 8px;
-    font-family: monospace;
-    color: rgb(76, 68, 190);
 }
 
 .rank-content {
