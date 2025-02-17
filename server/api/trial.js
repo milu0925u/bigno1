@@ -46,14 +46,23 @@ export default defineEventHandler(async (event) => {
     // 前日
     const startOfyesDay2 = new Date(moment(today).clone().subtract(2, 'days').startOf('day').toDate())
     const endOfyesDay2 = new Date(moment(today).clone().subtract(2, 'days').endOf('day').toDate())
+
+
     let twoDayData = await Trial.find({date: { $gte: startOfyesDay2, $lt: endOfyesDay2 }}).lean();
 
       // 假如前日數據抓不到
       const allFalse = (Array.isArray(twoDayData) ? twoDayData : []).every(trial => !trial.value);
           if(allFalse){
             const latestTrial = await Trial.findOne({ date: { $lt:  startOfyesDay2}, value: { $exists: true, $ne: null } }).sort({ date: -1 }).lean();
+
+            console.log(latestTrial,'later');
+            
+
             if(latestTrial){
             const lastdate = latestTrial.date
+
+            console.log(lastdate,'date');
+            
             const newstartOfyesDay = new Date(moment(lastdate).startOf("day").toISOString());
             const newendOfyesDay = new Date(moment(lastdate).endOf("day").toISOString());
             twoDayData = await Trial.find({date: { $gte: newstartOfyesDay, $lt: newendOfyesDay  }}).lean();

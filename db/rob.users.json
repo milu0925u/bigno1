@@ -1,0 +1,1683 @@
+[{
+  "_id": {
+    "$oid": "677cd3f1b89bea1c7137ad8d"
+  },
+  "createDate": {
+    "$date": "2024-11-16T00:00:00.000Z"
+  },
+  "id": {
+    "$numberLong": "1"
+  },
+  "job": "服事",
+  "position": "管理員",
+  "lineID": "rabbe0925",
+  "verify": true,
+  "password": "777777",
+  "username": "米路露",
+  "lineName": "路",
+  "leaveDate": null
+},
+{
+  "_id": {
+    "$oid": "677dc84c0477cc2c2d07dd79"
+  },
+  "createDate": {
+    "$date": "2024-11-16T00:00:00.000Z"
+  },
+  "id": {
+    "$numberLong": "2"
+  },
+  "job": "騎士",
+  "position": "一般成員",
+  "lineID": "",
+  "verify": true,
+  "password": "123456",
+  "username": "隆隆源",
+  "lineName": "Eric ",
+  "leaveDate": null
+},
+{
+  "_id": {
+    "$oid": "677de0050477cc2c2d07dd7b"
+  },
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "id": {
+    "$numberLong": "3"
+  },
+  "job": "獵人",
+  "position": "一般成員",
+  "lineID": "",
+  "verify": true,
+  "password": "987654",
+  "username": "霸豬東健",
+  "lineName": "Hao",
+  "leaveDate": null
+},
+{
+  "_id": {
+    "$oid": "677e3cab8ecb324f58476f17"
+  },
+  "id": 4,
+  "username": "KuRo",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-22T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "KuRo"
+},
+{
+  "_id": {
+    "$oid": "677e3d078ecb324f58476f1c"
+  },
+  "id": 5,
+  "username": "東莞仔",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-06T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "cheng"
+},
+{
+  "_id": {
+    "$oid": "677e3de8b0b315c4516d742e"
+  },
+  "id": 6,
+  "username": "大寶貝",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": " ",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "林利豐",
+  "trialTotal": 1425000
+},
+{
+  "_id": {
+    "$oid": "677f1533b0b315c4516d7437"
+  },
+  "id": 7,
+  "username": "麥該隧",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "宏韋"
+},
+{
+  "_id": {
+    "$oid": "677f1549b0b315c4516d743c"
+  },
+  "id": 8,
+  "username": "以本商人",
+  "password": "123456",
+  "job": "鐵匠",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-08T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-02T00:00:00.000Z"
+  },
+  "lineName": "Aman LUK"
+},
+{
+  "_id": {
+    "$oid": "677f1556b0b315c4516d7441"
+  },
+  "id": 9,
+  "username": "肥滋滋的米粥",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "阿中"
+},
+{
+  "_id": {
+    "$oid": "677f1567b0b315c4516d7446"
+  },
+  "id": 10,
+  "username": "武裝小黑",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-07T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Tony",
+  "trialTotal": 548961
+},
+{
+  "_id": {
+    "$oid": "677f157ab0b315c4516d744b"
+  },
+  "id": 11,
+  "username": "隙弃罗",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-10T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-07T00:00:00.000Z"
+  },
+  "lineName": " Yuan",
+  "trialTotal": 504822
+},
+{
+  "_id": {
+    "$oid": "677f158cb0b315c4516d7450"
+  },
+  "id": 12,
+  "username": "1995",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-10T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-13T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677f162cb0b315c4516d7455"
+  },
+  "id": 13,
+  "username": "Vi",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-10T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "葳(Vivi)"
+},
+{
+  "_id": {
+    "$oid": "677f1639b0b315c4516d745a"
+  },
+  "id": 14,
+  "username": "璇璣悠悠",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-07T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Annie",
+  "trialTotal": 511322
+},
+{
+  "_id": {
+    "$oid": "677f1649b0b315c4516d745f"
+  },
+  "id": 15,
+  "username": "阿里阿多",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-21T00:00:00.000Z"
+  },
+  "lineName": "易Yi"
+},
+{
+  "_id": {
+    "$oid": "677f1654b0b315c4516d7464"
+  },
+  "id": 16,
+  "username": "藤",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "傑"
+},
+{
+  "_id": {
+    "$oid": "677f165fb0b315c4516d7469"
+  },
+  "id": 17,
+  "username": "我有隻honda 雕",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-27T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "彥",
+  "trialTotal": 1008000
+},
+{
+  "_id": {
+    "$oid": "677f166ab0b315c4516d746e"
+  },
+  "id": 18,
+  "username": "微風飄逸",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-12T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677f1675b0b315c4516d7473"
+  },
+  "id": 19,
+  "username": "賣隊友女孩",
+  "password": "123456",
+  "job": "鐵匠",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-23T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Kevin 書楷",
+  "trialTotal": 378718
+},
+{
+  "_id": {
+    "$oid": "677f167fb0b315c4516d7478"
+  },
+  "id": 20,
+  "username": "霸豬好想C",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-20T00:00:00.000Z"
+  },
+  "lineName": "芃媞-Ben",
+  "trialTotal": 604580
+},
+{
+  "_id": {
+    "$oid": "677f168fb0b315c4516d747d"
+  },
+  "id": 21,
+  "username": "聽著情歌打守槍",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-17T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "彥翔",
+  "trialTotal": 833766
+},
+{
+  "_id": {
+    "$oid": "677f1699b0b315c4516d7482"
+  },
+  "id": 22,
+  "username": "Acw",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-17T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-17T00:00:00.000Z"
+  },
+  "lineName": ".Acw",
+  "trialTotal": 720951
+},
+{
+  "_id": {
+    "$oid": "677f16a4b0b315c4516d7487"
+  },
+  "id": 23,
+  "username": "槍槍小波",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Taco",
+  "trialTotal": 1030000
+},
+{
+  "_id": {
+    "$oid": "677f16acb0b315c4516d748c"
+  },
+  "id": 24,
+  "username": "鹹蝦叔",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Johnny",
+  "trialTotal": 959115
+},
+{
+  "_id": {
+    "$oid": "677f16b7b0b315c4516d7491"
+  },
+  "id": 25,
+  "username": "咒刹來囉",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-13T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-11T00:00:00.000Z"
+  },
+  "lineName": "歐陽",
+  "trialTotal": 1243000
+},
+{
+  "_id": {
+    "$oid": "677f16c6b0b315c4516d7496"
+  },
+  "id": 26,
+  "username": "梅川窟子",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "lineName": "根",
+  "trialTotal": 1011000
+},
+{
+  "_id": {
+    "$oid": "677f16d0b0b315c4516d749b"
+  },
+  "id": 27,
+  "username": "chillsee郎",
+  "password": "123456",
+  "job": "鐵匠",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Yitin Chien",
+  "trialTotal": 512117
+},
+{
+  "_id": {
+    "$oid": "677f16d9b0b315c4516d74a0"
+  },
+  "id": 28,
+  "username": "闇南瓜爵士",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-17T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Pumpkin",
+  "trialTotal": 464745
+},
+{
+  "_id": {
+    "$oid": "677f16e4b0b315c4516d74a5"
+  },
+  "id": 29,
+  "username": "卡萊爾布萊茲",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-09T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677f16ecb0b315c4516d74aa"
+  },
+  "id": 30,
+  "username": "不要吵",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-21T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "小玥",
+  "trialTotal": 420897
+},
+{
+  "_id": {
+    "$oid": "677f16f6b0b315c4516d74af"
+  },
+  "id": 31,
+  "username": "天才小釣手",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-13T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677f1702b0b315c4516d74b4"
+  },
+  "id": 32,
+  "username": "擺右邊",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "Wo 窩 Steven",
+  "trialTotal": 853207
+},
+{
+  "_id": {
+    "$oid": "677f170cb0b315c4516d74b9"
+  },
+  "id": 33,
+  "username": "陌邪",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-12T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-21T00:00:00.000Z"
+  },
+  "lineName": "黃阿裕",
+  "trialTotal": 205900
+},
+{
+  "_id": {
+    "$oid": "677f1716b0b315c4516d74be"
+  },
+  "id": 34,
+  "username": "運氣決定實力",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "trialTotal": 321272,
+  "lineName": "熊小偉"
+},
+{
+  "_id": {
+    "$oid": "677f171fb0b315c4516d74c3"
+  },
+  "id": 35,
+  "username": "霸豬NaBi",
+  "password": "987654",
+  "job": "服事",
+  "position": "管理員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "驊",
+  "trialTotal": 805648
+},
+{
+  "_id": {
+    "$oid": "677f1728b0b315c4516d74c8"
+  },
+  "id": 36,
+  "username": "小霖O口O",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-08T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "冠霖",
+  "trialTotal": 424346
+},
+{
+  "_id": {
+    "$oid": "677f1731b0b315c4516d74cd"
+  },
+  "id": 37,
+  "username": "想不到Ray",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "lineName": "侯睿智",
+  "trialTotal": 172435
+},
+{
+  "_id": {
+    "$oid": "677f1740b0b315c4516d74d2"
+  },
+  "id": 38,
+  "username": "頭過身就過",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "小朱",
+  "trialTotal": 447910
+},
+{
+  "_id": {
+    "$oid": "677f1749b0b315c4516d74d7"
+  },
+  "id": 39,
+  "username": "吸到彩裝就課金",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-02T00:00:00.000Z"
+  },
+  "trialTotal": 846050
+},
+{
+  "_id": {
+    "$oid": "677f1758b0b315c4516d74dc"
+  },
+  "id": 40,
+  "username": "椎椎",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "簡阿哲",
+  "trialTotal": 343090
+},
+{
+  "_id": {
+    "$oid": "677f1761b0b315c4516d74e1"
+  },
+  "id": 41,
+  "username": "陌殤如酒回眸",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-05T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "M",
+  "trialTotal": 313675
+},
+{
+  "_id": {
+    "$oid": "677f176db0b315c4516d74e6"
+  },
+  "id": 42,
+  "username": "CHC",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-08T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "karl chen",
+  "trialTotal": 593627
+},
+{
+  "_id": {
+    "$oid": "677f1778b0b315c4516d74eb"
+  },
+  "id": 43,
+  "username": "幸運小牛o",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "trialTotal": 880993
+},
+{
+  "_id": {
+    "$oid": "677f1782b0b315c4516d74f0"
+  },
+  "id": 44,
+  "username": "玉米",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-12T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677f178cb0b315c4516d74f5"
+  },
+  "id": 45,
+  "username": "Ryo",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "trialTotal": 315923,
+  "lineName": "やまﾘよう"
+},
+{
+  "_id": {
+    "$oid": "677f1796b0b315c4516d74fa"
+  },
+  "id": 46,
+  "username": "咪咪兒",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-02T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "明旻",
+  "trialTotal": 239950
+},
+{
+  "_id": {
+    "$oid": "677f17a2b0b315c4516d74ff"
+  },
+  "id": 47,
+  "username": "佛山香港腳",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-14T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-11T00:00:00.000Z"
+  },
+  "lineName": "凱",
+  "trialTotal": 507992
+},
+{
+  "_id": {
+    "$oid": "677f17acb0b315c4516d7504"
+  },
+  "id": 48,
+  "username": "0404",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-10T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "小安",
+  "trialTotal": 1138000
+},
+{
+  "_id": {
+    "$oid": "677f17bfb0b315c4516d750a"
+  },
+  "id": 49,
+  "username": "劉煥榮",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-15T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677f17c8b0b315c4516d750f"
+  },
+  "id": 50,
+  "username": "盤盤兒",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "宇",
+  "trialTotal": 356498
+},
+{
+  "_id": {
+    "$oid": "677f17d4b0b315c4516d7514"
+  },
+  "id": 51,
+  "username": "烈空座",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-11-23T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "欽榮",
+  "trialTotal": 1039000
+},
+{
+  "_id": {
+    "$oid": "677f17ddb0b315c4516d7519"
+  },
+  "id": 52,
+  "username": "蒜泥搗梅",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-22T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "lineName": "劉邦鑑",
+  "trialTotal": 356489
+},
+{
+  "_id": {
+    "$oid": "677f17e6b0b315c4516d751e"
+  },
+  "id": 53,
+  "username": "Caster",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-23T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "trialTotal": 631612,
+  "lineName": "黃煒"
+},
+{
+  "_id": {
+    "$oid": "677f17efb0b315c4516d7523"
+  },
+  "id": 54,
+  "username": "A尼娜B樣怎麼C",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-24T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "trialTotal": 737017,
+  "lineName": "Taco"
+},
+{
+  "_id": {
+    "$oid": "677f1802b0b315c4516d7528"
+  },
+  "id": 55,
+  "username": "下面羊死了",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2024-12-24T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "邱盛鴻",
+  "trialTotal": 120630
+},
+{
+  "_id": {
+    "$oid": "677f180db0b315c4516d752d"
+  },
+  "id": 56,
+  "username": "叫爺爺",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "lineName": "俊成",
+  "createDate": {
+    "$date": "2024-12-31T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "trialTotal": 190623
+},
+{
+  "_id": {
+    "$oid": "677f1817b0b315c4516d7532"
+  },
+  "id": 57,
+  "username": "bobo",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-04T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "lineName": "王信淵",
+  "trialTotal": 393865
+},
+{
+  "_id": {
+    "$oid": "677f1822b0b315c4516d7537"
+  },
+  "id": 58,
+  "username": "肯德基kfc",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": null,
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-06T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "lineName": "kf",
+  "trialTotal": 1684000
+},
+{
+  "_id": {
+    "$oid": "677f18f77cc9242be258d7ba"
+  },
+  "id": 59,
+  "username": "Oo煞氣a濛貓oO",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "誠. (誠誠)",
+  "lineID": "",
+  "__v": 0,
+  "createDate": {
+    "$date": "2025-01-01T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-10T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6784cc37140ec508762dacc1"
+  },
+  "id": 60,
+  "username": "冷冽",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "Milo Tsai",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-09T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-02T00:00:00.000Z"
+  },
+  "__v": 0,
+  "trialTotal": 81925
+},
+{
+  "_id": {
+    "$oid": "6784ccd0140ec508762dacc7"
+  },
+  "id": 61,
+  "username": "麵麵",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "麵麵",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-10T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "__v": 0,
+  "trialTotal": 204214
+},
+{
+  "_id": {
+    "$oid": "6784ccdf140ec508762daccd"
+  },
+  "id": 62,
+  "username": "大摳呆",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "柏智",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-12T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "__v": 0,
+  "trialTotal": 249238
+},
+{
+  "_id": {
+    "$oid": "6784cce9140ec508762dacd3"
+  },
+  "id": 63,
+  "username": "璐魔",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "璐(小雯)",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-12T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0,
+  "trialTotal": 330234
+},
+{
+  "_id": {
+    "$oid": "678733cf60b4d63971c59428"
+  },
+  "id": 64,
+  "username": "November",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "ｲﾑﾙﾀ",
+  "lineID": "",
+  "createDate": {
+    "$date": "2024-11-01T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0,
+  "trialTotal": 682223
+},
+{
+  "_id": {
+    "$oid": "678733e560b4d63971c5942e"
+  },
+  "id": 65,
+  "username": "風吹沙塵",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "小昕",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-13T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0,
+  "trialTotal": 95303
+},
+{
+  "_id": {
+    "$oid": "6787341560b4d63971c59434"
+  },
+  "id": 66,
+  "username": "狩魔",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "You Chang",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-15T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0,
+  "trialTotal": 159116
+},
+{
+  "_id": {
+    "$oid": "678898d6e8b029de2a6594fa"
+  },
+  "id": 67,
+  "username": "海輪先弄濕",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "鴻",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-15T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0,
+  "trialTotal": 111259
+},
+{
+  "_id": {
+    "$oid": "678da926911e9bb0d630cca7"
+  },
+  "id": 68,
+  "username": "海輪弄不濕",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "johnny",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-17T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0,
+  "trialTotal": 64392
+},
+{
+  "_id": {
+    "$oid": "678f254080234c85ec42180f"
+  },
+  "id": 69,
+  "username": "哥哥不要吵",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "芃媞-Ben",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-20T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "678f9f01abb7b0d1034742bc"
+  },
+  "id": 70,
+  "username": "特雷伊",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "Max",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-21T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67905eda37dcad2a11cf7473"
+  },
+  "id": 71,
+  "username": "c夯特歐霸c",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "易Yi",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-22T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-01-25T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6792f67c47198163308b07ef"
+  },
+  "id": 72,
+  "username": "蘋果",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": false,
+  "lineName": "",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-24T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6795029c3d9484d1a20c3f19"
+  },
+  "id": 73,
+  "username": "篠田優",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "易Yi",
+  "lineID": " ",
+  "createDate": {
+    "$date": "2025-01-25T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67960a60cc285eb851c55101"
+  },
+  "id": 74,
+  "username": "亞Son森",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "AunSon.Tao",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67960a88d9f8e7567a2209bd"
+  },
+  "id": 75,
+  "username": "小鵝麻痺",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "Lon Lee",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6796b802f7d29e56bab1e602"
+  },
+  "id": 76,
+  "username": "涫婷",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "spider36",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-26T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6796b824a5fa18facee89ef0"
+  },
+  "id": 77,
+  "username": "一條柴",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": null,
+  "lineName": "Lice Liang",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-27T00:00:00.000Z"
+  },
+  "leaveDate": {
+    "$date": "2025-02-09T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "679a02c3a88f7df82a8a8df3"
+  },
+  "id": 78,
+  "username": "橘子香",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "Ray Ray",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-01-27T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a01e110da233a5ff312ef2"
+  },
+  "id": 79,
+  "username": "傑哥不要2015",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "Jay",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-02T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a01e2115f984212cc3813f"
+  },
+  "id": 80,
+  "username": "歹當憨吉",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "憨吉",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-02T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a01e2baca3a2a639d4f555"
+  },
+  "id": 81,
+  "username": "馬眼王",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "順",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-02T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a8a2f2a61e54a99033af19"
+  },
+  "id": 82,
+  "username": "強迫營業",
+  "password": "123456",
+  "job": "鐵匠",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "Lice Liang",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-09T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a8a344a61e54a99033af23"
+  },
+  "id": 83,
+  "username": "烏龍奶綠",
+  "password": "123456",
+  "job": "服事",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "Polaris",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-09T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aea09bb15a5daa4ede4e51"
+  },
+  "id": 84,
+  "username": "可麗餅叔叔",
+  "password": "123456",
+  "job": "刺客",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "Weicheng",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aea0d8cdfce84090cfb90c"
+  },
+  "id": 85,
+  "username": "吃太陽餅會掉寶",
+  "password": "123456",
+  "job": "獵人",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "東南~曾渝淮(魚丸)",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aea103e024ba2f95144a3d"
+  },
+  "id": 86,
+  "username": "命中注定",
+  "password": "123456",
+  "job": "騎士",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aea11bcdfce84090cfb91d"
+  },
+  "id": 87,
+  "username": "幻冷",
+  "password": "123456",
+  "job": "法師",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "鈺翔",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aea13ce9566b57b6929d4f"
+  },
+  "id": 88,
+  "username": "職人の拿鐵CC",
+  "password": "123456",
+  "job": "鐵匠",
+  "position": "一般成員",
+  "verify": true,
+  "lineName": "黃柏霖",
+  "lineID": "",
+  "createDate": {
+    "$date": "2025-02-13T00:00:00.000Z"
+  },
+  "leaveDate": null,
+  "__v": 0
+}]

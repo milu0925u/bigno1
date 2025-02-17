@@ -33,9 +33,7 @@ import axios from "axios";
 
 const { $swal } = useNuxtApp();
 
-
-
-import { WatcherUser, fetchAllUsers } from '~/store/st_user.js';
+import { fetchAllUsers } from '~/store/st_user.js';
 
 
 const currentActive = ref("trialUser"); // 接收子層組件
@@ -53,7 +51,7 @@ const printUser = ref([]);
 // 送出代寫數值 
 const send = async (id, value) => {
     try {
-        const response = await axios.post("/api/trial", { ...inputData.value, id: id, value: value, newdate: newdate.value });
+        const response = await axios.post("/api/trial", { ...inputData.value, type: 'add', date: new Date().toISOString().split("T")[0], id: id, mid: user.value.id, value: value, newdate: newdate.value });
         if (response.data.success) {
             fetchAllUsers()
             $swal.fire({
@@ -71,9 +69,11 @@ const send = async (id, value) => {
 // 抓取資料並過濾
 const fetchData = async () => {
     try {
+
         const response = await axios.get('/api/trial');
         if (response.data.success) {
-            printUser.value = response.data.users.sort((a, b) => a.ranking - b.ranking);
+            const newdata = response.data.users
+            printUser.value = newdata.sort((a, b) => b.value - a.value);
         } else {
             $swal.fire({
                 title: response.data.message,
@@ -88,15 +88,16 @@ const fetchData = async () => {
 };
 
 // 監聽
-WatcherUser((newUser) => {
-    if (newUser) {
-        inputData.value = {
-            mid: newUser.id,
-            type: 'add',
-            date: new Date().toISOString().split("T")[0],
-        };
-    }
-});
+// WatcherUser((newUser) => {
+//     if (newUser) {
+//         inputData.value = {
+//             mid: newUser.id,
+//             type: 'add',
+//             date: new Date().toISOString().split("T")[0],
+//         };
+//     }
+// });
+
 onMounted(() => {
     fetchData();
 });
