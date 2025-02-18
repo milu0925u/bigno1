@@ -39,7 +39,7 @@ import HomeTrialAttend from '~/components/HomeTrialAttend.vue';
 import HomeTrialRank from '~/components/HomeTrialRank.vue';
 import HomeNavbar from '~/components/HomeNavbar.vue';
 import HomeProfession from '~/components/HomeProfession.vue';
-
+import { fetchAllUsers } from '~/store/st_user';
 // 設置此頁的title跟關鍵字搜尋
 useHead({
     title: '天下第一霸豬',
@@ -62,6 +62,14 @@ onMounted(() => {
     setTimeout(() => {
         loading.value = false;
     }, 2000);
+
+
+    window.addEventListener("storage", (event) => {
+        if (event.key === "updatetime") {
+            fetchAllUsers();
+        }
+    });
+
 });
 
 definePageMeta({
