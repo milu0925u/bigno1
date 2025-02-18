@@ -3,30 +3,15 @@ import { User, Trial } from "./model";
 import moment from "moment";
 
 
-// 排名
-const getUserRankingData = async(users, date) => {
-      // 昨日
-    const startOfyesDay = new Date(moment(date).clone().subtract(1, 'days').startOf('day').toDate())
-    const endOfyesDay = new Date(moment(date).clone().subtract(1, 'days').endOf('day').toDate())
+  // 定義回溯函數
+  const findLatestTrialDate = async (date) => {
+    const latestTrial = await Trial.findOne({
+      date: { $lt: date },
+      value: { $exists: true, $ne: null }
+    }).sort({ date: -1 }).lean();
+    return latestTrial ? latestTrial.date : null;
+  };
 
-    // 今日
-    const startOfDay = new Date(moment(date).startOf("day").toISOString());
-    const endOfDay = new Date(moment(date).endOf("day").toISOString());
-
-    const startDateData = await Trial.find({date: { $gte: startOfDay, $lt: endOfDay }}).lean();
-    const  previousDateData = await Trial.find({date: { $gte: startOfyesDay, $lt: endOfyesDay }}).lean();
-
-  return users.map(user => {
-    const userStartData = startDateData.find(data => data.id === user.id);
-    const userPreviousData = previousDateData.find(data => data.id === user.id);
-
-    const pro = userStartData && userPreviousData 
-      ? (userPreviousData.ranking - userStartData.ranking) 
-      : 0;
-
-    return { ...user,...userStartData,  pro };
-  });
-};
 
 
 // 處理 HTTP 請求
@@ -39,49 +24,50 @@ export default defineEventHandler(async (event) => {
     if (event.req.method === "GET") {
       const today = new Date().toISOString().split('T')[0];  
       const users = await User.find({ verify: true }).select('id username').lean();
-    // 昨日
-    const startOfyesDay = new Date(moment(today).clone().subtract(1, 'days').startOf('day').toDate())
-    const endOfyesDay = new Date(moment(today).clone().subtract(1, 'days').endOf('day').toDate())
-    const oneDayData = await Trial.find({date: { $gte: startOfyesDay, $lt: endOfyesDay }}).lean();
-    // 前日
-    const startOfyesDay2 = new Date(moment(today).clone().subtract(2, 'days').startOf('day').toDate())
-    const endOfyesDay2 = new Date(moment(today).clone().subtract(2, 'days').endOf('day').toDate())
+   // 取得當天的資料
+  let startOfToday = new Date(moment(today).startOf("day").toISOString());
+  let endOfToday = new Date(moment(today).endOf("day").toISOString());
+  let oneDayData = await Trial.find({ date: { $gte: startOfToday, $lt: endOfToday } }).lean();
 
+  // 如果當日資料為空，回溯到最近有數據的日期
+  if (!oneDayData.length) {
+    const lastDate = await findLatestTrialDate(today);
+    if (lastDate) {
+      startOfToday = new Date(moment(lastDate).startOf("day").toISOString());
+      endOfToday = new Date(moment(lastDate).endOf("day").toISOString());
+      oneDayData = await Trial.find({ date: { $gte: startOfToday, $lt: endOfToday } }).lean();
+    }
+  }
 
-    let twoDayData = await Trial.find({date: { $gte: startOfyesDay2, $lt: endOfyesDay2 }}).lean();
+  // 取得前一天的資料
+  let startOfPrevDay = new Date(moment(startOfToday).clone().subtract(1, "days").startOf("day").toISOString());
+  let endOfPrevDay = new Date(moment(startOfToday).clone().subtract(1, "days").endOf("day").toISOString());
+  let twoDayData = await Trial.find({ date: { $gte: startOfPrevDay, $lt: endOfPrevDay } }).lean();
 
-      // 假如前日數據抓不到
-      const allFalse = (Array.isArray(twoDayData) ? twoDayData : []).every(trial => !trial.value);
-          if(allFalse){
-            const latestTrial = await Trial.findOne({ date: { $lt:  startOfyesDay2}, value: { $exists: true, $ne: null } }).sort({ date: -1 }).lean();
+  // 如果前日資料為空，再回溯最近一次有數據的日期
+  if (!twoDayData.length) {
+    const lastPrevDate = await findLatestTrialDate(startOfPrevDay);
+    if (lastPrevDate) {
+      startOfPrevDay = new Date(moment(lastPrevDate).startOf("day").toISOString());
+      endOfPrevDay = new Date(moment(lastPrevDate).endOf("day").toISOString());
+      twoDayData = await Trial.find({ date: { $gte: startOfPrevDay, $lt: endOfPrevDay } }).lean();
+    }
+  }
 
-            console.log(latestTrial,'later');
-            
+  const newoneUserData = users.map((u) => {
+    const trialData = oneDayData.find((tr) => tr.id === u.id);
+    const trialData2 = twoDayData.find((tr) => tr.id === u.id);
+    const isNewEntry = !trialData2;
 
-            if(latestTrial){
-            const lastdate = latestTrial.date
+    const value = trialData ? trialData.value : 0;
+    const ranking = trialData2 && trialData ? trialData.ranking - trialData2.ranking : 0;
+    let attend = false;
 
-            console.log(lastdate,'date');
-            
-            const newstartOfyesDay = new Date(moment(lastdate).startOf("day").toISOString());
-            const newendOfyesDay = new Date(moment(lastdate).endOf("day").toISOString());
-            twoDayData = await Trial.find({date: { $gte: newstartOfyesDay, $lt: newendOfyesDay  }}).lean();
-            }
-          }
-
-          const newoneUserData = users.map((u)=>{
-            const trialData = oneDayData.find((tr)=>tr.id === u.id)
-            const trialData2 = twoDayData.find((tr)=>tr.id === u.id)
-            const isNewEntry = !trialData2;
-
-            const value = trialData ? trialData.value : 0;
-            const ranking =  trialData2 && trialData  ? trialData.ranking - trialData2.ranking : 0         
-            let attend = false;
-            if(isNewEntry && trialData && !trialData2){
-              attend = true;
-            }else if (trialData && trialData2 && trialData.value - trialData2.value !== 0){
-              attend = true;
-            }
+    if (isNewEntry && trialData && !trialData2) {
+      attend = true;
+    } else if (trialData && trialData2 && trialData.value - trialData2.value !== 0) {
+      attend = true;
+    }
 
             return {
               id:u.id,
