@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
       const users = await User.findOne({ username });
 
       if (type === "login") {
-        
+
         // 檢查用戶是否存在
         if (!users) {
           return { success: false, message: "沒有這個成員" };
@@ -96,9 +96,10 @@ export default defineEventHandler(async (event) => {
           return { success: false, message: "你已經註冊過！" };
         }
 
+
         // 最後一名的流水編號
         let lastUser = await User.findOne().sort({ id: -1 }).limit(1);
-        const id = Number(lastUser.id) + 1;
+        const id = lastUser  ? Number(lastUser.id) + 1 : 1;
 
         const newUser = new User({
           id,
@@ -192,9 +193,6 @@ export default defineEventHandler(async (event) => {
     if (event.req.method === "PATCH"){
       // 會員觀看成長數據
       const {uid} = await readBody(event);
-    
-      //  const startOfMonth = moment(month, "YYYY-MM").startOf("month").toDate();
-      //  const endOfMonth = moment(month, "YYYY-MM").endOf("month").toDate();
      
        const allTrials = await Trial.find({id:uid}).lean();
     

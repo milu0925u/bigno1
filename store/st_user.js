@@ -47,10 +47,7 @@ export const fetchChartData = async () => {
   try {
     const response = await axios.post("/api/search", { date: today });
     if (response.data.success) {
-      trail.value = [
-        response.data.data.trailY.length,
-        response.data.data.trailN.length,
-      ];
+
       battle.value = [
         response.data.data.battleY.length,
         response.data.data.battleN.length,

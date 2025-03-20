@@ -7,8 +7,8 @@
             <button :class="{ activeColor: route.name === 'manager-verify' }" @click="goToVerify"><i
                     class="fa-solid fa-user-pen"></i><span>審核人員</span></button>
 
-            <button :class="{ activeColor: route.name === 'manager-trial' }" @click="goToWriteTrial"><i
-                    class="fa-solid fa-bolt"></i><span>協助輸入試煉</span></button>
+            <!-- <button :class="{ activeColor: route.name === 'manager-trial' }" @click="goToWriteTrial"><i
+                    class="fa-solid fa-bolt"></i><span>協助輸入試煉</span></button> -->
 
             <button :class="{ activeColor: route.name === 'manager-battle' }" @click="goToBattle"><i
                     class="fa-regular fa-square-check"></i><span>戰場出席</span></button>
@@ -114,7 +114,7 @@ const addboard = () => {
 
 const isClient = ref(false);
 onMounted(() => {
-  isClient.value = true; // 客戶端渲染後顯示內容
+    isClient.value = true; // 客戶端渲染後顯示內容
 });
 </script>
 

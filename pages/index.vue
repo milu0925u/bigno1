@@ -15,18 +15,18 @@
         <div class="newuser">
             <HomeNewUser />
         </div>
-        <div class="attendt">
+        <!-- <div class="attendt">
             <HomeTrialAttend />
-        </div>
+        </div> -->
         <div class="attendb">
             <HomeBattleAttend />
         </div>
-        <div class="rank">
+        <!-- <div class="rank">
             <HomeTrialRank />
-        </div>
+        </div> -->
         <div class="pig"></div>
         <div class="bg"></div>
-        <div class="pig-g"></div>
+
     </div>
 </template>
 
@@ -42,13 +42,13 @@ import HomeProfession from '~/components/HomeProfession.vue';
 import { fetchAllUsers } from '~/store/st_user';
 // 設置此頁的title跟關鍵字搜尋
 useHead({
-    title: '天下第一霸豬',
+    title: '糟糕我被波利包圍了',
     meta: [
-        { name: 'description', content: 'This is RO rebirth Game\'s Guild - Swagger Pig No.1 ' },
+        { name: 'description', content: 'Oops, I\'m surrounded by Polly' },
         { name: 'keywords', content: 'rebirth,game,guild,nuxt,RO' }
     ],
     link: [
-        { rel: 'icon', type: 'image/png', href: '/images/logo.png' } // 指定新的 LOGO 路徑
+        { rel: 'icon', type: 'image/png', href: '/images/LOGO.svg' } // 指定新的 LOGO 路徑
     ]
 });
 
@@ -86,7 +86,7 @@ definePageMeta({
     bottom: 0;
     left: 0;
     right: 0;
-    background-image: url('/public/images/background1.png');
+    background-image: url('/public/images/background2.png');
     background-repeat: no-repeat;
     background-size: 100%;
     width: 100%;
@@ -97,7 +97,7 @@ definePageMeta({
     position: absolute;
     top: 0;
     left: 0;
-    background-image: url('/public/images/pig.png');
+    background-image: url('/public/images/openi-2.png');
     background-repeat: no-repeat;
     background-size: 70%;
     width: 300px;
@@ -108,7 +108,7 @@ definePageMeta({
     position: absolute;
     bottom: 0;
     right: 10px;
-    background-image: url('/public/images/pig-g.png');
+    background-image: url('/public/images/openi-1.png');
     background-repeat: no-repeat;
     background-size: 100%;
     width: 300px;

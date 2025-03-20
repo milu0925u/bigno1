@@ -21,25 +21,66 @@ button {
 .btn {
   width: 95%;
   background: black;
+  // background: #fd779d;
+  // background: #ff628e;
   color: white;
+  // color: rgb(69, 39, 39);
   padding: 6px;
   border-radius: 6px;
   box-shadow: inset -1px -1px 1px rgba(191, 191, 192, 0.607), 2px 2px 1px black;
+  // box-shadow: inset -1px -1px 1px rgba(191, 191, 192, 0.607), 2px 2px 1px #ea1349;
   text-align: center;
   &:active {
     border: 1px solid white;
     box-shadow: 0 0 0 1px black;
+    // box-shadow: 0 0 0 1px #ea1349;
     transform: translateY(2px);
   }
 }
 
+// .home-grid {
+//   display: grid;
+//   grid-template-columns: 10% 15% 15% 15% auto 10%;
+//   grid-template-areas:
+//     "navv navv navv navv navv navv"
+//     ". usercard board profession rank ."
+//     ". attendt attendb newuser rank .";
+//   row-gap: 24px;
+//   column-gap: 36px;
+//   padding: 16px;
+//   .navv {
+//     grid-area: navv;
+//   }
+//   .board{
+//     grid-area: board;
+//   }
+//   .profession{
+//     grid-area: profession;
+//   }
+//   .usercard {
+//     grid-area: usercard;
+//   }
+//   .newuser {
+//     grid-area: newuser;
+//   }
+//   .attendt {
+//     grid-area: attendt;
+//   }
+//   .attendb {
+//     grid-area: attendb;
+//   }
+//   .rank {
+//     grid-area: rank;
+//   }
+// }
+
 .home-grid {
   display: grid;
-  grid-template-columns: 10% 15% 15% 15% auto 10%;
+  grid-template-columns: 10% auto auto auto 10%;
   grid-template-areas:
-    "navv navv navv navv navv navv"
-    ". usercard board profession rank ."
-    ". attendt attendb newuser rank .";
+    "navv navv navv navv navv"
+    ". usercard board board ."
+    ". newuser profession attendb .";
   row-gap: 24px;
   column-gap: 36px;
   padding: 16px;
@@ -122,19 +163,6 @@ align-items: center;
   }
 }
 
-// @media screen and (max-width: 1200px) {
-//   .home-grid {
-//     display: flex;
-//     flex-wrap: wrap;
-//   }
-// }
-
-// @media screen and (max-width: 1200px) {
-//   .home-grid {
-//     display: flex;
-//     flex-wrap: wrap;
-//   }
-// }
 
 
 @media screen and (max-width: 768px) {

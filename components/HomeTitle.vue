@@ -21,6 +21,12 @@ defineProps({
     display: flex;
     gap: 16px;
     font-size: 16px;
+    color: #fb0e51;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+
+    i {
+        color: #fd779d;
+    }
 }
 
 .title-border {

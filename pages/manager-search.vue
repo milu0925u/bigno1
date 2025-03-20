@@ -40,7 +40,7 @@
                     <div>
                         <div>名稱</div>
                     </div>
-                    <div v-for="(day, i ) in data2.days" :key="i">
+                    <div v-for="(day, i) in data2.days" :key="i">
                         <div>{{ day }}</div>
                     </div>
                 </div>
@@ -75,9 +75,7 @@ const fetchSearch = async () => {
     try {
         const response = await axios.post("/api/search", { date: selectedDate.value });
         if (response.data.success) {
-            if (response.data.data.trianY.length === 0 &&
-                response.data.data.trianN.length === 0 &&
-                response.data.data.battleN.length === 0 &&
+            if (response.data.data.battleN.length === 0 &&
                 response.data.data.battleY.length === 0 &&
                 response.data.data.dayoff.length === 0
             ) {
