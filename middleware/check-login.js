@@ -48,5 +48,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
           console.error("解碼失敗", error);
         }
       }
-   }});
+   }
+  });
 

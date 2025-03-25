@@ -45,7 +45,8 @@ export default defineEventHandler(async (event) => {
         lineID,
         type,
         id,
-        trialTotal
+        trialTotal,
+        again
       } = await readBody(event);
 
       //資料庫中查詢
@@ -91,10 +92,22 @@ export default defineEventHandler(async (event) => {
           },
         };
       } else if (type === "signup") {
-        // 檢查用戶是否存在
-        if (users) {
-          return { success: false, message: "你已經註冊過！" };
+
+        // 假如曾經待過
+        if(again){
+          let username = await User.findOne({username:username}).sort();
+          if(username) return { success: false, message: "找不到這個ID" };
+
+          const updateData = {leaveDate:null,createDate:new Date(),verify:true};
+
+          await User.updateMany({ username:username },{ $set: updateData });
+          return { success: true, message: "重新加入成功！" };
         }
+
+
+        // 檢查用戶是否存在
+        if (users) return { success: false, message: "你已經註冊過！" };
+        
 
 
         // 最後一名的流水編號

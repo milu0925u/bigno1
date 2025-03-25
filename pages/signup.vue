@@ -23,7 +23,8 @@
 
             <div><label>密碼</label><input type="password" v-model="formData.password" placeholder="Password" required />
             </div>
-
+            <span class="ever-been-member">是否曾為會員(相同遊戲名稱加入需勾選)?<input type="checkbox" v-model="formData.again" />
+            </span>
             <div class="btn-group">
                 <button class="btn" @click="signup">註冊</button>
                 <button class="btn" @click="goToHome">返回</button>
@@ -39,7 +40,7 @@ import axios from 'axios';
 import { fetchAllUsers } from '~/store/st_user';
 
 const formData = ref({
-    type: 'signup', username: '', password: '', job: '選擇職業', lineName: '', lineID: ''
+    type: 'signup', username: '', password: '', job: '選擇職業', lineName: '', lineID: '', again: false
 });
 const errorMessage = ref('');
 
@@ -150,6 +151,17 @@ definePageMeta({
         width: 80%;
         background: red;
         padding: 3px;
+    }
+}
+
+.ever-been-member {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+
+    input {
+        transform: scale(1.5);
+        margin: 5px;
     }
 }
 

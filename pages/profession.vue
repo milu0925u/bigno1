@@ -26,7 +26,7 @@
                 <div v-for="fuser in f" :key="fuser.id">{{ fuser.username }}</div>
             </div>
         </div>
-
+        <div>總共:{{ totalLength }}人</div>
         <button @click="goToHome">返回</button>
     </div>
 </template>
@@ -41,6 +41,10 @@ const c = ref([]);
 const d = ref([]);
 const e = ref([]);
 const f = ref([]);
+
+const totalLength = computed(() =>
+    a.value.length + b.value.length + c.value.length + d.value.length + e.value.length + f.value.length
+);
 
 // 回首頁
 const goToHome = () => {

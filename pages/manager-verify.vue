@@ -112,12 +112,6 @@ const fetchAllDayoff = async () => {
         if (response.data.success) {
             if (response.data.dayoff.length === 0) {
                 dayoffUser.value = [];
-                $swal.fire({
-                    title: "目前無資料",
-                    icon: "success",
-                    timer: 1500,
-                    showConfirmButton: false
-                });
                 return
             }
             const newuser = response.data.dayoff.filter((v) => v.verify === false);

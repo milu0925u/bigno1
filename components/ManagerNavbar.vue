@@ -13,6 +13,9 @@
             <button :class="{ activeColor: route.name === 'manager-battle' }" @click="goToBattle"><i
                     class="fa-regular fa-square-check"></i><span>戰場出席</span></button>
 
+            <button :class="{ activeColor: route.name === 'manager-prize' }" @click="goToPrize"><i
+                    class="fa-solid fa-award"></i><span>抽獎</span></button>
+
             <button :class="{ activeColor: route.name === 'manager-board' }" @click="goToBoard"><i
                     class="fa-solid fa-comments"></i><span>公會公告</span></button>
 
@@ -44,6 +47,11 @@
                 <button :class="{ activeColor: props.currentActive === 'allboard' }" @click="allboard">所有公告</button>
                 <button :class="{ activeColor: props.currentActive === 'addboard' }" @click="addboard">新增公告</button>
             </div>
+            <div v-else-if='route.name === "manager-prize"'>
+                <button :class="{ activeColor: props.currentActive === 'allprize' }" @click="allprize">所有獎項</button>
+                <button :class="{ activeColor: props.currentActive === 'addprize' }" @click="addprize">新建獎項</button>
+                <button :class="{ activeColor: props.currentActive === 'lottery' }" @click="lottery">抽獎</button>
+            </div>
         </div>
     </div>
 </template>
@@ -67,7 +75,9 @@ const goToWriteTrial = () => {
 const goToBoard = () => {
     navigateTo('/manager-board')
 };
-
+const goToPrize = () => {
+    navigateTo('/manager-prize')
+};
 
 const goToHome = () => { navigateTo('/') };
 
@@ -109,6 +119,15 @@ const allboard = () => {
 };
 const addboard = () => {
     emit('update:currentActive', "addboard");
+};
+const allprize = () => {
+    emit('update:currentActive', "allprize");
+};
+const addprize = () => {
+    emit('update:currentActive', "addprize");
+};
+const lottery = () => {
+    emit('update:currentActive', "lottery");
 };
 
 

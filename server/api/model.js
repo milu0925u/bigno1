@@ -14,7 +14,7 @@ const User =
       verify: Boolean,
       lineName: String,
       lineID: String,
-      createDate: Date,
+      createdate: { type: Date, default: Date.now },
       leaveDate: Date,
     })
   );
@@ -80,7 +80,7 @@ const Dayoff =
       uid: Number,
       title:String,
       content: Object,
-      createdate: Date,
+      createdate: { type: Date, default: Date.now },
       hiddendate: {
         type: Date,
         required: false,
@@ -109,7 +109,7 @@ const Dayoff =
       bid: Number,
       uid: Number,
       content: Object,
-      createdate: Date,
+      createdate: { type: Date, default: Date.now },
       updatedate: {
         type: Date,
         required: false,
@@ -121,4 +121,31 @@ const Dayoff =
     })
   );
 
-export { User, Battlefield, Trial, Dayoff ,Board,BoardReply,BoardImg};
+  const Prizes=
+  mongoose.models.prizes ||
+  mongoose.model(
+    "prizes",
+    new mongoose.Schema({
+      pid:Number,
+      pname:String,
+      repeat:Boolean,
+      limit: { type: Number, default: 1 }, 
+      hidden: { type: Boolean, default: false }, 
+      content: String,
+      createdate: { type: Date, default: Date.now },
+    })
+  );
+
+  const Awardees =
+  mongoose.models.awardees ||
+  mongoose.model(
+    "awardees",
+    new mongoose.Schema({
+      aid:Number,
+      pid: Number,
+      uid: Number,
+      createdate: { type: Date, default: Date.now },
+    })
+  );
+
+export { User, Battlefield, Trial, Dayoff ,Board,BoardReply,BoardImg,Awardees,Prizes};
