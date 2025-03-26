@@ -145,7 +145,7 @@ export default defineEventHandler(async (event) => {
           updateData.username = username;
         }
         if (createDate) {
-          updateData.createDate = createDate;
+          updateData.createDate = createDate
         }
         if (leaveDate) {
           updateData.leaveDate = leaveDate;
@@ -166,10 +166,11 @@ export default defineEventHandler(async (event) => {
           updateData.position = position;
         }
 
-
+        console.log(id,'id');
+        
         // 更新會員資料 - 多項目
         await User.updateMany(
-          { id: parseInt(id) },
+          { id: Number(id) },
           { $set: updateData } // 更新提供的欄位
         );
 
@@ -203,19 +204,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    if (event.req.method === "PATCH"){
-      // 會員觀看成長數據
-      const {uid} = await readBody(event);
-     
-       const allTrials = await Trial.find({id:uid}).lean();
-    
-       return {
-        success: true,
-        message: "取得成功！",
-        label:['2025-1-1','2025-1-2','2025-1-3'],
-        data:[100,50,20]
-      };
-    }
   } catch (e) {
     return {
       success: false,

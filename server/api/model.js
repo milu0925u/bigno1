@@ -14,7 +14,7 @@ const User =
       verify: Boolean,
       lineName: String,
       lineID: String,
-      createdate: { type: Date, default: Date.now },
+      createDate: { type: Date, default: Date.now },
       leaveDate: Date,
     })
   );

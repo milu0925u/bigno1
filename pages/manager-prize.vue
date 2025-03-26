@@ -13,52 +13,57 @@
                     <div>{{ prize.pname }}</div>
                     <div>{{ prize.limit }}</div>
                     <div>{{ prize.content }}</div>
-                    <button @click="openModel = true">查看</button>
-                    <div v-if="openModel" class="overlay" @click="openModel = false"></div>
-                    <div class="awardee-person" v-if="openModel">
-                        <div>
-                            <button @click="openModel = false" class="cancle"><i class="fa-solid fa-xmark"></i></button>
-                            <div class="header grid">
-                                <div>得獎人</div>
-                                <div>得獎日期</div>
-                            </div>
-                            <div v-for="award in prize.awardees" :key="award.aid" class="grid awardees">
-                                <div>{{ getUserById(award.uid).username }}</div>
-                                <div>{{ new Date(award.createdate).toISOString().split('T')[0] }}</div>
-                            </div>
-                        </div>
+                    <div v-if="prize.awardees && prize.awardees.length">
+                        <button @click="handleOpenModel(prize.awardees)" class="watch-btn">查看</button>
                     </div>
+                    <span v-else>尚未抽獎</span>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container" v-else-if="currentActive === 'addprize'">
-        <div class="create">
-            <div><label>名稱：</label><input type="text" v-model="formData.pname" /></div>
-            <div class="radio">
-                <label>領獎人數：</label>
-                <div>多人<input type="radio" name="awardee" v-model="formData.repeat" :value="true" />一人<input
-                        type="radio" name="awardee" v-model="formData.repeat" :value="false" /></div>
+
+        <div v-if="openModel" class="overlay" @click="openModel = false"></div>
+        <div class="awardee-modal" v-if="openModel">
+            <div class="awardee-all-list">
+                <button @click="openModel = false" class="cancle"><i class="fa-solid fa-xmark"></i></button>
+                <div class="header grid">
+                    <div>得獎人</div>
+                    <div>得獎日期</div>
+                </div>
+                <div v-for="award in awardees" :key="award.aid" class="grid">
+                    <div>{{ getUserById(award.uid).username }}</div>
+                    <div>{{ new Date(award.createdate).toISOString().split('T')[0] }}</div>
+                </div>
             </div>
-            <div v-if="formData.repeat">可獲得人數：<input type="number" v-model="formData.limit" /></div>
-            <div><label>內容：</label><input type="text" v-model="formData.content" /></div>
-
-            <button class="btn" @click="sendCreatePrize">送出</button>
-
         </div>
-    </div>
-    <div class="container" v-else>
-        <div class="select">
-            <select v-model="selectPid">
-                <option v-for="(item, i) in filteredPrizes" :key="i" :value="item.pid">
-                    {{ item.pname }}
-                </option>
-            </select>
-            <button class="btn" @click="sendFetchAwardee">確定</button>
+
+        <div class="container" v-else-if="currentActive === 'addprize'">
+            <div class="create">
+                <div><label>名稱：</label><input type="text" v-model="formData.pname" /></div>
+                <div class="radio">
+                    <label>領獎人數：</label>
+                    <div>多人<input type="radio" name="awardee" v-model="formData.repeat" :value="true" />一人<input
+                            type="radio" name="awardee" v-model="formData.repeat" :value="false" /></div>
+                </div>
+                <div v-if="formData.repeat">可獲得人數：<input type="number" v-model="formData.limit" /></div>
+                <div><label>內容：</label><input type="text" v-model="formData.content" /></div>
+
+                <button class="btn" @click="sendCreatePrize">送出</button>
+
+            </div>
         </div>
-        <div class="wheel-container">
-            <canvas ref="wheelCanvas" width="600" height="600"></canvas>
-            <button @click="spinWheel" :disabled="isSpinning">開始抽獎</button>
+        <div class="container" v-else-if="currentActive === 'lottery'">
+            <div class="select">
+                <select v-model="selectPid">
+                    <option v-for="(item, i) in filteredPrizes" :key="i" :value="item.pid">
+                        {{ item.pname }}
+                    </option>
+                </select>
+                <button class="btn" @click="sendFetchAwardee">確定</button>
+            </div>
+            <div class="wheel-container">
+                <canvas ref="wheelCanvas" width="600" height="600"></canvas>
+                <button @click="spinWheel" :disabled="isSpinning">開始抽獎</button>
+            </div>
         </div>
     </div>
 </template>
@@ -75,6 +80,16 @@ const updateCurrentActive = (newValue) => {
 const users = useState("users")
 
 const openModel = ref(false);
+const awardees = ref();
+const handleOpenModel = async (items) => {
+    await items;
+    console.log(items, 'items');
+
+    openModel.value = true;
+    awardees.value = items
+
+
+}
 
 const datas = ref([]);
 const fetchData = async () => {
@@ -392,6 +407,7 @@ definePageMeta({
             align-items: center;
 
             >div {
+                flex: 1;
                 white-space: nowrap;
                 /* 禁止換行 */
                 overflow: hidden;
@@ -401,59 +417,16 @@ definePageMeta({
                 padding: 8px;
             }
 
-            .awardee-person {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(88, 88, 88, 0.4);
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            .watch-btn {
+                width: 40%;
+                padding: 4px 6px;
+                border: 1px dashed rgb(107, 162, 172);
+                color: #3cca9b;
 
-                >div {
-                    position: relative;
-                    z-index: 2;
-                    background: rgba(255, 255, 255, 1);
-                    padding: 16px;
-                    width: 500px;
-                    height: 300px;
-                    color: black;
-
-                    .cancle {
-                        position: absolute;
-                        right: 5px;
-                        top: 5px;
-                        color: red;
-                        font-size: 18px;
-                    }
+                &:hover {
+                    background: #3cca9b8f;
+                    color: white;
                 }
-
-                .awardees {
-                    position: relative;
-                    z-index: 8;
-                    background: rgba(255, 255, 255, 0.5);
-                    height: 30px;
-                    color: black;
-                }
-
-                .grid {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                }
-            }
-
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 1;
             }
         }
 
@@ -524,6 +497,68 @@ definePageMeta({
             width: 50px;
         }
     }
+}
+
+.awardee-modal {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(31, 31, 31, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .header {
+        text-align: center;
+
+        >div {
+            margin-inline: 2px;
+            background: rgb(0, 0, 0);
+            color: white;
+            padding: 6px 4px;
+        }
+    }
+
+    .awardee-all-list {
+        position: relative;
+        padding: 16px;
+        width: 500px;
+        height: 300px;
+        color: black;
+        background: white;
+
+        .cancle {
+            position: absolute;
+            right: -36px;
+            top: -36px;
+            color: red;
+            font-size: 36px;
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        text-align: center;
+
+        >div {
+            padding: 4px 8px;
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
 }
 
 
