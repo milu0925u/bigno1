@@ -61,8 +61,8 @@
                 <button class="btn" @click="sendFetchAwardee">確定</button>
             </div>
             <div class="wheel-container">
-                <canvas ref="wheelCanvas" width="600" height="600"></canvas>
                 <button @click="spinWheel" :disabled="isSpinning">開始抽獎</button>
+                <canvas ref="wheelCanvas" width="600" height="600"></canvas>
             </div>
         </div>
     </div>
@@ -484,12 +484,13 @@ definePageMeta({
     }
 
     .select {
-        width: 80%;
+        width: 100%;
         display: flex;
+        justify-content: center;
         gap: 16px;
 
         select {
-            width: 80%;
+            width: 40%;
             padding: 6px 16px;
         }
 
@@ -580,9 +581,57 @@ definePageMeta({
 @media screen and (max-width: 768px) {
     .container {
         .content {
+            width: 100%;
+
+            .header {
+                >div {
+                    margin-inline: 0
+                }
+            }
+
+            .body {
+                >div {
+                    padding: 2px;
+                }
+
+                .watch-btn {
+                    width: 80%;
+                }
+            }
+
+            .header,
+            .body {
+                padding: 0px;
+            }
+        }
+
+        .create {
             display: flex;
             flex-direction: column;
+            width: 100%;
+
+            label {
+                white-space: nowrap;
+            }
+
+            input[type="text"],
+            input[type="number"] {
+                width: 90%;
+            }
+
+            .radio {
+                >div {
+                    justify-content: space-around;
+                }
+            }
+        }
+
+        .select {
+            select {
+                width: 70%;
+            }
         }
     }
+
 }
 </style>
