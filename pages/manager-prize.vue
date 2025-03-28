@@ -25,6 +25,7 @@
         <div class="awardee-modal" v-if="openModel">
             <div class="awardee-all-list">
                 <button @click="openModel = false" class="cancle"><i class="fa-solid fa-xmark"></i></button>
+
                 <div class="header grid">
                     <div>得獎人</div>
                     <div>得獎日期</div>
@@ -33,6 +34,7 @@
                     <div>{{ getUserById(award.uid).username }}</div>
                     <div>{{ new Date(award.createdate).toISOString().split('T')[0] }}</div>
                 </div>
+
             </div>
         </div>
 
@@ -503,6 +505,7 @@ definePageMeta({
     align-items: center;
 
     .header {
+        margin-top: 32px;
         text-align: center;
 
         >div {
@@ -520,23 +523,34 @@ definePageMeta({
         height: 300px;
         color: black;
         background: white;
+        overflow: hidden;
+        overflow-y: auto;
 
         .cancle {
             position: absolute;
-            right: -36px;
-            top: -36px;
+            right: 6px;
+            top: 6px;
             color: red;
-            font-size: 36px;
+            font-size: 24px;
         }
     }
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 16px 1fr 1fr 16px;
+        grid-template-areas: '. name date .';
         text-align: center;
 
         >div {
             padding: 4px 8px;
+
+            &:first-child {
+                grid-area: name;
+            }
+
+            &:last-child {
+                grid-area: date;
+            }
         }
     }
 }
@@ -547,7 +561,7 @@ definePageMeta({
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 1;
 }
 
 
