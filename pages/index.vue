@@ -26,7 +26,9 @@
         </div> -->
         <div class="pig"></div>
         <div class="bg"></div>
-
+        <div class="notify">
+            <HomeNotify />
+        </div>
     </div>
 </template>
 
@@ -40,6 +42,7 @@ import HomeTrialRank from '~/components/HomeTrialRank.vue';
 import HomeNavbar from '~/components/HomeNavbar.vue';
 import HomeProfession from '~/components/HomeProfession.vue';
 import { fetchAllUsers } from '~/store/st_user';
+import HomeNotify from '~/components/HomeNotify.vue';
 // 設置此頁的title跟關鍵字搜尋
 useHead({
     title: '糟糕我被波利包圍了',
@@ -113,6 +116,14 @@ definePageMeta({
     background-size: 100%;
     width: 300px;
     height: 130px;
+}
+
+.notify {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    width: 100%;
 }
 
 @media screen and (max-width: 1600px) {

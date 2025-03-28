@@ -53,12 +53,22 @@
         </div>
         <div class="container" v-else-if="currentActive === 'lottery'">
             <div class="select">
-                <select v-model="selectPid">
-                    <option v-for="(item, i) in filteredPrizes" :key="i" :value="item.pid">
+                <select v-model="selectPid" class="select-id">
+                    <option v-for="item in filteredPrizes" :key="item.pid" :value="item.pid">
                         {{ item.pname }}
                     </option>
                 </select>
-                <button class="btn" @click="sendFetchAwardee">確定</button>
+                <div class="wrapper">
+                    <CheckboxWrapper v-model:selectedValue="selectedOption" />
+                    <button class="btn" @click="sendFetchAwardee">確定</button>
+                </div>
+                <form>
+                    <select v-if="selectedOption === 'optional'" v-model="selectedUsers" multiple>
+                        <option v-for="userA in printUser" :key="userA.id" :value="userA.id">
+                            {{ userA.username }}
+                        </option>
+                    </select>
+                </form>
             </div>
             <div class="wheel-container">
                 <button @click="spinWheel" :disabled="isSpinning">開始抽獎</button>
@@ -70,25 +80,29 @@
 
 <script setup>
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
+import CheckboxWrapper from '~/components/CheckboxWrapper.vue';
 import axios from "axios";
 import gsap from "gsap";
+const selectedOption = ref('all');
 const { $swal } = useNuxtApp();
 const currentActive = ref("allprize"); // 接收子層組件
 const updateCurrentActive = (newValue) => {
     currentActive.value = newValue;
 };
-const users = useState("users")
+const users = useState("users");
+const printUser = ref();
+const selectedUsers = ref([]);
+watch(selectedOption, () => {
+    printUser.value = users.value.filter((user) => (user.leaveDate === null));
+}, { immediate: true });
+
 
 const openModel = ref(false);
 const awardees = ref();
 const handleOpenModel = async (items) => {
     await items;
-    console.log(items, 'items');
-
     openModel.value = true;
     awardees.value = items
-
-
 }
 
 const datas = ref([]);
@@ -183,12 +197,21 @@ const filteredPrizes = computed(() => {
 // 選擇後,所有剩下得抽獎者
 const sendFetchAwardee = async () => {
     try {
-        const response = await axios.post('/api/awardee', { pid: selectPid.value, type: 'getawardee' });
+        const response = await axios.post('/api/awardee', { pid: selectPid.value, type: 'getawardee', select: selectedOption.value, selectedUsers: selectedUsers.value });
+
         if (response.data.success) {
             awardee.value = response.data.data
         }
+
+        if (!response.data.success) {
+            $swal.fire({
+                title: response.data.message,
+                icon: "warning",
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
     } catch (error) {
-        console.log(error, 'error');
         $swal.fire({
             title: 'Please try again',
             icon: "error",
@@ -197,7 +220,7 @@ const sendFetchAwardee = async () => {
         });
     }
 }
-const selectPid = ref("null"); //選擇獎勵
+const selectPid = ref(null); //選擇獎勵
 
 // 轉盤抽獎
 const wheelCanvas = ref(null);  //畫布
@@ -272,59 +295,6 @@ const spinWheel = () => {
         }
     });
 };
-
-// const drawWheel = () => {
-//     const canvas = wheelCanvas.value;
-//     if (!canvas) return;
-
-//     wheelCtx = canvas.getContext("2d");
-//     const numPrizes = awardee.value.length;
-
-//     const angleStep = (2 * Math.PI) / numPrizes;
-
-//     for (let i = 0; i < numPrizes; i++) {
-//         const startAngle = i * angleStep;
-//         const endAngle = startAngle + angleStep;
-//         wheelCtx.beginPath();
-//         wheelCtx.moveTo(300, 300);
-//         wheelCtx.arc(300, 300, 300, startAngle, endAngle);
-//         wheelCtx.fillStyle = i % 2 === 0 ? "#ffcc00" : "#ff6600";
-//         wheelCtx.fill();
-//         wheelCtx.stroke();
-
-//         // 繪製獎品名稱
-//         wheelCtx.save();
-//         wheelCtx.fillStyle = "#fff";
-//         wheelCtx.translate(300, 300);
-//         wheelCtx.rotate(startAngle + angleStep / 2);
-//         wheelCtx.font = "14px Arial";
-//         wheelCtx.fillText(awardee.value[i].username, 200, 10);
-//         wheelCtx.restore();
-//     }
-// };
-// const spinWheel = () => {
-//     if (isSpinning.value) return;
-//     isSpinning.value = true;
-
-//     const numPrizes = awardee.value.length;
-//     const randomIndex = Math.floor(Math.random() * numPrizes);
-//     const anglePerPrize = 360 / numPrizes;
-
-//     const targetAngle = 360 * 5 - (randomIndex * anglePerPrize); // 讓選中的 index 停在最上方
-
-//     // **重置角度，確保轉盤每次都從 0 開始**
-//     gsap.set(wheelCanvas.value, { rotation: 0 });
-
-//     gsap.to(wheelCanvas.value, {
-//         rotation: targetAngle,
-//         duration: 3,
-//         ease: "power4.out",
-//         onComplete: async () => {
-//             isSpinning.value = false;
-//             await addAwardee(awardee.value[randomIndex].id)
-//         }
-//     });
-// };
 // 新增中獎人
 const addAwardee = async (id) => {
     try {
@@ -334,8 +304,6 @@ const addAwardee = async (id) => {
             type: 'add'
         });
         if (response.data.success) {
-            await sendFetchAwardee();
-            await fetchData();
             $swal.fire({
                 title: response.data.message,
                 icon: "success",
@@ -352,7 +320,7 @@ const addAwardee = async (id) => {
     } catch (error) {
         console.log(error, 'error');
         $swal.fire({
-            title: 'Please try again',
+            title: error.response?.data?.message || 'Please try again',
             icon: "error",
             timer: 1500,
             showConfirmButton: false
@@ -360,15 +328,16 @@ const addAwardee = async (id) => {
     }
 }
 
-
+// 選了項目以後，抓可以抽獎的人
 watch(awardee, () => {
     drawWheel();
 });
+
 const isClient = ref(false);
 onMounted(() => {
     isClient.value = true; // 客戶端渲染後顯示內容
     fetchData();
-    drawWheel();
+    // drawWheel();
     window.addEventListener('resize', drawWheel);
 });
 
@@ -487,9 +456,10 @@ definePageMeta({
         width: 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 16px;
 
-        select {
+        .select-id {
             width: 40%;
             padding: 6px 16px;
         }
@@ -497,7 +467,25 @@ definePageMeta({
         button {
             width: 50px;
         }
+
+        form {
+            width: 150px;
+            height: 180px;
+
+            select {
+                width: 150px;
+                height: 100%;
+            }
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
     }
+
 }
 
 .awardee-modal {
@@ -627,8 +615,27 @@ definePageMeta({
         }
 
         .select {
-            select {
-                width: 70%;
+            height: auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-areas: 'selectID selectID'
+                'wrapper form';
+            border-bottom: 1px solid black;
+            padding: 16px;
+
+            .select-id {
+                grid-area: selectID;
+                justify-self: center;
+                width: 80%;
+            }
+
+            .wrapper {
+                grid-area: wrapper;
+            }
+
+            form {
+                grid-area: form;
             }
         }
     }

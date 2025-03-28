@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     if (event.req.method === "GET") {
 
       const prizes = await Prizes.find().lean();
-  
+
         return {
           success: true,
           message: "取得獎項成功",
