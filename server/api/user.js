@@ -94,21 +94,15 @@ export default defineEventHandler(async (event) => {
       } else if (type === "signup") {
 
         // 假如曾經待過
-        if(again){
-          let username = await User.findOne({username:username}).sort();
-          if(username) return { success: false, message: "找不到這個ID" };
-
-          const updateData = {leaveDate:null,createDate:new Date(),verify:true};
-
-          await User.updateMany({ username:username },{ $set: updateData });
+        if(again && users.verify === null){
+          if(!users) return { success: false, message: "找不到這個ID" };
+          await User.updateMany({ username:username },{ $set: {leaveDate:null,createDate:new Date(),verify:true} });
           return { success: true, message: "重新加入成功！" };
         }
-
 
         // 檢查用戶是否存在
         if (users) return { success: false, message: "你已經註冊過！" };
         
-
 
         // 最後一名的流水編號
         let lastUser = await User.findOne().sort({ id: -1 }).limit(1);

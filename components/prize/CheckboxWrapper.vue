@@ -1,51 +1,38 @@
 <template>
     <fieldset id="switch" class="radio-input">
         <div>
-            <input class="input" type="radio" name="radio" v-model="checkedValue" value="all">
+            <input class="input" type="radio" name="radio" :value="false" :checked="modelValue === false"
+                @change="$emit('update:modelValue', false)" />
             <label>全部</label>
         </div>
         <div>
-            <input class="input" type="radio" name="radio" v-model="checkedValue" value="optional">
-            <label>自選排除</label>
-        </div>
-        <div><input class="input" type="radio" name="radio" v-model="checkedValue" value="battlefield">
+            <input class="input" type="radio" name="radio" :value="true" :checked="modelValue === true"
+                @change="$emit('update:modelValue', true)" />
             <label>出席戰場</label>
         </div>
     </fieldset>
 </template>
 
 <script setup>
-const props = defineProps({
-    selectedValue: {
-        type: String,
-        default: 'all',
-    },
+defineProps({
+    modelValue: Boolean
 });
 
-const emit = defineEmits(['update:selectedValue']);
-
-const checkedValue = computed({
-    get: () => props.selectedValue,
-    set: (value) => emit('update:selectedValue', value),
-});
-
+defineEmits(["update:modelValue"]);
 
 </script>
-
 
 <style lang="scss" scoped>
 .radio-input {
     >div {
         display: flex;
         align-items: center;
-        padding: 0px 8px;
+        padding: 0 16px;
     }
 }
 
-/* From Uiverse.io by adeladel522 */
 .input {
     -webkit-appearance: none;
-    /* remove default */
     display: block;
     margin: 10px;
     width: 24px;
@@ -71,10 +58,6 @@ const checkedValue = computed({
     -webkit-transform: scale(1.5);
     -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
 }
-
-
-
-/* The up/down direction logic */
 
 .input,
 .input:active {

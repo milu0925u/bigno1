@@ -23,7 +23,8 @@
 
             <div><label>密碼</label><input type="password" v-model="formData.password" placeholder="Password" required />
             </div>
-            <span class="ever-been-member">是否曾為會員(相同遊戲名稱加入需勾選)?<input type="checkbox" v-model="formData.again" />
+            <span class="ever-been-member">是否曾為會員(相同遊戲名稱加入需勾選)?
+                <input type="checkbox" v-model="formData.again" />
             </span>
             <div class="btn-group">
                 <button class="btn" @click="signup">註冊</button>
