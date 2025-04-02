@@ -30,7 +30,7 @@ import axios from "axios";
 const { $swal } = useNuxtApp();
 const users = useState("users");
 const allPrize = useState("getAllPrize");
-const isSpinning = useState("isSpinning");
+const canSpin = useState("canSpin");
 const excludePeople = ref([]);
 // 排除人
 const handleChange = (event) => {
@@ -46,6 +46,8 @@ const filteredPrizes = computed(() => {
 const choosePrize = useState("choosePrize", () => NaN)
 // 全部false/出席戰場true分類
 const chooseAttend = useState("chooseAttend", () => false)
+// 重抓資料的開關
+const dataLock = useState("dataLock", () => false)
 // 排除已離開的人
 const excludeLeaveUser = ref([]);
 watch(users, () => {
@@ -54,17 +56,15 @@ watch(users, () => {
 
 
 // get抽獎者
-const lotteryList = useState('allprize');
-
+const lotteryList = useState('lottery');
 const sendFetchAwardee = async () => {
     let sendData = { type: 'getawardee', pid: choosePrize.value, chooseAttend: chooseAttend.value, excludePeople: excludePeople.value }
     try {
         const response = await axios.post('/api/awardee', sendData);
-
         if (response.data.success) {
             lotteryList.value = response.data.data;
+            canSpin.value = true
         }
-
         if (!response.data.success) {
             $swal.fire({
                 title: response.data.message,
@@ -82,16 +82,14 @@ const sendFetchAwardee = async () => {
             showConfirmButton: false
         });
     }
-    isInProcess.value = false;
 };
 
-const isInProcess = useState('isInProcess', () => false);
-
-watch(isInProcess, async () => {
-
-    console.log('lotteryList has changed, fetching awardees count...');
-
-    await sendFetchAwardee();
+watch(() => dataLock.value, async () => {
+    if (dataLock.value) {
+        console.log('Lockopen')
+        await sendFetchAwardee()
+        dataLock.value = false;
+    }
 });
 </script>
 

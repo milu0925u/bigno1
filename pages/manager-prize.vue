@@ -37,7 +37,7 @@ import SelectAwardee from '~/components/prize/SelectAwardee.vue';
 import ManagerNavbar from '~/components/ManagerNavbar.vue';
 import Lottery from '~/components/prize/Lottery.vue';
 
-const currentActive = ref("lottery"); // 接收子層組件
+const currentActive = ref("allprize"); // 接收子層組件
 const updateCurrentActive = (newValue) => {
     currentActive.value = newValue;
 };
@@ -49,6 +49,8 @@ const openModal = useState('openModal', () => false);
 const datas = useState('getAllPrize', () => []);
 const awardees = useState('awardees', () => []); // 得獎人
 const lotteryList = useState('lottery', () => []); // 抽獎名單
+
+
 const fetchData = async () => {
     try {
         const [prizesResponse, awardeeResponse] = await Promise.all([

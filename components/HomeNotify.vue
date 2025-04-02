@@ -2,8 +2,8 @@
 
     <div v-if="isClient">
         <div class="marquee">
-            <div class="marquee-content">
-                <div v-for="item in datas" :key="item.aid" class="marquee-item"
+            <div class="marquee-content" v-if="datas && datas.length">
+                <div v-for="(item, index) in datas" :key="item.aid" class="marquee-item"
                     :style="`animation-delay: ${index * 1}s;`">
                     恭喜 「{{ getUserById(item.uid).username }}」 獲得{{ getPrizeById(item.pid).pname }} ！
                 </div>

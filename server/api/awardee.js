@@ -20,8 +20,7 @@ export default defineEventHandler(async (event) => {
 
     if (event.req.method === "POST") {
       const { pid, uid, type,chooseAttend,excludePeople} = await readBody(event);
-      
-      
+
       // 新增中獎人
       if (type === 'add') {
         if(!pid || !uid ) return { success: false, message: "缺少必要選擇" };
@@ -72,7 +71,6 @@ export default defineEventHandler(async (event) => {
         let resultUser = [];
         const users = await User.find({verify:true}).select("id username").lean();
 
-
         // 只要戰場有出席的人
         if (chooseAttend){
           const today = new Date();
@@ -97,9 +95,8 @@ export default defineEventHandler(async (event) => {
           resultUser = resultUser.filter(user => !awardees.some(auser => user.id === auser.uid));
         }
 
-
         // 需要排除掉的人
-        if(excludePeople){
+        if(excludePeople && excludePeople.length >0){
           const filteredUsers = resultUser.filter(user => !excludePeople.includes(user.id));
           resultUser = filteredUsers;
         }
