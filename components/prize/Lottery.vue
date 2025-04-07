@@ -2,7 +2,7 @@
     <div class="wheel-container">
         <button @click="spinWheel" :disabled="!canSpin"
             :style="{ backgroundColor: !canSpin ? '#cccccc' : '#ff6600', color: !canSpin ? '#666666' : '#fff' }">開始抽獎</button>
-        <canvas ref="drawRef" width="600" height="600"></canvas>
+        <canvas class="canvas" ref="drawRef" width="600" height="600"></canvas>
     </div>
 </template>
 
@@ -153,9 +153,7 @@ onMounted(() => {
 });
 watch(() => lotteryList.value, () => {
     drawWheel();
-},
-    { deep: true }
-);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -171,5 +169,10 @@ watch(() => lotteryList.value, () => {
         border: none;
         cursor: pointer;
     }
+}
+
+.canvas {
+    position: relative;
+    z-index: -1;
 }
 </style>

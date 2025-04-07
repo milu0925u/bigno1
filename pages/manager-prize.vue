@@ -20,7 +20,7 @@
                     <div>得獎日期</div>
                 </div>
                 <div v-for="award in awardees" :key="award.aid" class="grid">
-                    <div>{{ getUserById(award.uid).username }}</div>
+                    <div>{{ getUserById(award.uid).verify ? getUserById(award.uid).username : 'unknown' }}</div>
                     <div>{{ new Date(award.createdate).toISOString().split('T')[0] }}</div>
                 </div>
 

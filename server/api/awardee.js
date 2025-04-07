@@ -46,8 +46,10 @@ export default defineEventHandler(async (event) => {
         const newAwardee = new Awardees({ aid: aid, pid: pid, uid: uid });
         await newAwardee.save();
 
+        // 新的資料庫
+        const newAwardeeLength = await Awardees.find({pid:pid});
 
-        if(pidPrize.limit === Number(repeatAwardee.length) + 1){
+        if(newAwardeeLength.length > pidPrize.limit){
           await Prizes.updateOne(
             { pid: pid },
             {
@@ -66,7 +68,7 @@ export default defineEventHandler(async (event) => {
         if (!pidPrize) return { success: false, message: "無此獎項" };
         // 獎項只有一個且得獎人已經有資料
         const awardees = await Awardees.find({pid: pid}).select("uid").lean();
-        if (!pidPrize.repeat && awardees.length <= 0) return { success: false, message: "已經抽完了" };
+        if (!pidPrize.repeat && awardees.length > 0) return { success: false, message: "已經抽完了" };
         
         let resultUser = [];
         const users = await User.find({verify:true}).select("id username").lean();
